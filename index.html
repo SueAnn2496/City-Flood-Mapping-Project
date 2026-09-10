@@ -113,7 +113,6 @@
             transition: all 0.3s;
         }
 
-        /* Klang Button (Yellow) -> Map4 */
         .district-btn.klang:hover, .district-btn.klang.active {
             background-color: #f1c40f;
             color: #2c3e50;
@@ -121,7 +120,6 @@
             box-shadow: 0 2px 8px rgba(241, 196, 15, 0.5);
         }
 
-        /* Shah Alam Button (Purple) -> Map5 */
         .district-btn.shahalam:hover, .district-btn.shahalam.active {
             background-color: #9b59b6;
             color: white;
@@ -129,7 +127,6 @@
             box-shadow: 0 2px 8px rgba(155, 89, 182, 0.5);
         }
 
-        /* Petaling Jaya Button (Green) -> Map6 */
         .district-btn.pj:hover, .district-btn.pj.active {
             background-color: #2ecc71;
             color: white;
@@ -175,6 +172,7 @@
             box-shadow: 2px 0 10px rgba(0,0,0,0.3);
             transition: margin-left 0.3s ease;
             z-index: 900;
+            overflow-y: auto;
         }
 
         .sidebar.collapsed {
@@ -193,6 +191,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            margin-bottom: 20px;
         }
 
         .layer-btn {
@@ -211,6 +210,95 @@
             background-color: #1abc9c;
             font-weight: bold;
             padding-left: 18px;
+        }
+
+        /* BASEMAP TOGGLE OPTION */
+        .basemap-option {
+            background-color: #1a252f;
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #7f8c8d;
+            transition: .4s;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #1abc9c;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(18px);
+        }
+
+        /* LEGEND CONTAINER */
+        .legend-box {
+            background-color: #1a252f;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .legend-box h4 {
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: #1abc9c;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 5px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: #ecf0f1;
+        }
+
+        .color-box {
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-shrink: 0;
         }
 
         .map-container {
@@ -237,9 +325,9 @@
     <!-- 2. MAP INTERFACE -->
     <div class="map-section" id="map-interface">
         
-        <!-- Top Navigation Bar (Only active on Boundary Area Map) -->
+        <!-- Top Navigation Bar -->
         <div class="top-nav" id="topNav">
-            <button class="district-btn klang active" onclick="switchDistrict('Map4/', this)">Klang</button>
+            <button class="district-btn klang" onclick="switchDistrict('Map4/', this)">Klang</button>
             <button class="district-btn shahalam" onclick="switchDistrict('Map5/', this)">Shah Alam</button>
             <button class="district-btn pj" onclick="switchDistrict('Map6/', this)">Petaling Jaya</button>
         </div>
@@ -252,53 +340,142 @@
             <div class="sidebar" id="sidebar">
                 <h3>🗺️ Flood Maps</h3>
                 <div class="map-selector">
-                    <button class="layer-btn active" onclick="switchLayer('Boundary', this)">Boundary Area Map</button>
+                    <button class="layer-btn active" onclick="switchLayer('Map1/', this)">Boundary Area Map</button>
                     <button class="layer-btn" onclick="switchLayer('Map2/', this)">Slope Map</button>
                     <button class="layer-btn" onclick="switchLayer('Map3/', this)">Land Cover Map</button>
                 </div>
+
+                <!-- BASEMAP CONTROL -->
+                <h3>🌐 Base Layer</h3>
+                <div class="basemap-option">
+                    <span>Google Satellite</span>
+                    <label class="switch">
+                        <input type="checkbox" id="satToggle" checked onchange="toggleGoogleSatellite(this.checked)">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- DYNAMIC LEGEND POPUP -->
+                <div class="legend-box" id="legendBox">
+                    <h4 id="legendTitle">Legend</h4>
+                    <div id="legendContent"></div>
+                </div>
             </div>
 
-            <!-- Map Iframe (Default: Map4 for Klang) -->
-            <iframe id="mapFrame" class="map-container" src="Map4/index.html"></iframe>
+            <!-- Map Iframe -->
+            <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
         </div>
     </div>
 
     <script>
-        var currentBoundaryFolder = 'Map4/'; // Default for Boundary Area (Klang)
-        var isBoundaryMode = true;
+        var slopeLegendHTML = `
+            <div class="legend-item"><div class="color-box" style="background: #ffffff; border: 1px solid #ccc;"></div> Very Gentle</div>
+            <div class="legend-item"><div class="color-box" style="background: #d0e1f9;"></div> Gentle</div>
+            <div class="legend-item"><div class="color-box" style="background: #94c2e6;"></div> Moderate</div>
+            <div class="legend-item"><div class="color-box" style="background: #4a90e2;"></div> Moderate Steep</div>
+            <div class="legend-item"><div class="color-box" style="background: #1e62b4;"></div> Steep</div>
+            <div class="legend-item"><div class="color-box" style="background: #0d3880;"></div> Very Steep</div>
+        `;
+
+        var landCoverLegendHTML = `
+            <div class="legend-item"><div class="color-box" style="background: #006400;"></div> Tree cover</div>
+            <div class="legend-item"><div class="color-box" style="background: #ffbb22;"></div> Shrubland</div>
+            <div class="legend-item"><div class="color-box" style="background: #ffff4c;"></div> Grassland</div>
+            <div class="legend-item"><div class="color-box" style="background: #f096ff;"></div> Cropland</div>
+            <div class="legend-item"><div class="color-box" style="background: #fa0000;"></div> Built-up</div>
+            <div class="legend-item"><div class="color-box" style="background: #b4b4b4;"></div> Bare / sparse vegetation</div>
+            <div class="legend-item"><div class="color-box" style="background: #f0f0f0; border: 1px solid #ccc;"></div> Snow and ice</div>
+            <div class="legend-item"><div class="color-box" style="background: #0064c8;"></div> Permanent water bodies</div>
+            <div class="legend-item"><div class="color-box" style="background: #0096a0;"></div> Herbaceous wetland</div>
+            <div class="legend-item"><div class="color-box" style="background: #00cf75;"></div> Mangroves</div>
+            <div class="legend-item"><div class="color-box" style="background: #ffebaf;"></div> Moss and lichen</div>
+        `;
 
         function toggleDashboard() {
             var sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('collapsed');
         }
 
-        function switchLayer(target, btn) {
+        function switchLayer(mapFolder, btn) {
             var topNav = document.getElementById('topNav');
+            var legendBox = document.getElementById('legendBox');
+            var legendTitle = document.getElementById('legendTitle');
+            var legendContent = document.getElementById('legendContent');
 
-            if (target === 'Boundary') {
-                isBoundaryMode = true;
+            var districtBtns = document.querySelectorAll('.district-btn');
+            districtBtns.forEach(function(b) { b.classList.remove('active'); });
+
+            if (mapFolder === 'Map1/') {
                 topNav.classList.remove('hidden');
-                document.getElementById('mapFrame').src = currentBoundaryFolder + 'index.html';
-            } else {
-                isBoundaryMode = false;
+                legendBox.style.display = 'none';
+                document.getElementById('mapFrame').src = 'Map1/index.html';
+            } else if (mapFolder === 'Map2/') {
                 topNav.classList.add('hidden');
-                document.getElementById('mapFrame').src = target + 'index.html';
+                legendTitle.innerText = 'Slope Legend';
+                legendContent.innerHTML = slopeLegendHTML;
+                legendBox.style.display = 'block';
+                document.getElementById('mapFrame').src = 'Map2/index.html';
+            } else if (mapFolder === 'Map3/') {
+                topNav.classList.add('hidden');
+                legendTitle.innerText = 'Land Cover Legend';
+                legendContent.innerHTML = landCoverLegendHTML;
+                legendBox.style.display = 'block';
+                document.getElementById('mapFrame').src = 'Map3/index.html';
             }
-            
+
             var layerBtns = document.querySelectorAll('.layer-btn');
             layerBtns.forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
         }
 
         function switchDistrict(mapFolder, btn) {
-            currentBoundaryFolder = mapFolder;
-
             var districtBtns = document.querySelectorAll('.district-btn');
             districtBtns.forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
 
-            document.getElementById('mapFrame').src = currentBoundaryFolder + 'index.html';
+            document.getElementById('mapFrame').src = mapFolder + 'index.html';
         }
+
+        // Toggle Google Satellite on the active map inside iframe
+        function toggleGoogleSatellite(enabled) {
+            var iframe = document.getElementById('mapFrame');
+            try {
+                var iframeWin = iframe.contentWindow;
+                if (iframeWin && iframeWin.map) {
+                    // OpenLayers setup
+                    if (typeof iframeWin.map.getLayers === 'function') {
+                        iframeWin.map.getLayers().forEach(function(layer) {
+                            var title = layer.get('title') || '';
+                            if (title.toLowerCase().includes('google') || title.toLowerCase().includes('satellite')) {
+                                layer.setVisible(enabled);
+                            }
+                        });
+                    } 
+                    // Leaflet setup
+                    else if (iframeWin.map.eachLayer) {
+                        iframeWin.map.eachLayer(function(layer) {
+                            if (layer._url && layer._url.includes('google')) {
+                                if (enabled) {
+                                    iframeWin.map.addLayer(layer);
+                                } else {
+                                    iframeWin.map.removeLayer(layer);
+                                }
+                            }
+                        });
+                    }
+                }
+            } catch (e) {
+                console.log("Could not toggle satellite layer directly: ", e);
+            }
+        }
+
+        // Ensure default state is synced on map load
+        document.getElementById('mapFrame').addEventListener('load', function() {
+            var isChecked = document.getElementById('satToggle').checked;
+            setTimeout(function() {
+                toggleGoogleSatellite(isChecked);
+            }, 500);
+        });
     </script>
 
 </body>
