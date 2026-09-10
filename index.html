@@ -69,10 +69,10 @@
         }
 
         .team-credits-badge {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             background: rgba(26, 188, 156, 0.15);
             border: 1px solid rgba(26, 188, 156, 0.4);
-            padding: 8px 20px;
+            padding: 8px 18px;
             border-radius: 20px;
             color: #5eead4;
             margin-bottom: 30px;
@@ -403,39 +403,89 @@
             right: 25px;
             background: rgba(15, 23, 42, 0.94);
             color: white;
-            padding: 16px;
+            padding: 14px 16px;
             border-radius: 10px;
             box-shadow: 0 8px 30px rgba(0,0,0,0.5);
             z-index: 850;
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255,255,255,0.12);
-            max-width: 300px;
+            max-width: 280px;
+            max-height: 55vh;
+            overflow-y: auto;
             display: none;
         }
 
-        .floating-legend h4 {
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-            color: #2dd4bf;
+        .legend-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border-bottom: 1px solid #334155;
             padding-bottom: 6px;
+            margin-bottom: 8px;
+        }
+
+        .floating-legend h4 {
+            font-size: 0.9rem;
+            color: #2dd4bf;
+            margin: 0;
+        }
+
+        .legend-toggle-btn {
+            background: none;
+            border: 1px solid #334155;
+            color: #2dd4bf;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            display: grid;
+            place-items: center;
+            font-size: 0.9rem;
+        }
+        .legend-toggle-btn:hover {
+            background: #1e293b;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
+            margin-bottom: 6px;
+            font-size: 0.8rem;
             color: #e2e8f0;
         }
 
         .color-box {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border-radius: 4px;
             border: 1px solid rgba(255,255,255,0.2);
             flex-shrink: 0;
+        }
+
+        /* FLOATING JUMP-TO-MAP BUTTON */
+        .floating-jump-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: #2dd4bf;
+            color: #0f172a;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            box-shadow: 0 4px 20px rgba(45, 212, 191, 0.4);
+            z-index: 950;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+        .floating-jump-btn:hover {
+            background: #14b8a6;
+            transform: translateY(-2px);
         }
 
         .map-container {
@@ -635,16 +685,16 @@
 
         .site-footer {
             background: #090d16;
-            color: #94a3b8;
+            color: #64748b;
             text-align: center;
-            padding: 35px 20px;
-            font-size: .9rem;
+            padding: 25px 20px;
+            font-size: .82rem;
             border-top: 1px solid #1e293b;
-            line-height: 1.8;
+            line-height: 1.6;
         }
 
         .site-footer strong {
-            color: #f1f5f9;
+            color: #cbd5e1;
         }
 
         @media (max-width: 1000px) {
@@ -671,10 +721,15 @@
             }
             .sidebar.collapsed { margin-left: -270px; }
             .landing-title { font-size: 2.2rem; }
+            .floating-legend { max-width: 220px; bottom: 15px; right: 15px; }
+            .floating-jump-btn { bottom: 15px; left: 15px; padding: 8px 14px; font-size: 0.78rem; }
         }
     </style>
 </head>
 <body>
+
+<!-- QUICK JUMP BUTTON TO MAP -->
+<a href="#map-interface" class="floating-jump-btn">🗺️ Quick Map</a>
 
 <!-- 1. LANDING PAGE -->
 <div class="landing-page">
@@ -780,9 +835,12 @@
 
         <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
 
-        <!-- FLOATING LEGEND OVER MAP -->
+        <!-- FLOATING LEGEND OVER MAP (WITH COLLAPSE BUTTON) -->
         <div class="floating-legend" id="floatingLegend">
-            <h4 id="floatingLegendTitle">Legend</h4>
+            <div class="legend-header-row">
+                <h4 id="floatingLegendTitle">Legend</h4>
+                <button class="legend-toggle-btn" onclick="toggleLegendBody()" title="Minimize/Expand">−</button>
+            </div>
             <div id="floatingLegendContent"></div>
         </div>
     </div>
@@ -966,11 +1024,11 @@
     </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER (DISCREET & COMPACT) -->
 <footer class="site-footer">
     City Flood & Waterlogging Risk Mapping Platform &nbsp;|&nbsp; GIS-Based Web Mapping Project <br>
-    <div style="margin-top: 8px;">
-        <strong>Created by:</strong> Chan Boon Yeah, Ooi Sue Ann, Wong Yuean Yi
+    <div style="margin-top: 4px; font-size: 0.78rem; opacity: 0.85;">
+        Created by: <strong>Chan Boon Yeah, Ooi Sue Ann, Wong Yuean Yi</strong>
     </div>
 </footer>
 
@@ -995,13 +1053,27 @@ var landCoverLegendHTML = `
     <div class="legend-item"><div class="color-box" style="background:#0064c8;"></div>Permanent water bodies</div>
     <div class="legend-item"><div class="color-box" style="background:#0096a0;"></div>Herbaceous wetland</div>
     <div class="legend-item"><div class="color-box" style="background:#00cf75;"></div>Mangroves</div>
-    <div style="margin-top: 15px; border-top: 1px solid #334155; padding-top: 10px;">
-        <div style="font-size: 0.8rem; margin-bottom: 5px; color: #2dd4bf; text-align: center; font-weight: bold;">Waterlogging Susceptibility</div>
-        <div style="position: relative; height: 160px; width: 100%;">
+    <div style="margin-top: 10px; border-top: 1px solid #334155; padding-top: 8px;">
+        <div style="font-size: 0.75rem; margin-bottom: 4px; color: #2dd4bf; text-align: center; font-weight: bold;">Waterlogging Susceptibility</div>
+        <div style="position: relative; height: 130px; width: 100%;">
             <canvas id="landCoverRiskChart"></canvas>
         </div>
     </div>
 `;
+
+let isLegendMinimized = false;
+function toggleLegendBody() {
+    var content = document.getElementById("floatingLegendContent");
+    var btn = document.querySelector(".legend-toggle-btn");
+    isLegendMinimized = !isLegendMinimized;
+    if (isLegendMinimized) {
+        content.style.display = "none";
+        btn.innerText = "+";
+    } else {
+        content.style.display = "block";
+        btn.innerText = "−";
+    }
+}
 
 function toggleDashboard() {
     document.getElementById("sidebar").classList.toggle("collapsed");
@@ -1019,7 +1091,7 @@ function initLandCoverChart() {
     landCoverChartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Built-up', 'Tree Cover', 'Grassland / Shrubs', 'Water Bodies / Wetlands'],
+            labels: ['Built-up', 'Tree Cover', 'Grass / Shrubs', 'Water / Wetlands'],
             datasets: [{
                 data: [45, 20, 20, 15],
                 backgroundColor: ['#fa0000', '#006400', '#ffbb22', '#0096a0']
@@ -1033,8 +1105,8 @@ function initLandCoverChart() {
                     position: 'bottom',
                     labels: {
                         color: '#f1f5f9',
-                        boxWidth: 10,
-                        font: { size: 10 }
+                        boxWidth: 8,
+                        font: { size: 9 }
                     }
                 }
             }
@@ -1046,6 +1118,11 @@ function switchLayer(mapFolder, btn) {
     var floatingLegend = document.getElementById("floatingLegend");
     var floatingLegendTitle = document.getElementById("floatingLegendTitle");
     var floatingLegendContent = document.getElementById("floatingLegendContent");
+
+    // Reset minimized state when switching layers
+    isLegendMinimized = false;
+    document.querySelector(".legend-toggle-btn").innerText = "−";
+    floatingLegendContent.style.display = "block";
 
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.querySelector('.risk-btn').classList.remove("active");
