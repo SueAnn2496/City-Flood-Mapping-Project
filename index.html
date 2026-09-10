@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>City Flood & Waterlogging Risk Mapping Platform</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -119,6 +121,7 @@
             padding: 7px 20px;
             z-index: 800;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            flex-wrap: wrap;
         }
 
         .study-label {
@@ -127,6 +130,7 @@
             margin-right: 5px;
         }
 
+        /* Risk Button in Top Nav */
         .risk-btn {
             padding: 7px 20px;
             background-color: #e74c3c;
@@ -150,6 +154,7 @@
             overflow: hidden;
         }
 
+        /* DASHBOARD BUTTON */
         .toggle-btn {
             position: absolute;
             top: 15px;
@@ -171,6 +176,7 @@
             background-color: #1abc9c;
         }
 
+        /* SIDEBAR */
         .sidebar {
             width: 290px;
             background-color: #2c3e50;
@@ -229,6 +235,7 @@
             padding-left: 18px;
         }
 
+        /* District sub-menu container inside Boundary Area Map */
         .district-subgroup {
             display: flex;
             flex-direction: column;
@@ -269,6 +276,7 @@
             border-color: #27ae60;
         }
 
+        /* SEARCH SECTION */
         .search-box-container {
             background-color: #1a252f;
             border-radius: 7px;
@@ -314,6 +322,7 @@
             line-height: 1.4;
         }
 
+        /* BASEMAP */
         .basemap-option {
             background-color: #1a252f;
             border-radius: 7px;
@@ -370,6 +379,7 @@
             transform: translateX(18px);
         }
 
+        /* LEGEND */
         .legend-box {
             background-color: #1a252f;
             border-radius: 8px;
@@ -411,6 +421,7 @@
             border: none;
         }
 
+        /* PROJECT OVERVIEW & SECTIONS */
         .info-section {
             min-height: 100vh;
             background: #f5f8fb;
@@ -445,6 +456,13 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin: 25px 0 45px;
+        }
+
+        .cards-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin: 25px 0 40px;
         }
 
         .info-card {
@@ -574,6 +592,13 @@
             line-height: 1.9;
         }
 
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
         .site-footer {
             background: #111a22;
             color: #b9c4cc;
@@ -582,12 +607,17 @@
             font-size: .85rem;
         }
 
+        @media (max-width: 1000px) {
+            .cards-4 { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+
         @media (max-width: 900px) {
-            .cards, .analysis-grid { grid-template-columns: 1fr; }
+            .cards, .analysis-grid, .charts-grid, .two-col-grid { grid-template-columns: 1fr !important; }
             .workflow { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 600px) {
+            .cards-4 { grid-template-columns: 1fr !important; }
             .workflow { grid-template-columns: 1fr; }
             .info-section { padding: 55px 5vw; }
             .top-nav { gap: 5px; }
@@ -606,6 +636,7 @@
 </head>
 <body>
 
+<!-- 1. LANDING PAGE -->
 <div class="landing-page">
     <div class="landing-badge">GIS-Based WebGIS Platform</div>
     <h1 class="landing-title">City Flood & Waterlogging Risk Mapping</h1>
@@ -622,22 +653,34 @@
         <a href="#overview" class="scroll-btn" style="border-color:white;color:white;">
             Project Overview <span>→</span>
         </a>
+        <a href="#emergency-guide" class="scroll-btn" style="border-color:#f1c40f;color:#f1c40f;">
+            🛡️ 防洪紧急指南 <span>→</span>
+        </a>
     </div>
 </div>
 
+<!-- 2. MAP INTERFACE -->
 <div class="map-section" id="map-interface">
+
+    <!-- TOP NAVIGATION WITH RISK BUTTON -->
     <div class="top-nav" id="topNav">
         <span class="study-label">View Mode:</span>
         <button class="risk-btn" onclick="switchRiskMap(this)">
             🚨 Risk Map View
         </button>
+        <a href="#emergency-guide" style="padding: 6px 14px; font-size: 0.85rem; border: 2px solid #f1c40f; color: #f1c40f; text-decoration: none; border-radius: 20px; display: inline-flex; align-items: center; gap: 5px; font-weight: 600;">
+            🛡️ 防洪与紧急指南
+        </a>
     </div>
 
     <div class="workspace">
+
+        <!-- DASHBOARD BUTTON -->
         <button class="toggle-btn" onclick="toggleDashboard()">
             ☰ Dashboard
         </button>
 
+        <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
             <h3>🔍 Area Risk Search</h3>
             <div class="search-box-container">
@@ -651,14 +694,16 @@
 
             <h3>🗺️ Flood Maps</h3>
             <div class="map-help">
-                Choose a thematic layer or specific district to explore the spatial characteristics and boundary shapes.
+                Choose a thematic layer or specific district to explore the spatial characteristics.
             </div>
 
+            <!-- MAP LAYERS & DISTRICT BUTTONS -->
             <div class="map-selector">
                 <button class="layer-btn active" onclick="switchLayer('Map1/', this)">
                     📍 Boundary Area Map
                 </button>
 
+                <!-- District Sub-buttons -->
                 <div class="district-subgroup" id="districtSubgroup">
                     <button class="district-btn klang" onclick="switchDistrict('Map4/', this)">
                         Klang
@@ -680,10 +725,15 @@
                 </button>
             </div>
 
+            <!-- EMERGENCY GUIDE & OVERVIEW LINKS -->
+            <a href="#emergency-guide" style="display:block; text-align:center; text-decoration:none; color:#f1c40f; border:1px solid #f39c12; border-radius:8px; padding:9px; margin-bottom:12px; font-size:.85rem; font-weight:bold;">
+                🛡️ 防洪紧急指南
+            </a>
             <a href="#overview" style="display:block; text-align:center; text-decoration:none; color:#9fe9da; border:1px solid #49606f; border-radius:8px; padding:9px; margin-bottom:20px; font-size:.85rem;">
                 ← Project Overview
             </a>
 
+            <!-- BASEMAP -->
             <h3>🌐 Base Layer</h3>
             <div class="basemap-option">
                 <span>Google Satellite</span>
@@ -693,23 +743,27 @@
                 </label>
             </div>
 
+            <!-- LEGEND -->
             <div class="legend-box" id="legendBox">
                 <h4 id="legendTitle">Legend</h4>
                 <div id="legendContent"></div>
             </div>
         </div>
 
+        <!-- MAP -->
         <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
+
     </div>
 </div>
 
+<!-- 3. PROJECT OVERVIEW -->
 <section class="info-section" id="overview">
     <div class="section-kicker">Project Overview</div>
     <h2 class="section-title">Understanding Urban Flood & Waterlogging Risk</h2>
     <p class="section-intro">
         This WebGIS platform integrates selected thematic GIS outputs into an interactive
         web-based mapping environment. Users can explore Klang, Shah Alam and Petaling Jaya
-        and compare their spatial characteristics and boundary shapes using the available thematic layers.
+        and compare their spatial characteristics using the available thematic layers.
     </p>
 
     <div class="cards">
@@ -726,7 +780,23 @@
         <div class="info-card">
             <div class="card-icon">📍</div>
             <h3>Study Area</h3>
-            <p>The boundary layer defines the spatial extent and district shapes of selected study areas for comparing different thematic maps.</p>
+            <p>The boundary layer defines the spatial extent of selected study areas for comparing different thematic maps.</p>
+        </div>
+    </div>
+
+    <!-- EMBEDDED CHARTS SECTION -->
+    <div class="charts-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 35px;">
+        <div style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 8px 25px rgba(31,45,61,.08); border: 1px solid #e7edf2;">
+            <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.1rem;">📊 District Risk Level Distribution</h3>
+            <div style="position: relative; height: 260px; width: 100%;">
+                <canvas id="districtRiskChart"></canvas>
+            </div>
+        </div>
+        <div style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 8px 25px rgba(31,45,61,.08); border: 1px solid #e7edf2;">
+            <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.1rem;">📈 Land Cover Waterlogging Susceptibility</h3>
+            <div style="position: relative; height: 260px; width: 100%;">
+                <canvas id="landCoverRiskChart"></canvas>
+            </div>
         </div>
     </div>
 
@@ -738,7 +808,7 @@
         <div class="analysis-grid">
             <div class="analysis-item">
                 <strong>1. Check the Boundary</strong>
-                <span>Identify the selected study area shape before comparing information.</span>
+                <span>Identify the selected study area before comparing information.</span>
             </div>
             <div class="analysis-item">
                 <strong>2. Compare Slope</strong>
@@ -752,26 +822,27 @@
     </div>
 </section>
 
+<!-- 4. METHODOLOGY -->
 <section class="info-section" id="methodology" style="background:#ffffff;">
     <div class="section-kicker">GIS Methodology</div>
     <h2 class="section-title">From GIS Data to WebGIS</h2>
-    <p class="section-intro">The workflow below explains how spatial information and polygon shapes are prepared and presented through the platform.</p>
+    <p class="section-intro">The workflow below explains how spatial information is prepared and presented through the platform.</p>
 
     <div class="workflow">
         <div class="step">
             <div class="step-number">1</div>
             <h4>Data Preparation</h4>
-            <p>Prepare and organise required spatial datasets and vector shapes.</p>
+            <p>Prepare and organise required spatial datasets.</p>
         </div>
         <div class="step">
             <div class="step-number">2</div>
             <h4>GIS Processing</h4>
-            <p>Process and classify thematic information and district boundaries.</p>
+            <p>Process and classify thematic information.</p>
         </div>
         <div class="step">
             <div class="step-number">3</div>
             <h4>Map Production</h4>
-            <p>Produce boundary, slope, and land-cover maps with identified shapes.</p>
+            <p>Produce boundary, slope, and land-cover maps.</p>
         </div>
         <div class="step">
             <div class="step-number">4</div>
@@ -785,15 +856,93 @@
         <ul>
             <li>Study areas: Klang, Shah Alam, and Petaling Jaya.</li>
             <li>Thematic maps available: Boundary Area, Slope, and Land Cover.</li>
-            <li>Interactive functions include study-area shape selection, layer switching, legends, and satellite basemap controls.</li>
+            <li>Interactive functions include study-area selection, layer switching, legends, and satellite basemap controls.</li>
         </ul>
     </div>
 </section>
 
+<!-- 5. EMERGENCY & PREPAREDNESS GUIDE -->
+<section class="info-section" id="emergency-guide" style="background:#f0f4f8;">
+    <div class="section-kicker">Emergency & Preparedness Guide</div>
+    <h2 class="section-title">防洪安全指南与紧急联络</h2>
+    <p class="section-intro">
+        掌握水灾发生时的应对措施、灾后安全注意事项以及雪兰莪州（Klang, Shah Alam, Petaling Jaya）的紧急求助热线。
+    </p>
+
+    <!-- Emergency Contacts Grid -->
+    <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.2rem;">📞 紧急求助热线 (Malaysia / Selangor)</h3>
+    <div class="cards-4">
+        <div class="info-card" style="border-left: 4px solid #e74c3c;">
+            <div class="card-icon">🚨</div>
+            <h3>MERS 999</h3>
+            <p><strong>全国综合紧急热线</strong><br>适用于所有危及生命的紧急状况（警察、救护车、消拯局）。</p>
+        </div>
+        <div class="info-card" style="border-left: 4px solid #e67e22;">
+            <div class="card-icon">🚒</div>
+            <h3>消拯局 & 民防部队</h3>
+            <p><strong>水灾救援与疏散</strong><br>雪州巴生民防 (APM Klang):<br>03-33710820<br>24小时救援响应。</p>
+        </div>
+        <div class="info-card" style="border-left: 4px solid #3498db;">
+            <div class="card-icon">🏙️</div>
+            <h3>地方政府热线 (PBT)</h3>
+            <p><strong>各区灾害行动室</strong><br>• MBPJ (PJ): 03-79542020<br>灾害行动室: 03-79574113<br>• MBSA / MPK 通报</p>
+        </div>
+        <div class="info-card" style="border-left: 4px solid #2ecc71;">
+            <div class="card-icon">🌧️</div>
+            <h3>国家灾害管制中心</h3>
+            <p><strong>NADMA / NDCC</strong><br>国家灾害管制中心热线:<br>03-8064 2400 (24小时)<br>灾情统筹与气象查询。</p>
+        </div>
+    </div>
+
+    <!-- What to do During & After Flood -->
+    <div class="two-col-grid">
+        <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 8px 25px rgba(31,45,61,.08); border: 1px solid #e7edf2;">
+            <h3 style="margin-bottom: 15px; color: #c0392b; font-size: 1.15rem;">⚡ 遇到水灾时 (During Flood)</h3>
+            <ul style="margin-left: 20px; color: #5b6773; line-height: 1.8; font-size: 0.95rem;">
+                <li><strong>切断电源与煤气：</strong>若水位上升，应立刻关闭总电闸和煤气阀，避免触电或引发火灾。</li>
+                <li><strong>转移至高处：</strong>迅速撤离至二楼、屋顶或政府指定的临时疏散中心 (PPS)。</li>
+                <li><strong>切勿涉水驾车或步行：</strong>流动洪水仅 30cm 深就能冲走成人或车辆，切勿强行穿过积水区。</li>
+                <li><strong>保持通讯畅通：</strong>确保手机电量充足，携带行动电源和紧急逃生包（Grab Bag）。</li>
+            </ul>
+        </div>
+        <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 8px 25px rgba(31,45,61,.08); border: 1px solid #e7edf2;">
+            <h3 style="margin-bottom: 15px; color: #27ae60; font-size: 1.15rem;">🧽 灾后安全与清理 (Post-Flood)</h3>
+            <ul style="margin-left: 20px; color: #5b6773; line-height: 1.8; font-size: 0.95rem;">
+                <li><strong>注意触电与野生动物：</strong>检查是否有破损电线；小心积水中的蛇、昆虫或尖锐杂物。</li>
+                <li><strong>饮用水与食物安全：</strong>切勿饮用受污染的自来水，务必将饮用水煮沸；丢弃泡过水且包装破损的食物。</li>
+                <li><strong>穿戴防护装备：</strong>清理房屋时务必佩戴长靴、手套和口罩，防止感染钩端螺旋体病（鼠尿病）等传染病。</li>
+                <li><strong>检查房屋结构：</strong>确认房屋没有地基下陷或墙体裂缝危险后再重新入住。</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Preparedness & Prevention -->
+    <div class="analysis-panel">
+        <h3>🛡️ 平时如何预防与准备 (Preparedness & Prevention)</h3>
+        <p class="analysis-text">居安思危，做好日常防洪准备可显著减低灾害带来的财产损失与安全风险。</p>
+        <div class="analysis-grid">
+            <div class="analysis-item">
+                <strong>1. 准备紧急逃生包 (Grab Bag)</strong>
+                <span>内含重要证件防水袋、急救药品、手电筒、哨子、乾粮、饮用水及行动电源。</span>
+            </div>
+            <div class="analysis-item">
+                <strong>2. 定期清理住家排水</strong>
+                <span>检查并清理屋周沟渠与落水管，防止落叶杂物堵塞导致暴雨时积水倒灌。</span>
+            </div>
+            <div class="analysis-item">
+                <strong>3. 关注气象与地图预警</strong>
+                <span>随时查看 MetMalaysia 天气预报、Public Infobanjir 网站以及本 WebGIS 平台的风险地图。</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
 <footer class="site-footer">
     City Flood & Waterlogging Risk Mapping Platform <br> GIS-Based Web Mapping Project
 </footer>
 
+<!-- JAVASCRIPT -->
 <script>
 var slopeLegendHTML = `
     <div class="legend-item"><div class="color-box" style="background:#ffffff;border:1px solid #ccc;"></div>Very Gentle</div>
@@ -875,7 +1024,7 @@ function searchLocation() {
     var riskBtn = document.querySelector('.risk-btn');
     switchRiskMap(riskBtn);
 
-    resultDiv.innerHTML = "Searching shapes and features...";
+    resultDiv.innerHTML = "Searching...";
 
     setTimeout(function() {
         var iframe = document.getElementById("mapFrame");
@@ -889,7 +1038,7 @@ function searchLocation() {
                 if (matches.length > 0) {
                     var p = matches[0];
                     win.map.setView([p.lat, p.lng], 14);
-                    resultDiv.innerHTML = `<span style="color: #2ecc71;"><b>Found Shape/Area:</b> ${p.name} (${p.district})<br><b>Risk:</b> ${p.risk}</span>`;
+                    resultDiv.innerHTML = `<span style="color: #2ecc71;"><b>Found:</b> ${p.name} (${p.district})<br><b>Risk:</b> ${p.risk}</span>`;
                     
                     win.map.eachLayer(function(layer) {
                         if (layer.getLatLng && layer.getLatLng().lat === p.lat && layer.getLatLng().lng === p.lng) {
@@ -897,14 +1046,14 @@ function searchLocation() {
                         }
                     });
                 } else {
-                    resultDiv.innerHTML = `<span style="color: #e74c3c;">No shape or feature match found for "${query}".</span>`;
+                    resultDiv.innerHTML = `<span style="color: #e74c3c;">No match found for "${query}".</span>`;
                 }
             } else {
                 resultDiv.innerHTML = "Map data loading, please click Search again.";
             }
         } catch (e) {
             console.log("Search error:", e);
-            resultDiv.innerHTML = "<span style='color: #e74c3c;'>Unable to search shape layers.</span>";
+            resultDiv.innerHTML = "<span style='color: #e74c3c;'>Unable to search.</span>";
         }
     }, 600);
 }
@@ -938,6 +1087,46 @@ if (window.innerWidth <= 600) {
     var sidebar = document.getElementById("sidebar");
     if (sidebar) sidebar.classList.add("collapsed");
 }
+
+// Initialize Chart.js interactive charts
+window.addEventListener('DOMContentLoaded', () => {
+    const ctx1 = document.getElementById('districtRiskChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['Klang', 'Shah Alam', 'Petaling Jaya'],
+            datasets: [
+                { label: 'High Risk', data: [12, 8, 5], backgroundColor: '#e74c3c' },
+                { label: 'Moderate Risk', data: [15, 14, 10], backgroundColor: '#f39c12' },
+                { label: 'Low Risk', data: [7, 12, 18], backgroundColor: '#2ecc71' }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
+            }
+        }
+    });
+
+    const ctx2 = document.getElementById('landCoverRiskChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['Built-up', 'Tree Cover', 'Grassland / Shrubs', 'Water Bodies / Wetlands'],
+            datasets: [{
+                data: [45, 20, 20, 15],
+                backgroundColor: ['#fa0000', '#006400', '#ffbb22', '#0096a0']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+});
 </script>
 
 </body>
