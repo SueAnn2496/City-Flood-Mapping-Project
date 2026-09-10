@@ -6,66 +6,127 @@
     <title>Web GIS Map Viewer - City Flood Mapping</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { height: 100%; font-family: Arial, sans-serif; display: flex; flex-direction: column; }
+        body, html { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
         
-        /* Navigation bar styles */
-        .nav-bar {
-            background-color: #2c3e50;
+        /* Layout Structure */
+        .app-container {
             display: flex;
-            padding: 10px 20px;
-            gap: 10px;
-            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
         }
-        .nav-bar h2 {
-            color: #ecf0f1;
+
+        /* Toggle Button */
+        .toggle-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: background 0.3s;
+        }
+        .toggle-btn:hover {
+            background-color: #34495e;
+        }
+
+        /* Sliding Dashboard Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 70px 20px 20px 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            transition: margin-left 0.3s ease;
+            z-index: 900;
+        }
+        .sidebar.collapsed {
+            margin-left: -280px;
+        }
+
+        .sidebar h2 {
             font-size: 18px;
-            margin-right: 20px;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+            border-bottom: 2px solid #34495e;
+            padding-bottom: 10px;
+        }
+
+        /* Map Navigation Buttons */
+        .map-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         .nav-btn {
-            padding: 8px 16px;
+            padding: 12px 15px;
             background-color: #34495e;
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
-            transition: background 0.3s;
+            text-align: left;
+            transition: all 0.3s;
         }
         .nav-btn:hover, .nav-btn.active {
             background-color: #1abc9c;
+            font-weight: bold;
+            padding-left: 20px;
         }
 
-        /* Map display container */
+        /* Map Viewer Frame */
         .map-container {
             flex: 1;
+            height: 100%;
             width: 100%;
-            height: calc(100vh - 50px);
             border: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="nav-bar">
-        <h2>🗺️ City Flood Mapping Platform</h2>
-        <!-- Match exact folder names: Map1, Map2, Map3 -->
-        <button class="nav-btn active" onclick="switchMap('Map1/', this)">Klang</button>
-        <button class="nav-btn" onclick="switchMap('Map2/', this)">Shah Alam</button>
-        <button class="nav-btn" onclick="switchMap('Map3/', this)">Petaling Jaya</button>
+    <div class="app-container">
+        <!-- Dashboard Toggle Button -->
+        <button class="toggle-btn" onclick="toggleDashboard()">☰ Dashboard</button>
+
+        /* Sliding Dashboard Sidebar */
+        <div class="sidebar" id="sidebar">
+            <h2>🗺️ Flood Maps</h2>
+            <div class="map-selector">
+                <button class="nav-btn active" onclick="switchMap('Map1/', this)">Boundary Area Map</button>
+                <button class="nav-btn" onclick="switchMap('Map2/', this)">Slope Map</button>
+                <button class="nav-btn" onclick="switchMap('Map3/', this)">Land Cover Map</button>
+            </div>
+        </div>
+
+        <!-- Map Display Container -->
+        <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
     </div>
 
-    <!-- Default loaded map -->
-    <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
-
     <script>
+        // Switch between map folders
         function switchMap(mapPath, btn) {
-            // Switch iframe content to selected map folder
             document.getElementById('mapFrame').src = mapPath + 'index.html';
             
-            // Update active button state
             var buttons = document.querySelectorAll('.nav-btn');
             buttons.forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
+        }
+
+        // Expand or collapse Dashboard sidebar
+        function toggleDashboard() {
+            var sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
         }
     </script>
 
