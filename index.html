@@ -386,7 +386,7 @@
             z-index: 850;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.15);
-            max-width: 250px;
+            max-width: 280px;
             display: none;
         }
 
@@ -776,15 +776,15 @@
     <!-- CHARTS SECTION -->
     <div class="charts-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 35px;">
         <div style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 8px 25px rgba(31,45,61,.08); border: 1px solid #e7edf2;">
-            <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.1rem;">📊 District Risk Level Distribution</h3>
+            <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.1rem;">📊 Spatial Distribution of Flood Hotspots (2022-2026)</h3>
             <div style="position: relative; height: 260px; width: 100%;">
-                <canvas id="districtRiskChart"></canvas>
+                <canvas id="spatialDistributionChart"></canvas>
             </div>
         </div>
         <div style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 8px 25px rgba(31,45,61,.08); border: 1px solid #e7edf2;">
-            <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.1rem;">📈 Land Cover Waterlogging Susceptibility</h3>
+            <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.1rem;">📈 Flood Risk Severity Level Breakdown by District</h3>
             <div style="position: relative; height: 260px; width: 100%;">
-                <canvas id="landCoverRiskChart"></canvas>
+                <canvas id="districtRiskChart"></canvas>
             </div>
         </div>
     </div>
@@ -949,10 +949,51 @@ var landCoverLegendHTML = `
     <div class="legend-item"><div class="color-box" style="background:#0064c8;"></div>Permanent water bodies</div>
     <div class="legend-item"><div class="color-box" style="background:#0096a0;"></div>Herbaceous wetland</div>
     <div class="legend-item"><div class="color-box" style="background:#00cf75;"></div>Mangroves</div>
+    <div style="margin-top: 15px; border-top: 1px solid #34495e; padding-top: 10px;">
+        <div style="font-size: 0.8rem; margin-bottom: 5px; color: #62e0c4; text-align: center; font-weight: bold;">Waterlogging Susceptibility</div>
+        <div style="position: relative; height: 160px; width: 100%;">
+            <canvas id="landCoverRiskChart"></canvas>
+        </div>
+    </div>
 `;
 
 function toggleDashboard() {
     document.getElementById("sidebar").classList.toggle("collapsed");
+}
+
+let landCoverChartInstance = null;
+
+function initLandCoverChart() {
+    const canvas = document.getElementById('landCoverRiskChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (landCoverChartInstance) {
+        landCoverChartInstance.destroy();
+    }
+    landCoverChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Built-up', 'Tree Cover', 'Grassland / Shrubs', 'Water Bodies / Wetlands'],
+            datasets: [{
+                data: [45, 20, 20, 15],
+                backgroundColor: ['#fa0000', '#006400', '#ffbb22', '#0096a0']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#ecf0f1',
+                        boxWidth: 10,
+                        font: { size: 10 }
+                    }
+                }
+            }
+        }
+    });
 }
 
 function switchLayer(mapFolder, btn) {
@@ -972,10 +1013,11 @@ function switchLayer(mapFolder, btn) {
         floatingLegend.style.display = "block";
         document.getElementById("mapFrame").src = "Map2/index.html";
     } else if (mapFolder === "Map3/") {
-        floatingLegendTitle.innerText = "Land Cover Legend";
+        floatingLegendTitle.innerText = "Land Cover & Susceptibility";
         floatingLegendContent.innerHTML = landCoverLegendHTML;
         floatingLegend.style.display = "block";
         document.getElementById("mapFrame").src = "Map3/index.html";
+        setTimeout(initLandCoverChart, 50);
     }
 
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove("active"));
@@ -1077,12 +1119,37 @@ if (window.innerWidth <= 600) {
 }
 
 // ==========================================
-// INITIALIZE CHART.JS (Updated with Figure 4.1 & Figure 4.2 data)
+// INITIALIZE CHART.JS
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-    // 1. District Risk Level Distribution Chart (Figure 4.2 Breakdown by District & Figure 4.1 Hotspot Totals)
-    const ctx1 = document.getElementById('districtRiskChart').getContext('2d');
+    // 1. Spatial Distribution of Urban Flood/Waterlogging Hotspots (Figure 4.1 Data)
+    const ctx1 = document.getElementById('spatialDistributionChart').getContext('2d');
     new Chart(ctx1, {
+        type: 'bar',
+        data: {
+            labels: ['Shah Alam', 'Petaling Jaya', 'Klang'],
+            datasets: [{
+                label: 'Identified Flood Hotspots (2022-2026)',
+                data: [17, 15, 11],
+                backgroundColor: ['#1f4e78', '#2e75b6', '#5b9bd5']
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { beginAtZero: true, max: 20 }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+
+    // 2. Flood Risk Severity Level Breakdown by District (Figure 4.2 Data)
+    const ctx2 = document.getElementById('districtRiskChart').getContext('2d');
+    new Chart(ctx2, {
         type: 'bar',
         data: {
             labels: ['Shah Alam', 'Petaling Jaya', 'Klang'],
@@ -1100,23 +1167,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 x: { stacked: true },
                 y: { stacked: true, beginAtZero: true }
             }
-        }
-    });
-
-    // 2. Land Cover Waterlogging Susceptibility Chart
-    const ctx2 = document.getElementById('landCoverRiskChart').getContext('2d');
-    new Chart(ctx2, {
-        type: 'doughnut',
-        data: {
-            labels: ['Built-up', 'Tree Cover', 'Grassland / Shrubs', 'Water Bodies / Wetlands'],
-            datasets: [{
-                data: [45, 20, 20, 15],
-                backgroundColor: ['#fa0000', '#006400', '#ffbb22', '#0096a0']
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
         }
     });
 });
