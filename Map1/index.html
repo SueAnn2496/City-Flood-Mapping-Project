@@ -48,7 +48,6 @@
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-        // remove popup's row if "visible-with-data"
         function removeEmptyRowsFromPopupContent(content, feature) {
          var tempDiv = document.createElement('div');
          tempDiv.innerHTML = content;
@@ -62,7 +61,6 @@
          }
          return tempDiv.innerHTML;
         }
-        // modify popup if contains media
         function addClassToPopupIfMedia(content, popup) {
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = content;
@@ -94,7 +92,6 @@
                     video.style.maxWidth = "60vw";
                     imgTd.parentNode.replaceChild(video, imgTd);
                     popup._contentNode.classList.add('media');
-                    // Aggiorna il popup quando il video carica i metadati
                     video.addEventListener('loadedmetadata', function() {
                         popup.update();
                     });
@@ -126,7 +123,6 @@
             minNativeZoom: 0,
             maxNativeZoom: 20
         });
-        layer_GoogleHybrid_0;
         map.addLayer(layer_GoogleHybrid_0);
         function pop_DAERAH_SELANGOR_3375fix_1(feature, layer) {
             layer.on({
@@ -150,10 +146,10 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function(e) {
+                addClassToPopupIfMedia(content, e.popup);
+            });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_DAERAH_SELANGOR_3375fix_1_0(feature) {
@@ -229,9 +225,9 @@
             layer.bindTooltip((layer.feature.properties['DISTRICT'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['DISTRICT']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_DAERAH_SELANGOR_3375fix_1'});
             labels.push(layer);
             totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
+             layer.added = true;
+             addLabel(layer, i);
+             i++;
         });
         resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
         map.on("zoomend", function(){
