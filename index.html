@@ -82,6 +82,7 @@
             background-color: #2c3e50;
         }
 
+        /* Top Bar - District Selectors */
         .top-nav {
             height: 50px;
             background-color: #1a252f;
@@ -92,13 +93,20 @@
             padding: 0 20px;
             z-index: 800;
             box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
         }
 
+        /* Hidden class for hiding top bar in Map2 & Map3 */
+        .top-nav.hidden {
+            display: none;
+        }
+
+        /* District Button Custom Colors */
         .district-btn {
-            padding: 7px 16px;
+            padding: 7px 18px;
             background-color: #2c3e50;
             color: #ecf0f1;
-            border: 1px solid #34495e;
+            border: 2px solid transparent;
             border-radius: 20px;
             cursor: pointer;
             font-size: 0.9rem;
@@ -106,11 +114,28 @@
             transition: all 0.3s;
         }
 
-        .district-btn:hover, .district-btn.active {
-            background-color: #3498db;
+        /* Klang Button (Yellow) */
+        .district-btn.klang:hover, .district-btn.klang.active {
+            background-color: #f1c40f;
+            color: #2c3e50;
+            border-color: #f39c12;
+            box-shadow: 0 2px 8px rgba(241, 196, 15, 0.5);
+        }
+
+        /* Shah Alam Button (Purple) */
+        .district-btn.shahalam:hover, .district-btn.shahalam.active {
+            background-color: #9b59b6;
             color: white;
-            border-color: #3498db;
-            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+            border-color: #8e44ad;
+            box-shadow: 0 2px 8px rgba(155, 89, 182, 0.5);
+        }
+
+        /* Petaling Jaya Button (Green) */
+        .district-btn.pj:hover, .district-btn.pj.active {
+            background-color: #2ecc71;
+            color: white;
+            border-color: #27ae60;
+            box-shadow: 0 2px 8px rgba(46, 204, 113, 0.5);
         }
 
         .workspace {
@@ -213,11 +238,11 @@
     <!-- 2. MAP INTERFACE -->
     <div class="map-section" id="map-interface">
         
-        <!-- Top Navigation Bar -->
-        <div class="top-nav">
-            <button class="district-btn active" onclick="switchDistrict('Klang', this)">Klang</button>
-            <button class="district-btn" onclick="switchDistrict('ShahAlam', this)">Shah Alam</button>
-            <button class="district-btn" onclick="switchDistrict('PetalingJaya', this)">Petaling Jaya</button>
+        <!-- Top Navigation Bar (Only active on Boundary Area Map) -->
+        <div class="top-nav" id="topNav">
+            <button class="district-btn klang active" onclick="switchDistrict('Klang', this)">Klang</button>
+            <button class="district-btn shahalam" onclick="switchDistrict('ShahAlam', this)">Shah Alam</button>
+            <button class="district-btn pj" onclick="switchDistrict('PetalingJaya', this)">Petaling Jaya</button>
         </div>
 
         <div class="workspace">
@@ -235,12 +260,13 @@
             </div>
 
             <!-- Map Iframe -->
-            <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
+            <iframe id="mapFrame" class="map-container" src="Map1/index.html?district=Klang"></iframe>
         </div>
     </div>
 
     <script>
         var currentFolder = 'Map1/';
+        var currentDistrict = 'Klang';
 
         function toggleDashboard() {
             var sidebar = document.getElementById('sidebar');
@@ -249,7 +275,16 @@
 
         function switchLayer(mapFolder, btn) {
             currentFolder = mapFolder;
-            document.getElementById('mapFrame').src = currentFolder + 'index.html';
+            var topNav = document.getElementById('topNav');
+
+            // Show top district bar ONLY on Boundary Area Map (Map1/)
+            if (mapFolder === 'Map1/') {
+                topNav.classList.remove('hidden');
+                document.getElementById('mapFrame').src = currentFolder + 'index.html?district=' + currentDistrict;
+            } else {
+                topNav.classList.add('hidden');
+                document.getElementById('mapFrame').src = currentFolder + 'index.html';
+            }
             
             var layerBtns = document.querySelectorAll('.layer-btn');
             layerBtns.forEach(function(b) { b.classList.remove('active'); });
@@ -257,10 +292,13 @@
         }
 
         function switchDistrict(districtName, btn) {
+            currentDistrict = districtName;
+
             var districtBtns = document.querySelectorAll('.district-btn');
             districtBtns.forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
 
+            // Reload Map1 with selected district parameter
             var frame = document.getElementById('mapFrame');
             frame.src = currentFolder + 'index.html?district=' + districtName;
         }
