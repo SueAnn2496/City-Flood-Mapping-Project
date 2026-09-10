@@ -1,49 +1,121 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <link rel="stylesheet" href="css/leaflet.css">
-        <link rel="stylesheet" href="css/qgis2web.css">
-        <link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <style>
-            html, body, #map { width: 100%; height: 100%; padding: 0; margin: 0; }
-        </style>
-        <title>Risk Map - Street View</title>
-    </head>
-    <body>
-        <div id="map"></div>
-        
-        <!-- Leaflet scripts & qgis2web generated scripts -->
-        <script src="js/leaflet.js"></script>
-        <script src="js/leaflet.rotatedMarker.js"></script>
-        <script src="js/leaflet.pattern.js"></script>
-        <script src="js/leaflet-hash.js"></script>
-        <script src="js/Autolinker.min.js"></script>
-        <script src="js/rbush.min.js"></script>
-        <script src="js/labelgun.min.js"></script>
-        <script src="js/labels.js"></script>
-        
-        <!-- Replace/Include your exported coordinate points JS file here -->
-        <!-- <script src="data/risk_points_1.js"></script> -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map 7 - Coordinate Excel Plotter</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- SheetJS (XLSX) library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        html, body, #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .upload-control {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .upload-control label {
+            font-size: 13px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+            color: #2c3e50;
+        }
+        .upload-control input[type="file"] {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
 
-        <script>
-        var map = L.map('map', {
-            zoomControl: true, maxZoom: 28, minZoom: 1
-        }).fitBounds([[2.9, 101.3], [3.3, 101.8]]); // Center default around Selangor/Klang Valley
+    <!-- Excel Upload Widget -->
+    <div class="upload-control">
+        <label for="excelUpload">📁 Upload Coordinate Excel:</label>
+        <input type="file" id="excelUpload" accept=".xlsx, .xls" />
+    </div>
 
-        var hash = new L.Hash(map);
-        
-        // Use OpenStreetMap as the Street Map base layer
-        var basemapLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize Map (Centered around Selangor / Klang Valley region)
+        var map = L.map('map').setView([3.0738, 101.5183], 11);
+
+        // Add OpenStreetMap Basemap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        });
-        map.addLayer(basemapLayer);
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
 
-        // NOTE: Once you run qgis2web and save it into Map7/, 
-        // the exported code will automatically load your coordinate point layers here.
-        </script>
-    </body>
+        // Layer group to store plotted points
+        var markerGroup = L.layerGroup().addTo(map);
+
+        // Handle Excel File Upload & Plotting
+        document.getElementById('excelUpload').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var data = new Uint8Array(e.target.result);
+                var workbook = XLSX.read(data, {type: 'array'});
+                
+                // Read the first sheet of the Excel file
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+                
+                // Convert sheet rows to JSON array
+                var rows = XLSX.utils.sheet_to_json(worksheet);
+                
+                // Clear any previously plotted markers
+                markerGroup.clearLayers();
+                var count = 0;
+                var bounds = [];
+
+                rows.forEach(function(row) {
+                    // Match multiple common variations of column names
+                    var lat = row.Latitude || row.lat || row.LAT;
+                    var lng = row.Longitude || row.lng || row.LNG || row.Lon || row.LON;
+                    var name = row.Name || row.ID || row.Point || `Point ${count + 1}`;
+
+                    if (lat !== undefined && lng !== undefined) {
+                        var latNum = parseFloat(lat);
+                        var lngNum = parseFloat(lng);
+                        
+                        if (!isNaN(latNum) && !isNaN(lngNum)) {
+                            var marker = L.marker([latNum, lngNum]);
+                            marker.bindPopup(`<b>${name}</b><br>Lat: ${latNum}<br>Lng: ${lngNum}`);
+                            markerGroup.addLayer(marker);
+                            
+                            bounds.push([latNum, lngNum]);
+                            count++;
+                        }
+                    }
+                });
+
+                if (count > 0) {
+                    // Automatically adjust map view to fit all coordinate points
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                    alert(`Successfully plotted ${count} points from Excel!`);
+                } else {
+                    alert('No valid coordinates found. Please ensure your Excel columns are named "Latitude" and "Longitude" (or "lat" / "lng").');
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+</body>
 </html>
