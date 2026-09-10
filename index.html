@@ -130,7 +130,6 @@
             margin-right: 5px;
         }
 
-        /* Risk Button in Top Nav */
         .risk-btn {
             padding: 7px 20px;
             background-color: #e74c3c;
@@ -154,7 +153,6 @@
             overflow: hidden;
         }
 
-        /* DASHBOARD BUTTON */
         .toggle-btn {
             position: absolute;
             top: 15px;
@@ -176,7 +174,6 @@
             background-color: #1abc9c;
         }
 
-        /* SIDEBAR */
         .sidebar {
             width: 290px;
             background-color: #2c3e50;
@@ -235,7 +232,6 @@
             padding-left: 18px;
         }
 
-        /* District sub-menu container inside Boundary Area Map */
         .district-subgroup {
             display: flex;
             flex-direction: column;
@@ -276,7 +272,6 @@
             border-color: #27ae60;
         }
 
-        /* SEARCH SECTION */
         .search-box-container {
             background-color: #1a252f;
             border-radius: 7px;
@@ -322,7 +317,6 @@
             line-height: 1.4;
         }
 
-        /* BASEMAP */
         .basemap-option {
             background-color: #1a252f;
             border-radius: 7px;
@@ -379,19 +373,26 @@
             transform: translateX(18px);
         }
 
-        /* LEGEND */
-        .legend-box {
-            background-color: #1a252f;
-            border-radius: 8px;
+        /* FLOATING LEGEND OVERLAY ON MAP */
+        .floating-legend {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(26, 37, 47, 0.92);
+            color: white;
             padding: 15px;
-            margin-top: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+            z-index: 850;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.15);
+            max-width: 250px;
             display: none;
         }
 
-        .legend-box h4 {
+        .floating-legend h4 {
             font-size: 0.95rem;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: #1abc9c;
             border-bottom: 1px solid #34495e;
             padding-bottom: 5px;
@@ -421,7 +422,6 @@
             border: none;
         }
 
-        /* PROJECT OVERVIEW & SECTIONS */
         .info-section {
             min-height: 100vh;
             background: #f5f8fb;
@@ -661,8 +661,6 @@
 
 <!-- 2. MAP INTERFACE -->
 <div class="map-section" id="map-interface">
-
-    <!-- TOP NAVIGATION WITH RISK BUTTON -->
     <div class="top-nav" id="topNav">
         <span class="study-label">View Mode:</span>
         <button class="risk-btn" onclick="switchRiskMap(this)">
@@ -674,13 +672,10 @@
     </div>
 
     <div class="workspace">
-
-        <!-- DASHBOARD BUTTON -->
         <button class="toggle-btn" onclick="toggleDashboard()">
             ☰ Dashboard
         </button>
 
-        <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
             <h3>🔍 Area Risk Search</h3>
             <div class="search-box-container">
@@ -697,13 +692,11 @@
                 Choose a thematic layer or specific district to explore the spatial characteristics.
             </div>
 
-            <!-- MAP LAYERS & DISTRICT BUTTONS -->
             <div class="map-selector">
                 <button class="layer-btn active" onclick="switchLayer('Map1/', this)">
                     📍 Boundary Area Map
                 </button>
 
-                <!-- District Sub-buttons -->
                 <div class="district-subgroup" id="districtSubgroup">
                     <button class="district-btn klang" onclick="switchDistrict('Map4/', this)">
                         Klang
@@ -725,7 +718,6 @@
                 </button>
             </div>
 
-            <!-- EMERGENCY GUIDE & OVERVIEW LINKS -->
             <a href="#emergency-guide" style="display:block; text-align:center; text-decoration:none; color:#f1c40f; border:1px solid #f39c12; border-radius:8px; padding:9px; margin-bottom:12px; font-size:.85rem; font-weight:bold;">
                 🛡️ Emergency Guide
             </a>
@@ -733,7 +725,6 @@
                 ← Project Overview
             </a>
 
-            <!-- BASEMAP -->
             <h3>🌐 Base Layer</h3>
             <div class="basemap-option">
                 <span>Google Satellite</span>
@@ -742,17 +733,15 @@
                     <span class="slider"></span>
                 </label>
             </div>
-
-            <!-- LEGEND -->
-            <div class="legend-box" id="legendBox">
-                <h4 id="legendTitle">Legend</h4>
-                <div id="legendContent"></div>
-            </div>
         </div>
 
-        <!-- MAP -->
         <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
 
+        <!-- FLOATING LEGEND OVER MAP -->
+        <div class="floating-legend" id="floatingLegend">
+            <h4 id="floatingLegendTitle">Legend</h4>
+            <div id="floatingLegendContent"></div>
+        </div>
     </div>
 </div>
 
@@ -784,7 +773,7 @@
         </div>
     </div>
 
-    <!-- EMBEDDED CHARTS SECTION -->
+    <!-- CHARTS SECTION -->
     <div class="charts-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 35px;">
         <div style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 8px 25px rgba(31,45,61,.08); border: 1px solid #e7edf2;">
             <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.1rem;">📊 District Risk Level Distribution</h3>
@@ -869,7 +858,6 @@
         Learn what actions to take during a flood, post-flood safety guidelines, and emergency hotlines across Selangor (Klang, Shah Alam, Petaling Jaya).
     </p>
 
-    <!-- Emergency Contacts Grid -->
     <h3 style="margin-bottom: 15px; color: #17202a; font-size: 1.2rem;">📞 Emergency Hotlines (Malaysia / Selangor)</h3>
     <div class="cards-4">
         <div class="info-card" style="border-left: 4px solid #e74c3c;">
@@ -894,7 +882,6 @@
         </div>
     </div>
 
-    <!-- What to do During & After Flood -->
     <div class="two-col-grid">
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 8px 25px rgba(31,45,61,.08); border: 1px solid #e7edf2;">
             <h3 style="margin-bottom: 15px; color: #c0392b; font-size: 1.15rem;">⚡ During a Flood</h3>
@@ -916,7 +903,6 @@
         </div>
     </div>
 
-    <!-- Preparedness & Prevention -->
     <div class="analysis-panel">
         <h3>🛡️ Preparedness & Prevention</h3>
         <p class="analysis-text">Proactive planning and everyday readiness can significantly reduce property damage and safety risks during disasters.</p>
@@ -970,25 +956,25 @@ function toggleDashboard() {
 }
 
 function switchLayer(mapFolder, btn) {
-    var legendBox = document.getElementById("legendBox");
-    var legendTitle = document.getElementById("legendTitle");
-    var legendContent = document.getElementById("legendContent");
+    var floatingLegend = document.getElementById("floatingLegend");
+    var floatingLegendTitle = document.getElementById("floatingLegendTitle");
+    var floatingLegendContent = document.getElementById("floatingLegendContent");
 
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.querySelector('.risk-btn').classList.remove("active");
 
     if (mapFolder === "Map1/") {
-        legendBox.style.display = "none";
+        floatingLegend.style.display = "none";
         document.getElementById("mapFrame").src = "Map1/index.html";
     } else if (mapFolder === "Map2/") {
-        legendTitle.innerText = "Slope Legend";
-        legendContent.innerHTML = slopeLegendHTML;
-        legendBox.style.display = "block";
+        floatingLegendTitle.innerText = "Slope Legend";
+        floatingLegendContent.innerHTML = slopeLegendHTML;
+        floatingLegend.style.display = "block";
         document.getElementById("mapFrame").src = "Map2/index.html";
     } else if (mapFolder === "Map3/") {
-        legendTitle.innerText = "Land Cover Legend";
-        legendContent.innerHTML = landCoverLegendHTML;
-        legendBox.style.display = "block";
+        floatingLegendTitle.innerText = "Land Cover Legend";
+        floatingLegendContent.innerHTML = landCoverLegendHTML;
+        floatingLegend.style.display = "block";
         document.getElementById("mapFrame").src = "Map3/index.html";
     }
 
@@ -1001,6 +987,7 @@ function switchDistrict(mapFolder, btn) {
     document.querySelector('.risk-btn').classList.remove("active");
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
+    document.getElementById("floatingLegend").style.display = "none";
     document.getElementById("mapFrame").src = mapFolder + "index.html";
 }
 
@@ -1009,6 +996,7 @@ function switchRiskMap(btn) {
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove("active"));
     document.querySelector('.risk-btn').classList.remove("active");
     btn.classList.add("active");
+    document.getElementById("floatingLegend").style.display = "none";
     document.getElementById("mapFrame").src = "Map7/index.html"; 
 }
 
@@ -1088,8 +1076,11 @@ if (window.innerWidth <= 600) {
     if (sidebar) sidebar.classList.add("collapsed");
 }
 
-// Initialize Chart.js interactive charts
+// ==========================================
+// INITIALIZE CHART.JS
+// ==========================================
 window.addEventListener('DOMContentLoaded', () => {
+    // 1. District Risk Level Distribution Chart
     const ctx1 = document.getElementById('districtRiskChart').getContext('2d');
     new Chart(ctx1, {
         type: 'bar',
@@ -1111,6 +1102,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 2. Land Cover Waterlogging Susceptibility Chart
     const ctx2 = document.getElementById('landCoverRiskChart').getContext('2d');
     new Chart(ctx2, {
         type: 'doughnut',
