@@ -3,20 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web GIS Map Viewer - City Flood Mapping</title>
+    <title>City Flood & Waterlogging Risk Mapping Platform</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body, html { height: 100%; font-family: Arial, sans-serif; overflow: hidden; }
-        
-        /* Layout Structure */
-        .app-container {
-            display: flex;
+        html, body { height: 100%; width: 100%; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+
+        /* 1. LANDING PAGE STYLES */
+        .landing-page {
             height: 100vh;
             width: 100vw;
-            position: relative;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
         }
 
-        /* Toggle Button */
+        .landing-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            max-width: 900px;
+            line-height: 1.2;
+        }
+
+        .landing-desc {
+            font-size: 1.1rem;
+            max-width: 750px;
+            line-height: 1.6;
+            color: #e0e6ed;
+            margin-bottom: 40px;
+        }
+
+        .scroll-btn {
+            background: transparent;
+            border: 2px solid #1abc9c;
+            color: #1abc9c;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .scroll-btn:hover {
+            background-color: #1abc9c;
+            color: white;
+            transform: translateY(3px);
+            box-shadow: 0 5px 15px rgba(26, 188, 156, 0.4);
+        }
+
+        .arrow-down {
+            font-size: 1.3rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
+        }
+
+        /* 2. MAP INTERFACE STYLES */
+        .map-section {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #2c3e50;
+        }
+
+        .top-nav {
+            height: 50px;
+            background-color: #1a252f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 0 20px;
+            z-index: 800;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .district-btn {
+            padding: 7px 16px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border: 1px solid #34495e;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .district-btn:hover, .district-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.4);
+        }
+
+        .workspace {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
         .toggle-btn {
             position: absolute;
             top: 15px;
@@ -25,66 +128,67 @@
             background-color: #2c3e50;
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 10px 16px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
             transition: background 0.3s;
         }
+
         .toggle-btn:hover {
             background-color: #34495e;
         }
 
-        /* Sliding Dashboard Sidebar */
         .sidebar {
             width: 280px;
             background-color: #2c3e50;
             color: white;
             display: flex;
             flex-direction: column;
-            padding: 70px 20px 20px 20px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            padding: 65px 20px 20px 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
             transition: margin-left 0.3s ease;
             z-index: 900;
         }
+
         .sidebar.collapsed {
             margin-left: -280px;
         }
 
-        .sidebar h2 {
-            font-size: 18px;
-            margin-bottom: 20px;
+        .sidebar h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
             color: #ecf0f1;
             border-bottom: 2px solid #34495e;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
-        /* Map Navigation Buttons */
         .map-selector {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
-        .nav-btn {
-            padding: 12px 15px;
+
+        .layer-btn {
+            padding: 12px 14px;
             background-color: #34495e;
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 0.9rem;
             text-align: left;
             transition: all 0.3s;
         }
-        .nav-btn:hover, .nav-btn.active {
+
+        .layer-btn:hover, .layer-btn.active {
             background-color: #1abc9c;
             font-weight: bold;
-            padding-left: 20px;
+            padding-left: 18px;
         }
 
-        /* Map Viewer Frame */
         .map-container {
             flex: 1;
             height: 100%;
@@ -95,38 +199,70 @@
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- Dashboard Toggle Button -->
-        <button class="toggle-btn" onclick="toggleDashboard()">☰ Dashboard</button>
+    <!-- 1. LANDING PAGE -->
+    <div class="landing-page">
+        <h1 class="landing-title">City Flood & Waterlogging Risk Mapping</h1>
+        <p class="landing-desc">
+            An interactive WebGIS platform displaying slope, rainfall, and land cover maps to identify potential waterlogging-risk areas in Shah Alam, Klang, and Petaling Jaya.
+        </p>
+        <a href="#map-interface" class="scroll-btn">
+            Explore Maps <span class="arrow-down">↓</span>
+        </a>
+    </div>
 
-        /* Sliding Dashboard Sidebar */
-        <div class="sidebar" id="sidebar">
-            <h2>🗺️ Flood Maps</h2>
-            <div class="map-selector">
-                <button class="nav-btn active" onclick="switchMap('Map1/', this)">Boundary Area Map</button>
-                <button class="nav-btn" onclick="switchMap('Map2/', this)">Slope Map</button>
-                <button class="nav-btn" onclick="switchMap('Map3/', this)">Land Cover Map</button>
-            </div>
+    <!-- 2. MAP INTERFACE -->
+    <div class="map-section" id="map-interface">
+        
+        <!-- Top Navigation Bar -->
+        <div class="top-nav">
+            <button class="district-btn active" onclick="switchDistrict('Klang', this)">Klang</button>
+            <button class="district-btn" onclick="switchDistrict('ShahAlam', this)">Shah Alam</button>
+            <button class="district-btn" onclick="switchDistrict('PetalingJaya', this)">Petaling Jaya</button>
         </div>
 
-        <!-- Map Display Container -->
-        <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
+        <div class="workspace">
+            <!-- Dashboard Toggle Button -->
+            <button class="toggle-btn" onclick="toggleDashboard()">☰ Dashboard</button>
+
+            <!-- Dashboard Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <h3>🗺️ Flood Maps</h3>
+                <div class="map-selector">
+                    <button class="layer-btn active" onclick="switchLayer('Map1/', this)">Boundary Area Map</button>
+                    <button class="layer-btn" onclick="switchLayer('Map2/', this)">Slope Map</button>
+                    <button class="layer-btn" onclick="switchLayer('Map3/', this)">Land Cover Map</button>
+                </div>
+            </div>
+
+            <!-- Map Iframe -->
+            <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
+        </div>
     </div>
 
     <script>
-        // Switch between map folders
-        function switchMap(mapPath, btn) {
-            document.getElementById('mapFrame').src = mapPath + 'index.html';
-            
-            var buttons = document.querySelectorAll('.nav-btn');
-            buttons.forEach(function(b) { b.classList.remove('active'); });
-            btn.classList.add('active');
-        }
+        var currentFolder = 'Map1/';
 
-        // Expand or collapse Dashboard sidebar
         function toggleDashboard() {
             var sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('collapsed');
+        }
+
+        function switchLayer(mapFolder, btn) {
+            currentFolder = mapFolder;
+            document.getElementById('mapFrame').src = currentFolder + 'index.html';
+            
+            var layerBtns = document.querySelectorAll('.layer-btn');
+            layerBtns.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+        }
+
+        function switchDistrict(districtName, btn) {
+            var districtBtns = document.querySelectorAll('.district-btn');
+            districtBtns.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+
+            var frame = document.getElementById('mapFrame');
+            frame.src = currentFolder + 'index.html?district=' + districtName;
         }
     </script>
 
