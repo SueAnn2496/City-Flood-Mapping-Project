@@ -1077,19 +1077,20 @@ if (window.innerWidth <= 600) {
 }
 
 // ==========================================
-// INITIALIZE CHART.JS
+// INITIALIZE CHART.JS (Updated with Figure 4.1 & Figure 4.2 data)
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-    // 1. District Risk Level Distribution Chart
+    // 1. District Risk Level Distribution Chart (Figure 4.2 Breakdown by District & Figure 4.1 Hotspot Totals)
     const ctx1 = document.getElementById('districtRiskChart').getContext('2d');
     new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['Klang', 'Shah Alam', 'Petaling Jaya'],
+            labels: ['Shah Alam', 'Petaling Jaya', 'Klang'],
             datasets: [
-                { label: 'High Risk', data: [12, 8, 5], backgroundColor: '#e74c3c' },
-                { label: 'Moderate Risk', data: [15, 14, 10], backgroundColor: '#f39c12' },
-                { label: 'Low Risk', data: [7, 12, 18], backgroundColor: '#2ecc71' }
+                { label: 'Class 5 (Very High)', data: [1, 1, 0], backgroundColor: '#a00000' },
+                { label: 'Class 4 (High)', data: [2, 4, 1], backgroundColor: '#d94e1f' },
+                { label: 'Class 3 (Moderate)', data: [5, 5, 5], backgroundColor: '#f39c12' },
+                { label: 'Class 2 (Low)', data: [9, 5, 5], backgroundColor: '#fce4b8' }
             ]
         },
         options: {
