@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web GIS Map Viewer</title>
+    <title>Web GIS Map Viewer - City Flood Mapping</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body, html { height: 100%; font-family: Arial, sans-serif; display: flex; flex-direction: column; }
@@ -48,22 +48,21 @@
 
     <div class="nav-bar">
         <h2>🗺️ City Flood Mapping Platform</h2>
-        
-        <!-- HERE IS WHERE map1, map2, AND map3 ARE DEFINED IN THE BUTTONS -->
-        <button class="nav-btn active" onclick="switchMap('Map1/', this)">Map 1</button>
-        <button class="nav-btn" onclick="switchMap('Map2/', this)">Map 2</button>
-        <button class="nav-btn" onclick="switchMap('Map3/', this)">Map 3</button>
+        <!-- Match exact folder names: Map1, Map2, Map3 -->
+        <button class="nav-btn active" onclick="switchMap('Map1/', this)">Klang</button>
+        <button class="nav-btn" onclick="switchMap('Map2/', this)">Shah Alam</button>
+        <button class="nav-btn" onclick="switchMap('Map3/', this)">Petaling Jaya</button>
     </div>
 
-    <!-- DEFAULT LOADED MAP (Map1) -->
+    <!-- Default loaded map -->
     <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
 
     <script>
         function switchMap(mapPath, btn) {
-            // Switch iframe content to the selected map folder
+            // Switch iframe content to selected map folder
             document.getElementById('mapFrame').src = mapPath + 'index.html';
             
-            // Update active state of buttons
+            // Update active button state
             var buttons = document.querySelectorAll('.nav-btn');
             buttons.forEach(function(b) { b.classList.remove('active'); });
             btn.classList.add('active');
