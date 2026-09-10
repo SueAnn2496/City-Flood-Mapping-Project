@@ -2,18 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map 7 - Coordinate Excel Plotter</title>
-    <!-- Leaflet CSS -->
+    <title>Map 7 - Excel Upload with Styled Markers</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <!-- SheetJS (XLSX) library -->
+    <!-- SheetJS (XLSX) library for reading Excel files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        html, body, #map {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; }
+        #map { height: 100%; width: 100%; }
         .upload-control {
             position: absolute;
             top: 15px;
@@ -23,7 +18,7 @@
             padding: 12px 15px;
             border-radius: 8px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
         }
         .upload-control label {
             font-size: 13px;
@@ -39,31 +34,28 @@
 </head>
 <body>
 
-    <!-- Excel Upload Widget -->
+    <!-- Excel Upload Control Box -->
     <div class="upload-control">
-        <label for="excelUpload">📁 Upload Coordinate Excel:</label>
+        <label for="excelUpload">📁 Upload Excel File:</label>
         <input type="file" id="excelUpload" accept=".xlsx, .xls" />
     </div>
 
-    <!-- Map Container -->
     <div id="map"></div>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Initialize Map (Centered around Selangor / Klang Valley region)
-        var map = L.map('map').setView([3.0738, 101.5183], 11);
-
-        // Add OpenStreetMap Basemap
+        // Initialize Map centered around Selangor
+        var map = L.map('map').setView([3.1, 101.55], 11);
+        
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
-        // Layer group to store plotted points
+        // Layer group to manage plotted Excel points
         var markerGroup = L.layerGroup().addTo(map);
 
-        // Handle Excel File Upload & Plotting
+        // Handle Excel upload and parsing
         document.getElementById('excelUpload').addEventListener('change', function(e) {
             var file = e.target.files[0];
             if (!file) return;
@@ -73,33 +65,55 @@
                 var data = new Uint8Array(e.target.result);
                 var workbook = XLSX.read(data, {type: 'array'});
                 
-                // Read the first sheet of the Excel file
+                // Read first worksheet
                 var firstSheetName = workbook.SheetNames[0];
                 var worksheet = workbook.Sheets[firstSheetName];
                 
-                // Convert sheet rows to JSON array
+                // Convert to JSON
                 var rows = XLSX.utils.sheet_to_json(worksheet);
                 
-                // Clear any previously plotted markers
+                // Clear existing markers
                 markerGroup.clearLayers();
                 var count = 0;
                 var bounds = [];
 
-                rows.forEach(function(row) {
-                    // Match multiple common variations of column names
-                    var lat = row.Latitude || row.lat || row.LAT;
-                    var lng = row.Longitude || row.lng || row.LNG || row.Lon || row.LON;
-                    var name = row.Name || row.ID || row.Point || `Point ${count + 1}`;
+                rows.forEach(function(p, index) {
+                    // Flexible column matching for robust reading
+                    var lat = p.lat || p.Lat || p.LAT || p.Latitude || p.LATITUDE;
+                    var lng = p.lng || p.Lng || p.LNG || p.Longitude || p.LONGITUDE;
+                    var name = p.name || p.Name || p.NAME || `Point ${index + 1}`;
+                    var district = p.district || p.District || p.DISTRICT || "Unknown District";
+                    var risk = p.risk || p.Risk || p.RISK || "Moderate / Low Risk";
+                    var easting = p.easting || p.Easting || p.EASTING || "-";
+                    var northing = p.northing || p.Northing || p.NORTHING || "-";
+                    var zone = p.zone || p.Zone || p.ZONE || "47N";
 
                     if (lat !== undefined && lng !== undefined) {
                         var latNum = parseFloat(lat);
                         var lngNum = parseFloat(lng);
-                        
+
                         if (!isNaN(latNum) && !isNaN(lngNum)) {
-                            var marker = L.marker([latNum, lngNum]);
-                            marker.bindPopup(`<b>${name}</b><br>Lat: ${latNum}<br>Lng: ${lngNum}`);
-                            markerGroup.addLayer(marker);
+                            // Match Map 1 styling logic
+                            var color = (risk.trim().toLowerCase() === "high risk") ? "#e74c3c" : "#f39c12";
                             
+                            var marker = L.circleMarker([latNum, lngNum], {
+                                radius: 8,
+                                fillColor: color,
+                                color: "#000",
+                                weight: 1,
+                                opacity: 1,
+                                fillOpacity: 0.85
+                            }).bindPopup(
+                                '<div style="font-family: Arial; font-size: 13px;">' +
+                                '<b style="color: #2c3e50; font-size: 14px;">' + name + '</b><hr style="margin: 4px 0;">' +
+                                '<b>District:</b> ' + district + '<br>' +
+                                '<b>Risk Status:</b> <span style="color: ' + color + '; font-weight: bold;">' + risk + '</span><br>' +
+                                '<b>Latitude / Longitude:</b> ' + latNum + ', ' + lngNum + '<br>' +
+                                '<b>UTM Coords:</b> ' + easting + ' E, ' + northing + ' N (' + zone + ')' +
+                                '</div>'
+                            );
+
+                            markerGroup.addLayer(marker);
                             bounds.push([latNum, lngNum]);
                             count++;
                         }
@@ -107,11 +121,10 @@
                 });
 
                 if (count > 0) {
-                    // Automatically adjust map view to fit all coordinate points
                     map.fitBounds(bounds, { padding: [50, 50] });
                     alert(`Successfully plotted ${count} points from Excel!`);
                 } else {
-                    alert('No valid coordinates found. Please ensure your Excel columns are named "Latitude" and "Longitude" (or "lat" / "lng").');
+                    alert('No valid coordinate points found. Ensure your Excel columns include Latitude and Longitude.');
                 }
             };
             reader.readAsArrayBuffer(file);
