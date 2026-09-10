@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web GIS 地图展示系统</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { height: 100%; font-family: Arial, sans-serif; display: flex; flex-direction: column; }
+        
+        /* 顶部导航栏样式 */
+        .nav-bar {
+            background-color: #2c3e50;
+            display: flex;
+            padding: 10px 20px;
+            gap: 10px;
+            align-items: center;
+        }
+        .nav-bar h2 {
+            color: #ecf0f1;
+            font-size: 18px;
+            margin-right: 20px;
+        }
+        .nav-btn {
+            padding: 8px 16px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background-color: #1abc9c;
+        }
+
+        /* 地图显示容器 */
+        .map-container {
+            flex: 1;
+            width: 100%;
+            height: calc(100vh - 50px);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <h2>🗺️ 地图展示平台</h2>
+        <button class="nav-btn active" onclick="switchMap('map1/', this)">地图一</button>
+        <button class="nav-btn" onclick="switchMap('map2/', this)">地图二</button>
+        <button class="nav-btn" onclick="switchMap('map3/', this)">地图三</button>
+    </div>
+
+    <!-- 默认加载第一个地图 -->
+    <iframe id="mapFrame" class="map-container" src="map1/index.html"></iframe>
+
+    <script>
+        function switchMap(mapPath, btn) {
+            // 切换 iframe 链接
+            document.getElementById('mapFrame').src = mapPath + 'index.html';
+            
+            // 更新按钮激活状态
+            var buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
