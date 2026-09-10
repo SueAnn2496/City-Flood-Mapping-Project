@@ -131,12 +131,33 @@
             background-color: #090d16;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 14px;
             padding: 8px 20px;
             z-index: 800;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             flex-wrap: wrap;
+        }
+
+        .toggle-btn {
+            background-color: #1e293b;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-btn:hover {
+            background-color: #2dd4bf;
+            color: #0f172a;
+            border-color: #2dd4bf;
         }
 
         .study-label {
@@ -168,36 +189,13 @@
             overflow: hidden;
         }
 
-        .toggle-btn {
-            position: absolute;
-            top: 85px; /* Positioned below Leaflet map zoom controls to prevent overlap */
-            left: 15px;
-            z-index: 1000;
-            background-color: #0f172a;
-            color: white;
-            border: 1px solid rgba(255,255,255,0.15);
-            padding: 10px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: 0.3s;
-        }
-
-        .toggle-btn:hover {
-            background-color: #2dd4bf;
-            color: #0f172a;
-            border-color: #2dd4bf;
-        }
-
         .sidebar {
             width: 310px;
             background-color: #0f172a;
             color: white;
             display: flex;
             flex-direction: column;
-            padding: 75px 20px 20px;
+            padding: 20px;
             box-shadow: 4px 0 20px rgba(0,0,0,0.4);
             transition: margin-left 0.3s ease;
             z-index: 900;
@@ -729,7 +727,7 @@
 <body>
 
 <!-- QUICK JUMP BUTTON TO MAP -->
-<a href="#map-interface" class="floating-jump-btn">🗺️ Quick Map</a>
+<a href="#map-interface" class="floating-jump-btn" onclick="scrollToMapAndReset()">🗺️ Quick Map</a>
 
 <!-- 1. LANDING PAGE -->
 <div class="landing-page">
@@ -745,7 +743,7 @@
         👨‍💻 Created by: Chan Boon Yeah, Ooi Sue Ann, Wong Yuean Yi
     </div>
     <div class="landing-buttons">
-        <a href="#map-interface" class="scroll-btn primary-btn">
+        <a href="#map-interface" class="scroll-btn primary-btn" onclick="scrollToMapAndReset()">
             Explore Maps <span>↓</span>
         </a>
         <a href="#overview" class="scroll-btn" style="border-color:white;color:white;">
@@ -760,9 +758,13 @@
 <!-- 2. MAP INTERFACE -->
 <div class="map-section" id="map-interface">
     <div class="top-nav" id="topNav">
+        <button class="toggle-btn" onclick="toggleDashboard()" title="Toggle Dashboard">☰</button>
         <span class="study-label">View Mode:</span>
         <button class="risk-btn" onclick="switchRiskMap(this)">
             🚨 Risk Map View
+        </button>
+        <button class="toggle-btn" onclick="resetMapView()" title="Reset Map View/Center" style="font-size: 0.85rem; padding: 6px 14px; gap: 6px; display: inline-flex; align-items: center;">
+            🎯 Center Map
         </button>
         <a href="#emergency-guide" style="padding: 7px 16px; font-size: 0.85rem; border: 2px solid #fbbf24; color: #fbbf24; text-decoration: none; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
             🛡️ Emergency Guide
@@ -770,10 +772,6 @@
     </div>
 
     <div class="workspace">
-        <button class="toggle-btn" onclick="toggleDashboard()">
-            ☰ Dashboard
-        </button>
-
         <div class="sidebar" id="sidebar">
             <h3>🔍 Area Risk Search</h3>
             <div class="search-box-container">
@@ -1119,7 +1117,6 @@ function switchLayer(mapFolder, btn) {
     var floatingLegendTitle = document.getElementById("floatingLegendTitle");
     var floatingLegendContent = document.getElementById("floatingLegendContent");
 
-    // Reset minimized state when switching layers
     isLegendMinimized = false;
     document.querySelector(".legend-toggle-btn").innerText = "−";
     floatingLegendContent.style.display = "block";
@@ -1163,6 +1160,24 @@ function switchRiskMap(btn) {
     btn.classList.add("active");
     document.getElementById("floatingLegend").style.display = "none";
     document.getElementById("mapFrame").src = "Map7/index.html"; 
+}
+
+// 🎯 Reset Map View / Center Map Function
+function resetMapView() {
+    var iframe = document.getElementById("mapFrame");
+    try {
+        var win = iframe.contentWindow;
+        if (win && win.map) {
+            // Default center for Klang, Shah Alam, PJ region with standard zoom
+            win.map.setView([3.0738, 101.5183], 11);
+        }
+    } catch (e) {
+        console.log("Could not reset map view:", e);
+    }
+}
+
+function scrollToMapAndReset() {
+    setTimeout(resetMapView, 300);
 }
 
 function searchLocation() {
@@ -1245,7 +1260,6 @@ if (window.innerWidth <= 600) {
 // INITIALIZE CHART.JS
 // ==========================================
 window.addEventListener('DOMContentLoaded', () => {
-    // 1. Spatial Distribution of Urban Flood/Waterlogging Hotspots with Percentages
     const ctx1 = document.getElementById('spatialDistributionChart').getContext('2d');
     new Chart(ctx1, {
         type: 'bar',
@@ -1271,7 +1285,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 2. Flood Risk Severity Level Breakdown by District
     const ctx2 = document.getElementById('districtRiskChart').getContext('2d');
     new Chart(ctx2, {
         type: 'bar',
