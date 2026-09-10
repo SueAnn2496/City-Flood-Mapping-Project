@@ -150,6 +150,18 @@
                     <tr>\
                         <td colspan="2">' + (feature.properties['NEGERI'] !== null ? autolinker.link(String(feature.properties['NEGERI']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
+                    <tr>\
+                        <td colspan="2"><br/><strong>Rainfall Data</strong>\
+                            <table style="width:100%; border-collapse: collapse; margin-top: 5px; font-size: 11px;">\
+                                <tr style="background: #1abc9c; color: white;"><th style="border: 1px solid #ddd; padding: 3px;">Year</th><th style="border: 1px solid #ddd; padding: 3px;">Total (mm)</th><th style="border: 1px solid #ddd; padding: 3px;">Avg (mm)</th></tr>\
+                                <tr style="text-align:center;"><td style="border: 1px solid #ddd; padding: 3px;">2022</td><td style="border: 1px solid #ddd; padding: 3px;">2959.2</td><td style="border: 1px solid #ddd; padding: 3px;">246.6</td></tr>\
+                                <tr style="text-align:center;"><td style="border: 1px solid #ddd; padding: 3px;">2023</td><td style="border: 1px solid #ddd; padding: 3px;">2898.4</td><td style="border: 1px solid #ddd; padding: 3px;">241.5</td></tr>\
+                                <tr style="text-align:center;"><td style="border: 1px solid #ddd; padding: 3px;">2024</td><td style="border: 1px solid #ddd; padding: 3px;">2943.2</td><td style="border: 1px solid #ddd; padding: 3px;">245.3</td></tr>\
+                                <tr style="text-align:center;"><td style="border: 1px solid #ddd; padding: 3px;">2025</td><td style="border: 1px solid #ddd; padding: 3px;">3044.7</td><td style="border: 1px solid #ddd; padding: 3px;">253.7</td></tr>\
+                                <tr style="text-align:center;"><td style="border: 1px solid #ddd; padding: 3px;">2026</td><td style="border: 1px solid #ddd; padding: 3px;">2910.8</td><td style="border: 1px solid #ddd; padding: 3px;">242.6</td></tr>\
+                            </table>\
+                        </td>\
+                    </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
 			layer.on('popupopen', function(e) {
