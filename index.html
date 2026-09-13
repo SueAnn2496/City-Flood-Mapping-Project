@@ -827,13 +827,6 @@
                 <button class="layer-btn" onclick="switchLayer('Map3/', this)">
                     🌳 Land Cover Map
                 </button>
-                
-                <!-- Land Cover GeoJSON Sub-button (Only shows when Land Cover Map is active) -->
-                <div class="district-subgroup" id="landCoverSubgroup" style="display: none;">
-                    <button class="district-btn" onclick="exportGeoJSON()" style="background: #1a2234; border-color: #2dd4bf; color: #2dd4bf; text-align: left;">
-                        📥 Export GeoJSON
-                    </button>
-                </div>
             </div>
 
             <!-- 📥 Export CSV (Only shown after clicking Risk Map View) -->
@@ -1162,7 +1155,6 @@ function switchLayer(mapFolder, btn) {
     var floatingLegendTitle = document.getElementById("floatingLegendTitle");
     var floatingLegendContent = document.getElementById("floatingLegendContent");
     var exportCsvContainer = document.getElementById("exportCsvContainer");
-    var landCoverSubgroup = document.getElementById("landCoverSubgroup");
 
     // Hide Export CSV when outside risk map
     exportCsvContainer.style.display = "none";
@@ -1177,19 +1169,16 @@ function switchLayer(mapFolder, btn) {
     if (mapFolder === "Map1/") {
         floatingLegend.style.display = "none";
         document.getElementById("mapFrame").src = "Map1/index.html";
-        landCoverSubgroup.style.display = "none";
     } else if (mapFolder === "Map2/") {
         floatingLegendTitle.innerText = "Slope Legend";
         floatingLegendContent.innerHTML = slopeLegendHTML;
         floatingLegend.style.display = "block";
         document.getElementById("mapFrame").src = "Map2/index.html";
-        landCoverSubgroup.style.display = "none";
     } else if (mapFolder === "Map3/") {
         floatingLegendTitle.innerText = "Land Cover & Susceptibility";
         floatingLegendContent.innerHTML = landCoverLegendHTML;
         floatingLegend.style.display = "block";
         document.getElementById("mapFrame").src = "Map3/index.html";
-        landCoverSubgroup.style.display = "flex";
         setTimeout(initLandCoverChart, 50);
     }
 
@@ -1202,7 +1191,6 @@ function switchDistrict(mapFolder, btn) {
     document.querySelector('.risk-btn').classList.remove("active");
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.getElementById("exportCsvContainer").style.display = "none";
-    document.getElementById("landCoverSubgroup").style.display = "none";
     btn.classList.add("active");
     document.getElementById("floatingLegend").style.display = "none";
     document.getElementById("mapFrame").src = mapFolder + "index.html";
@@ -1212,39 +1200,12 @@ function switchRiskMap(btn) {
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove("active"));
     document.querySelectorAll('.risk-btn').forEach(b => b.classList.remove("active"));
-    document.getElementById("landCoverSubgroup").style.display = "none";
     btn.classList.add("active");
     document.getElementById("floatingLegend").style.display = "none";
     document.getElementById("mapFrame").src = "Map7/index.html";
     
     // Show Export CSV button/container only when Risk Map is active
     document.getElementById("exportCsvContainer").style.display = "block";
-}
-
-function exportGeoJSON() {
-    alert("Raster to GeoJSON conversion initiated. Preparing GeoJSON file for download...");
-    const geoJsonData = {
-        type: "FeatureCollection",
-        features: [
-            {
-                type: "Feature",
-                properties: { class: "Land Cover Raster Conversion", susceptibility: "High" },
-                geometry: {
-                    type: "Polygon",
-                    coordinates: [
-                        [[101.5, 3.0], [101.6, 3.0], [101.6, 3.1], [101.5, 3.1], [101.5, 3.0]]
-                    ]
-                }
-            }
-        ]
-    };
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(geoJsonData));
-    const downloadAnchor = document.createElement('a');
-    downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", "land_cover_raster_to_geojson.geojson");
-    document.body.appendChild(downloadAnchor);
-    downloadAnchor.click();
-    downloadAnchor.remove();
 }
 
 function resetMapView() {
