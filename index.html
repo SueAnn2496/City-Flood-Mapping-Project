@@ -29,7 +29,7 @@
         .landing-page {
             min-height: 100vh;
             width: 100%;
-            background: linear-gradient(rgba(15, 23, 42, 0.82), rgba(30, 41, 59, 0.90)), linear-gradient(135deg, #0f172a, #1e3a8a);
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.92)), linear-gradient(135deg, #0f172a, #1e3a8a);
             color: white;
             display: flex;
             flex-direction: column;
@@ -37,6 +37,12 @@
             align-items: center;
             text-align: center;
             padding: 40px 20px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .landing-badge {
@@ -88,7 +94,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
         }
 
@@ -138,7 +144,7 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: 700;
-            transition: 0.3s;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -148,6 +154,7 @@
             background-color: #2dd4bf;
             color: #0f172a;
             border-color: #2dd4bf;
+            transform: scale(1.05);
         }
 
         .study-label {
@@ -165,11 +172,12 @@
             cursor: pointer;
             font-size: 0.9rem;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
         .risk-btn:hover, .risk-btn.active {
             background-color: #dc2626;
             box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            transform: translateY(-1px);
         }
 
         .workspace {
@@ -187,7 +195,7 @@
             flex-direction: column;
             padding: 20px;
             box-shadow: 4px 0 20px rgba(0,0,0,0.4);
-            transition: margin-left 0.3s ease;
+            transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
             z-index: 900;
             overflow-y: auto;
             border-right: 1px solid rgba(255,255,255,0.08);
@@ -195,6 +203,7 @@
 
         .sidebar.collapsed {
             margin-left: -310px;
+            opacity: 0.2;
         }
 
         .sidebar h3 {
@@ -229,7 +238,7 @@
             cursor: pointer;
             font-size: 0.9rem;
             text-align: left;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
         }
 
         .layer-btn:hover,
@@ -260,25 +269,28 @@
             font-size: 0.85rem;
             font-weight: 600;
             text-align: left;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
 
         .district-btn.klang:hover, .district-btn.klang.active {
             background-color: #f59e0b;
             color: #0f172a;
             border-color: #d97706;
+            padding-left: 18px;
         }
 
         .district-btn.shahalam:hover, .district-btn.shahalam.active {
             background-color: #a855f7;
             color: white;
             border-color: #9333ea;
+            padding-left: 18px;
         }
 
         .district-btn.pj:hover, .district-btn.pj.active {
             background-color: #10b981;
             color: white;
             border-color: #059669;
+            padding-left: 18px;
         }
 
         .search-box-container {
@@ -304,9 +316,11 @@
             border-radius: 6px;
             font-size: 0.85rem;
             outline: none;
+            transition: border-color 0.2s;
         }
         .search-input-group input:focus {
             border-color: #2dd4bf;
+            box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2);
         }
         .search-input-group button {
             flex-shrink: 0;
@@ -318,10 +332,11 @@
             cursor: pointer;
             font-weight: 700;
             font-size: 0.85rem;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
         }
         .search-input-group button:hover {
             background: #14b8a6;
+            transform: scale(1.03);
         }
         #searchResult {
             font-size: 0.8rem;
@@ -399,6 +414,7 @@
             height: 100%;
             width: 100%;
             border: none;
+            transition: opacity 0.3s ease;
         }
 
         .map-center-ctrl {
@@ -416,10 +432,11 @@
             z-index: 800;
             box-shadow: 0 1px 5px rgba(0,0,0,0.4);
             font-size: 15px;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.2s;
         }
         .map-center-ctrl:hover {
             background: #f4f4f4;
+            transform: scale(1.08);
         }
 
         /* FLOATING LEGEND OVERLAY ON MAP */
@@ -438,7 +455,7 @@
             max-width: 280px;
             max-height: 55vh;
             overflow-y: auto;
-            display: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .legend-header-row {
@@ -468,9 +485,24 @@
             display: grid;
             place-items: center;
             font-size: 0.9rem;
+            transition: background 0.2s;
         }
         .legend-toggle-btn:hover {
             background: #1e293b;
+        }
+
+        .legend-body-wrapper {
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+            max-height: 400px;
+            opacity: 1;
+        }
+
+        .legend-body-wrapper.minimized {
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .legend-item {
@@ -507,11 +539,12 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .floating-jump-btn:hover {
             background: #14b8a6;
-            transform: translateY(-2px);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 6px 25px rgba(45, 212, 191, 0.6);
         }
 
         .info-section {
@@ -565,7 +598,7 @@
             padding: 28px;
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
             border: 1px solid #e2e8f0;
-            transition: transform .3s ease, box-shadow .3s ease;
+            transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .info-card:hover {
@@ -623,6 +656,10 @@
             border: 1px solid rgba(255,255,255,0.08);
             padding: 20px;
             border-radius: 12px;
+            transition: background 0.3s ease;
+        }
+        .analysis-item:hover {
+            background: rgba(255,255,255,0.08);
         }
 
         .analysis-item strong {
@@ -650,6 +687,10 @@
             border-radius: 16px;
             padding: 24px 20px;
             border: 1px solid rgba(255,255,255,0.06);
+            transition: transform 0.3s ease;
+        }
+        .step:hover {
+            transform: translateY(-4px);
         }
 
         .step-number {
@@ -781,7 +822,7 @@
         <button class="risk-btn" onclick="switchRiskMap(this)">
             🚨 Risk Map View
         </button>
-        <a href="#emergency-guide" style="padding: 7px 16px; font-size: 0.85rem; border: 2px solid #fbbf24; color: #fbbf24; text-decoration: none; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+        <a href="#emergency-guide" style="padding: 7px 16px; font-size: 0.85rem; border: 2px solid #fbbf24; color: #fbbf24; text-decoration: none; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
             🛡️ Emergency Guide
         </a>
     </div>
@@ -830,7 +871,7 @@
             </div>
 
             <!-- 📥 Export CSV (Only shown after clicking Risk Map View) -->
-            <div id="exportCsvContainer" style="display: none;">
+            <div id="exportCsvContainer" style="display: none; animation: fadeIn 0.4s ease;">
                 <h3>📥 Export CSV</h3>
                 <div class="map-help">
                     Download risk point data and attribute tables directly.
@@ -870,7 +911,9 @@
                 <h4 id="floatingLegendTitle">Legend</h4>
                 <button class="legend-toggle-btn" onclick="toggleLegendBody()" title="Minimize/Expand">−</button>
             </div>
-            <div id="floatingLegendContent"></div>
+            <div class="legend-body-wrapper" id="legendBodyWrapper">
+                <div id="floatingLegendContent"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -879,7 +922,7 @@
 <section class="info-section" id="overview">
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 15px;">
         <div class="section-kicker" style="margin-bottom: 0;">Project Overview</div>
-        <a href="#map-interface" onclick="openMapAndSearchFocus()" style="background: #1e293b; color: #2dd4bf; border: 1px solid rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem;">
+        <a href="#map-interface" onclick="openMapAndSearchFocus()" style="background: #1e293b; color: #2dd4bf; border: 1px solid rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; transition: background 0.2s;">
             ☰ Search & Dashboard
         </a>
     </div>
@@ -1098,14 +1141,14 @@ var landCoverLegendHTML = `
 
 let isLegendMinimized = false;
 function toggleLegendBody() {
-    var content = document.getElementById("floatingLegendContent");
+    var wrapper = document.getElementById("legendBodyWrapper");
     var btn = document.querySelector(".legend-toggle-btn");
     isLegendMinimized = !isLegendMinimized;
     if (isLegendMinimized) {
-        content.style.display = "none";
+        wrapper.classList.add("minimized");
         btn.innerText = "+";
     } else {
-        content.style.display = "block";
+        wrapper.classList.remove("minimized");
         btn.innerText = "−";
     }
 }
@@ -1155,56 +1198,72 @@ function switchLayer(mapFolder, btn) {
     var floatingLegendTitle = document.getElementById("floatingLegendTitle");
     var floatingLegendContent = document.getElementById("floatingLegendContent");
     var exportCsvContainer = document.getElementById("exportCsvContainer");
+    var mapFrame = document.getElementById("mapFrame");
 
-    // Hide Export CSV when outside risk map
     exportCsvContainer.style.display = "none";
 
     isLegendMinimized = false;
+    document.getElementById("legendBodyWrapper").classList.remove("minimized");
     document.querySelector(".legend-toggle-btn").innerText = "−";
-    floatingLegendContent.style.display = "block";
 
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.querySelector('.risk-btn').classList.remove("active");
 
-    if (mapFolder === "Map1/") {
-        floatingLegend.style.display = "none";
-        document.getElementById("mapFrame").src = "Map1/index.html";
-    } else if (mapFolder === "Map2/") {
-        floatingLegendTitle.innerText = "Slope Legend";
-        floatingLegendContent.innerHTML = slopeLegendHTML;
-        floatingLegend.style.display = "block";
-        document.getElementById("mapFrame").src = "Map2/index.html";
-    } else if (mapFolder === "Map3/") {
-        floatingLegendTitle.innerText = "Land Cover & Susceptibility";
-        floatingLegendContent.innerHTML = landCoverLegendHTML;
-        floatingLegend.style.display = "block";
-        document.getElementById("mapFrame").src = "Map3/index.html";
-        setTimeout(initLandCoverChart, 50);
-    }
+    // Smooth frame transition
+    mapFrame.style.opacity = "0";
+    setTimeout(() => {
+        if (mapFolder === "Map1/") {
+            floatingLegend.style.display = "none";
+            mapFrame.src = "Map1/index.html";
+        } else if (mapFolder === "Map2/") {
+            floatingLegendTitle.innerText = "Slope Legend";
+            floatingLegendContent.innerHTML = slopeLegendHTML;
+            floatingLegend.style.display = "block";
+            mapFrame.src = "Map2/index.html";
+        } else if (mapFolder === "Map3/") {
+            floatingLegendTitle.innerText = "Land Cover & Susceptibility";
+            floatingLegendContent.innerHTML = landCoverLegendHTML;
+            floatingLegend.style.display = "block";
+            mapFrame.src = "Map3/index.html";
+            setTimeout(initLandCoverChart, 50);
+        }
+        mapFrame.style.opacity = "1";
+    }, 150);
 
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 }
 
 function switchDistrict(mapFolder, btn) {
+    var mapFrame = document.getElementById("mapFrame");
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove("active"));
     document.querySelector('.risk-btn').classList.remove("active");
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.getElementById("exportCsvContainer").style.display = "none";
     btn.classList.add("active");
     document.getElementById("floatingLegend").style.display = "none";
-    document.getElementById("mapFrame").src = mapFolder + "index.html";
+    
+    mapFrame.style.opacity = "0";
+    setTimeout(() => {
+        mapFrame.src = mapFolder + "index.html";
+        mapFrame.style.opacity = "1";
+    }, 150);
 }
 
 function switchRiskMap(btn) {
+    var mapFrame = document.getElementById("mapFrame");
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove("active"));
     document.querySelectorAll('.risk-btn').forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
     document.getElementById("floatingLegend").style.display = "none";
-    document.getElementById("mapFrame").src = "Map7/index.html";
     
-    // Show Export CSV button/container only when Risk Map is active
+    mapFrame.style.opacity = "0";
+    setTimeout(() => {
+        mapFrame.src = "Map7/index.html";
+        mapFrame.style.opacity = "1";
+    }, 150);
+    
     document.getElementById("exportCsvContainer").style.display = "block";
 }
 
