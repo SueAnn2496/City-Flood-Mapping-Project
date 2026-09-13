@@ -6,7 +6,6 @@ st.set_page_config(page_title="Risk Map - Export CSV", layout="wide")
 
 st.write("### 📍 Risk Map: Urban Waterlogging Coordinates")
 
-# 自动获取当前脚本所在文件夹的绝对路径，彻底解决找不到文件的问题
 current_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(current_dir, "Urban_Waterlogging_UTM_Coordinates.csv")
 
@@ -14,13 +13,17 @@ file_path = os.path.join(current_dir, "Urban_Waterlogging_UTM_Coordinates.csv")
 def load_data(path):
     return pd.read_csv(path)
 
+@st.cache_data
+def convert_df_to_csv(dataframe):
+    return dataframe.to_csv(index=False).encode("utf-8")
+
 try:
     df = load_data(file_path)
     
     st.write(f"Successfully loaded **{len(df)}** waterlogging risk points.")
     st.dataframe(df, use_container_width=True)
 
-    csv_data = df.to_csv(index=False).encode("utf-8")
+    csv_data = convert_df_to_csv(df)
 
     st.download_button(
         label="📥 Export CSV File",
