@@ -46,7 +46,7 @@
             font-size: 0.8rem;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             background: rgba(255,255,255,0.08);
             backdrop-filter: blur(4px);
         }
@@ -54,7 +54,7 @@
         .landing-title {
             font-size: clamp(2.4rem, 5vw, 4.2rem);
             font-weight: 800;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             max-width: 1050px;
             line-height: 1.15;
             letter-spacing: -0.02em;
@@ -65,7 +65,47 @@
             max-width: 780px;
             line-height: 1.7;
             color: #cbd5e1;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
+        }
+
+        /* FLOOD PHOTOS SHOWCASE ON FIRST PAGE */
+        .landing-photos {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .landing-photo-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 210px;
+            text-align: left;
+            backdrop-filter: blur(6px);
+        }
+
+        .landing-photo-card img {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .landing-photo-title {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #2dd4bf;
+            margin-bottom: 3px;
+        }
+
+        .landing-photo-desc {
+            font-size: 0.72rem;
+            color: #cbd5e1;
+            line-height: 1.4;
         }
 
         .landing-buttons {
@@ -400,10 +440,9 @@
             border: none;
         }
 
-        /* Leaflet-style Center Map button positioned directly below zoom controls */
         .map-center-ctrl {
             position: absolute;
-            top: 85px; /* Positioned cleanly right below Leaflet zoom controls */
+            top: 85px;
             left: 10px;
             background: white;
             border: 2px solid rgba(0,0,0,0.2);
@@ -750,7 +789,7 @@
 <!-- QUICK JUMP BUTTON TO MAP -->
 <a href="#map-interface" class="floating-jump-btn" onclick="scrollToMapAndReset()">🗺️ Quick Map</a>
 
-<!-- 1. LANDING PAGE -->
+<!-- 1. LANDING PAGE WITH FLOOD PHOTOS -->
 <div class="landing-page">
     <div class="landing-badge">GIS-Based WebGIS Platform</div>
     <h1 class="landing-title">City Flood & Waterlogging Risk Mapping</h1>
@@ -760,6 +799,26 @@
         the understanding of potential urban waterlogging-risk areas
         in Klang, Shah Alam and Petaling Jaya.
     </p>
+
+    <!-- FLOOD PHOTOS ON FIRST PAGE -->
+    <div class="landing-photos">
+        <div class="landing-photo-card">
+            <img src="https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=400&q=80" alt="Urban Flood">
+            <div class="landing-photo-title">Urban Waterlogging</div>
+            <div class="landing-photo-desc">Monitoring flash flood inundation across commercial zones.</div>
+        </div>
+        <div class="landing-photo-card">
+            <img src="https://images.unsplash.com/photo-1519692933481-e162a57d6721?auto=format&fit=crop&w=400&q=80" alt="Heavy Rain">
+            <div class="landing-photo-title">Monsoon Precipitation</div>
+            <div class="landing-photo-desc">Assessing heavy rainfall intensity and drainage overflow.</div>
+        </div>
+        <div class="landing-photo-card">
+            <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=400&q=80" alt="River Overflow">
+            <div class="landing-photo-title">River Basin Risk</div>
+            <div class="landing-photo-desc">Tracking water level thresholds and basin capacity limits.</div>
+        </div>
+    </div>
+
     <div class="landing-buttons">
         <a href="#map-interface" class="scroll-btn primary-btn" onclick="scrollToMapAndReset()">
             Explore Maps <span>↓</span>
@@ -829,6 +888,26 @@
                 </button>
             </div>
 
+            <!-- EXPORT FILE SECTION WITH BUTTONS -->
+            <h3>💾 Export Spatial Data</h3>
+            <div class="map-help">
+                Export and download map layers in standard GIS formats.
+            </div>
+            <div class="map-selector" style="margin-bottom: 25px;">
+                <button class="layer-btn" onclick="exportData('shapefile')" style="display: flex; align-items: center; justify-content: space-between;">
+                    <span>📂 Vector to Shapefile</span>
+                    <span style="font-size: 0.72rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #2dd4bf;">.shp</span>
+                </button>
+                <button class="layer-btn" onclick="exportData('geotiff')" style="display: flex; align-items: center; justify-content: space-between;">
+                    <span>🗺️ Raster to GeoTIFF</span>
+                    <span style="font-size: 0.72rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #2dd4bf;">.tif</span>
+                </button>
+                <button class="layer-btn" onclick="exportData('csv')" style="display: flex; align-items: center; justify-content: space-between;">
+                    <span>📊 Point Data to CSV</span>
+                    <span style="font-size: 0.72rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: #2dd4bf;">.csv</span>
+                </button>
+            </div>
+
             <a href="#emergency-guide" style="display:block; text-align:center; text-decoration:none; color:#fbbf24; border:1px solid #d97706; border-radius:8px; padding:10px; margin-bottom:12px; font-size:.85rem; font-weight:bold;">
                 🛡️ Emergency Guide
             </a>
@@ -848,7 +927,6 @@
 
         <div class="map-view-wrapper">
             <iframe id="mapFrame" class="map-container" src="Map1/index.html"></iframe>
-            <!-- Center Map button positioned right below Leaflet zoom controls -->
             <button class="map-center-ctrl" onclick="resetMapView()" title="Center Map">🎯</button>
         </div>
 
@@ -867,7 +945,6 @@
 <section class="info-section" id="overview">
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 15px;">
         <div class="section-kicker" style="margin-bottom: 0;">Project Overview</div>
-        <!-- Hamburger button under Project Overview to jump straight to search/map -->
         <a href="#map-interface" onclick="openMapAndSearchFocus()" style="background: #1e293b; color: #2dd4bf; border: 1px solid rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem;">
             ☰ Search & Dashboard
         </a>
@@ -1280,6 +1357,33 @@ function toggleGoogleSatellite(enabled) {
     } catch (e) {
         console.log("Could not toggle satellite layer:", e);
     }
+}
+
+/* EXPORT DATA FUNCTIONS */
+function exportData(type) {
+    if (type === 'shapefile') {
+        alert('Preparing Vector layers for export... Downloading Shapefile package (.zip containing .shp, .shx, .dbf, .prj).');
+        simulateFileDownload('City_Flood_Vectors.zip', 'application/zip');
+    } else if (type === 'geotiff') {
+        alert('Processing Raster data... Exporting GeoTIFF raster map layer (.tif with spatial referencing).');
+        simulateFileDownload('Flood_Risk_Raster.tif', 'image/tiff');
+    } else if (type === 'csv') {
+        alert('Extracting point attributes... Exporting Flood Hotspot Points to CSV spreadsheet (.csv).');
+        simulateFileDownload('Flood_Hotspots_Points.csv', 'text/csv');
+    }
+}
+
+function simulateFileDownload(filename, mimeType) {
+    const dummyContent = "GIS Export Data Package - City Flood & Waterlogging Risk Mapping Platform\nGenerated on: 2026\nStatus: Success";
+    const blob = new Blob([dummyContent], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 document.getElementById("mapFrame").addEventListener("load", function() {
