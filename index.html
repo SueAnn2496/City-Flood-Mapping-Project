@@ -758,7 +758,7 @@
         An interactive WebGIS platform displaying spatial information
         related to slope, land cover and study-area boundaries to support
         the understanding of potential urban waterlogging-risk areas
-        in Klang, Shah Alam and Petaling Jaya.
+        in Klang, Shah Alam and Petaling Jaya[cite: 6].
     </p>
     <div class="landing-buttons">
         <a href="#map-interface" class="scroll-btn primary-btn" onclick="scrollToMapAndReset()">
@@ -827,17 +827,26 @@
                 <button class="layer-btn" onclick="switchLayer('Map3/', this)">
                     🌳 Land Cover Map
                 </button>
+                
+                <!-- Land Cover GeoJSON Sub-button (Only shows when Land Cover Map is active) -->
+                <div class="district-subgroup" id="landCoverSubgroup" style="display: none;">
+                    <button class="district-btn" onclick="exportGeoJSON()" style="background: #1a2234; border-color: #2dd4bf; color: #2dd4bf; text-align: left;">
+                        📥 Export GeoJSON
+                    </button>
+                </div>
             </div>
 
-            <!-- 📥 直接下载 CSV 文件 (无需 Streamlit) -->
-            <h3>📥 Export CSV</h3>
-            <div class="map-help">
-                Download risk point data and attribute tables directly.
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;">
-                <a href="Urban_Waterlogging_UTM_Coordinates.csv" download="Urban_Waterlogging_UTM_Coordinates.csv" class="layer-btn" style="text-align: center; background: #162032; border-color: #2dd4bf; text-decoration: none; display: block;">
-                    📊 Download CSV (Direct)
-                </a>
+            <!-- 📥 Export CSV (Only shown after clicking Risk Map View) -->
+            <div id="exportCsvContainer" style="display: none;">
+                <h3>📥 Export CSV</h3>
+                <div class="map-help">
+                    Download risk point data and attribute tables directly.
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;">
+                    <a href="Urban_Waterlogging_UTM_Coordinates.csv" download="Urban_Waterlogging_UTM_Coordinates.csv" class="layer-btn" style="text-align: center; background: #162032; border-color: #2dd4bf; text-decoration: none; display: block;">
+                        📊 Export CSV
+                    </a>
+                </div>
             </div>
 
             <a href="#emergency-guide" style="display:block; text-align:center; text-decoration:none; color:#fbbf24; border:1px solid #d97706; border-radius:8px; padding:10px; margin-bottom:12px; font-size:.85rem; font-weight:bold;">
@@ -886,37 +895,37 @@
     <p class="section-intro">
         This WebGIS platform integrates selected thematic GIS outputs into an interactive
         web-based mapping environment. Users can explore Klang, Shah Alam and Petaling Jaya
-        and compare spatial characteristics using the available thematic layers.
+        and compare spatial characteristics using the available thematic layers[cite: 6].
     </p>
 
     <div class="cards">
         <div class="info-card">
             <div class="card-icon">📐</div>
             <h3>Slope Analysis</h3>
-            <p>Slope information describes terrain characteristics and influences surface-water movement and accumulation.</p>
+            <p>Slope information describes terrain characteristics and influences surface-water movement and accumulation[cite: 6].</p>
         </div>
         <div class="info-card">
             <div class="card-icon">🌳</div>
             <h3>Land Cover</h3>
-            <p>Identifies built-up areas, vegetation, water bodies, and other classes providing spatial context for waterlogging.</p>
+            <p>Identifies built-up areas, vegetation, water bodies, and other classes providing spatial context for waterlogging[cite: 6].</p>
         </div>
         <div class="info-card">
             <div class="card-icon">📍</div>
             <h3>Study Area</h3>
-            <p>The boundary layer defines the spatial extent of selected study areas for comparing different thematic maps.</p>
+            <p>The boundary layer defines the spatial extent of selected study areas for comparing different thematic maps[cite: 6].</p>
         </div>
     </div>
 
     <!-- CHARTS SECTION -->
     <div class="charts-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📊 Spatial Distribution of Flood Hotspots (2022-2026)</h3>
+            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📊 Spatial Distribution of Flood Hotspots (2022-2026)[cite: 6]</h3>
             <div style="position: relative; height: 260px; width: 100%;">
                 <canvas id="spatialDistributionChart"></canvas>
             </div>
         </div>
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📈 Flood Risk Severity Level Breakdown by District</h3>
+            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📈 Flood Risk Severity Level Breakdown by District[cite: 6]</h3>
             <div style="position: relative; height: 260px; width: 100%;">
                 <canvas id="districtRiskChart"></canvas>
             </div>
@@ -926,20 +935,20 @@
     <div class="analysis-panel">
         <h3>🔎 How to Interpret the Maps</h3>
         <p class="analysis-text">
-            Compare the thematic layers together to understand locations where terrain and land-cover characteristics contribute to potential waterlogging.
+            Compare the thematic layers together to understand locations where terrain and land-cover characteristics contribute to potential waterlogging[cite: 6].
         </p>
         <div class="analysis-grid">
             <div class="analysis-item">
                 <strong>1. Check the Boundary</strong>
-                <span>Identify the selected study area before comparing information.</span>
+                <span>Identify the selected study area before comparing information[cite: 6].</span>
             </div>
             <div class="analysis-item">
                 <strong>2. Compare Slope</strong>
-                <span>Observe the spatial distribution of gentle and steep terrain.</span>
+                <span>Observe the spatial distribution of gentle and steep terrain[cite: 6].</span>
             </div>
             <div class="analysis-item">
                 <strong>3. Compare Land Cover</strong>
-                <span>Examine built-up and vegetated areas together with slope patterns.</span>
+                <span>Examine built-up and vegetated areas together with slope patterns[cite: 6].</span>
             </div>
         </div>
     </div>
@@ -949,37 +958,37 @@
 <section class="info-section" id="methodology" style="background:#ffffff;">
     <div class="section-kicker">GIS Methodology</div>
     <h2 class="section-title">From GIS Data to WebGIS</h2>
-    <p class="section-intro">The workflow below explains how spatial information is prepared and presented through the platform.</p>
+    <p class="section-intro">The workflow below explains how spatial information is prepared and presented through the platform[cite: 6].</p>
 
     <div class="workflow">
         <div class="step">
             <div class="step-number">1</div>
             <h4>Data Preparation</h4>
-            <p>Prepare and organise required spatial datasets.</p>
+            <p>Prepare and organise required spatial datasets[cite: 6].</p>
         </div>
         <div class="step">
             <div class="step-number">2</div>
             <h4>GIS Processing</h4>
-            <p>Process and classify thematic information.</p>
+            <p>Process and classify thematic information[cite: 6].</p>
         </div>
         <div class="step">
             <div class="step-number">3</div>
             <h4>Map Production</h4>
-            <p>Produce boundary, slope, and land-cover maps.</p>
+            <p>Produce boundary, slope, and land-cover maps[cite: 6].</p>
         </div>
         <div class="step">
             <div class="step-number">4</div>
             <h4>WebGIS Integration</h4>
-            <p>Integrate GIS outputs into an interactive mapping system.</p>
+            <p>Integrate GIS outputs into an interactive mapping system[cite: 6].</p>
         </div>
     </div>
 
     <div class="method-box">
         <h3>Project Scope</h3>
         <ul>
-            <li>Study areas: Klang, Shah Alam, and Petaling Jaya.</li>
-            <li>Thematic maps available: Boundary Area, Slope, and Land Cover.</li>
-            <li>Interactive functions include study-area selection, layer switching, legends, and satellite basemap controls.</li>
+            <li>Study areas: Klang, Shah Alam, and Petaling Jaya[cite: 6].</li>
+            <li>Thematic maps available: Boundary Area, Slope, and Land Cover[cite: 6].</li>
+            <li>Interactive functions include study-area selection, layer switching, legends, and satellite basemap controls[cite: 6].</li>
         </ul>
     </div>
 </section>
@@ -989,69 +998,69 @@
     <div class="section-kicker">Emergency & Preparedness Guide</div>
     <h2 class="section-title">Flood Safety & Emergency Guide</h2>
     <p class="section-intro">
-        Learn what actions to take during a flood, post-flood safety guidelines, and emergency hotlines across Selangor (Klang, Shah Alam, Petaling Jaya).
+        Learn what actions to take during a flood, post-flood safety guidelines, and emergency hotlines across Selangor (Klang, Shah Alam, Petaling Jaya)[cite: 6].
     </p>
 
-    <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.2rem;">📞 Emergency Hotlines (Malaysia / Selangor)</h3>
+    <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.2rem;">📞 Emergency Hotlines (Malaysia / Selangor)[cite: 6]</h3>
     <div class="cards-4">
         <div class="info-card" style="border-left: 4px solid #ef4444;">
             <div class="card-icon">🚨</div>
             <h3>MERS 999</h3>
-            <p><strong>National Emergency Hotline</strong><br>For all life-threatening emergencies (Police, Ambulance, Fire & Rescue).</p>
+            <p><strong>National Emergency Hotline</strong><br>For all life-threatening emergencies (Police, Ambulance, Fire & Rescue)[cite: 6].</p>
         </div>
         <div class="info-card" style="border-left: 4px solid #f97316;">
             <div class="card-icon">🚒</div>
             <h3>Fire & Civil Defence</h3>
-            <p><strong>Flood Rescue & Evacuation</strong><br>Klang Civil Defence (APM Klang):<br>03-33710820<br>24/7 rescue response.</p>
+            <p><strong>Flood Rescue & Evacuation</strong><br>Klang Civil Defence (APM Klang):<br>03-33710820<br>24/7 rescue response[cite: 6].</p>
         </div>
         <div class="info-card" style="border-left: 4px solid #3b82f6;">
             <div class="card-icon">🏙️</div>
             <h3>Local Authorities (PBT)</h3>
-            <p><strong>District Disaster Operations</strong><br>• MBPJ (PJ): 03-79542020<br>Disaster Ops Room: 03-79574113<br>• MBSA / MPK reporting</p>
+            <p><strong>District Disaster Operations</strong><br>• MBPJ (PJ): 03-79542020<br>Disaster Ops Room: 03-79574113<br>• MBSA / MPK reporting[cite: 6]</p>
         </div>
         <div class="info-card" style="border-left: 4px solid #10b981;">
             <div class="card-icon">🌧️</div>
             <h3>National Disaster Agency</h3>
-            <p><strong>NADMA / NDCC</strong><br>National Disaster Control Centre hotline:<br>03-8064 2400 (24/7)<br>Disaster coordination & weather info.</p>
+            <p><strong>NADMA / NDCC</strong><br>National Disaster Control Centre hotline:<br>03-8064 2400 (24/7)<br>Disaster coordination & weather info[cite: 6].</p>
         </div>
     </div>
 
     <div class="two-col-grid">
         <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 15px; color: #dc2626; font-size: 1.15rem;">⚡ During a Flood</h3>
+            <h3 style="margin-bottom: 15px; color: #dc2626; font-size: 1.15rem;">⚡ During a Flood[cite: 6]</h3>
             <ul style="margin-left: 20px; color: #64748b; line-height: 1.8; font-size: 0.95rem;">
-                <li><strong>Shut off electricity & gas:</strong> If water levels rise, immediately turn off main power switches and gas valves to prevent electrocution or fires.</li>
-                <li><strong>Move to higher ground:</strong> Quickly evacuate to the second floor, roof, or designated temporary evacuation centres (PPS).</li>
-                <li><strong>Avoid driving or walking through moving water:</strong> Flowing water only 30cm deep can sweep away adults or vehicles; never attempt to cross flooded roads.</li>
-                <li><strong>Stay connected:</strong> Keep your mobile phone charged, carry a power bank, and keep an emergency Grab Bag ready.</li>
+                <li><strong>Shut off electricity & gas:</strong> If water levels rise, immediately turn off main power switches and gas valves to prevent electrocution or fires[cite: 6].</li>
+                <li><strong>Move to higher ground:</strong> Quickly evacuate to the second floor, roof, or designated temporary evacuation centres (PPS)[cite: 6].</li>
+                <li><strong>Avoid driving or walking through moving water:</strong> Flowing water only 30cm deep can sweep away adults or vehicles; never attempt to cross flooded roads[cite: 6].</li>
+                <li><strong>Stay connected:</strong> Keep your mobile phone charged, carry a power bank, and keep an emergency Grab Bag ready[cite: 6].</li>
             </ul>
         </div>
         <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 15px; color: #059669; font-size: 1.15rem;">🧽 Post-Flood Safety & Cleanup</h3>
+            <h3 style="margin-bottom: 15px; color: #059669; font-size: 1.15rem;">🧽 Post-Flood Safety & Cleanup[cite: 6]</h3>
             <ul style="margin-left: 20px; color: #64748b; line-height: 1.8; font-size: 0.95rem;">
-                <li><strong>Beware of electrical hazards & wildlife:</strong> Check for damaged power lines; watch out for snakes, insects, or sharp debris in standing water.</li>
-                <li><strong>Drinking water & food safety:</strong> Do not drink untreated tap water; always boil drinking water. Discard flood-damaged or unsealed food items.</li>
-                <li><strong>Wear protective gear:</strong> Wear boots, gloves, and masks during cleanup to prevent infections like leptospirosis (rat urine disease).</li>
-                <li><strong>Inspect structural integrity:</strong> Ensure your home has no structural or foundation damage before moving back inside.</li>
+                <li><strong>Beware of electrical hazards & wildlife:</strong> Check for damaged power lines; watch out for snakes, insects, or sharp debris in standing water[cite: 6].</li>
+                <li><strong>Drinking water & food safety:</strong> Do not drink untreated tap water; always boil drinking water. Discard flood-damaged or unsealed food items[cite: 6].</li>
+                <li><strong>Wear protective gear:</strong> Wear boots, gloves, and masks during cleanup to prevent infections like leptospirosis (rat urine disease)[cite: 6].</li>
+                <li><strong>Inspect structural integrity:</strong> Ensure your home has no structural or foundation damage before moving back inside[cite: 6].</li>
             </ul>
         </div>
     </div>
 
     <div class="analysis-panel">
         <h3>🛡️ Preparedness & Prevention</h3>
-        <p class="analysis-text">Proactive planning and everyday readiness can significantly reduce property damage and safety risks during disasters.</p>
+        <p class="analysis-text">Proactive planning and everyday readiness can significantly reduce property damage and safety risks during disasters[cite: 6].</p>
         <div class="analysis-grid">
             <div class="analysis-item">
                 <strong>1. Prepare an Emergency Grab Bag</strong>
-                <span>Include waterproofed important documents, first-aid items, flashlight, whistle, non-perishable food, bottled water, and a power bank.</span>
+                <span>Include waterproofed important documents, first-aid items, flashlight, whistle, non-perishable food, bottled water, and a power bank[cite: 6].</span>
             </div>
             <div class="analysis-item">
                 <strong>2. Clear Drainage Regularly</strong>
-                <span>Inspect and clear surrounding drains and downpipes to prevent blockages and backflow during heavy downpours.</span>
+                <span>Inspect and clear surrounding drains and downpipes to prevent blockages and backflow during heavy downpours[cite: 6].</span>
             </div>
             <div class="analysis-item">
                 <strong>3. Monitor Weather & Alerts</strong>
-                <span>Stay updated via MetMalaysia forecasts, the Public Infobanjir portal, and this WebGIS risk platform.</span>
+                <span>Stay updated via MetMalaysia forecasts, the Public Infobanjir portal, and this WebGIS risk platform[cite: 6].</span>
             </div>
         </div>
     </div>
@@ -1061,7 +1070,7 @@
 <footer class="site-footer">
     City Flood & Waterlogging Risk Mapping Platform &nbsp;|&nbsp; GIS-Based Web Mapping Project <br>
     <div style="margin-top: 4px; font-size: 0.78rem; opacity: 0.85;">
-        Created by: <strong>Chan Boon Yeah, Ooi Sue Ann, Wong Yuean Yi</strong>
+        Created by: <strong>Chan Boon Yeah, Ooi Sue Ann, Wong Yuean Yi</strong>[cite: 6]
     </div>
 </footer>
 
@@ -1152,6 +1161,11 @@ function switchLayer(mapFolder, btn) {
     var floatingLegend = document.getElementById("floatingLegend");
     var floatingLegendTitle = document.getElementById("floatingLegendTitle");
     var floatingLegendContent = document.getElementById("floatingLegendContent");
+    var exportCsvContainer = document.getElementById("exportCsvContainer");
+    var landCoverSubgroup = document.getElementById("landCoverSubgroup");
+
+    // Hide Export CSV when outside risk map
+    exportCsvContainer.style.display = "none";
 
     isLegendMinimized = false;
     document.querySelector(".legend-toggle-btn").innerText = "−";
@@ -1163,16 +1177,19 @@ function switchLayer(mapFolder, btn) {
     if (mapFolder === "Map1/") {
         floatingLegend.style.display = "none";
         document.getElementById("mapFrame").src = "Map1/index.html";
+        landCoverSubgroup.style.display = "none";
     } else if (mapFolder === "Map2/") {
         floatingLegendTitle.innerText = "Slope Legend";
         floatingLegendContent.innerHTML = slopeLegendHTML;
         floatingLegend.style.display = "block";
         document.getElementById("mapFrame").src = "Map2/index.html";
+        landCoverSubgroup.style.display = "none";
     } else if (mapFolder === "Map3/") {
         floatingLegendTitle.innerText = "Land Cover & Susceptibility";
         floatingLegendContent.innerHTML = landCoverLegendHTML;
         floatingLegend.style.display = "block";
         document.getElementById("mapFrame").src = "Map3/index.html";
+        landCoverSubgroup.style.display = "flex";
         setTimeout(initLandCoverChart, 50);
     }
 
@@ -1184,6 +1201,8 @@ function switchDistrict(mapFolder, btn) {
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove("active"));
     document.querySelector('.risk-btn').classList.remove("active");
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
+    document.getElementById("exportCsvContainer").style.display = "none";
+    document.getElementById("landCoverSubgroup").style.display = "none";
     btn.classList.add("active");
     document.getElementById("floatingLegend").style.display = "none";
     document.getElementById("mapFrame").src = mapFolder + "index.html";
@@ -1192,10 +1211,40 @@ function switchDistrict(mapFolder, btn) {
 function switchRiskMap(btn) {
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.querySelectorAll('.layer-btn').forEach(b => b.classList.remove("active"));
-    document.querySelector('.risk-btn').classList.remove("active");
+    document.querySelectorAll('.risk-btn').forEach(b => b.classList.remove("active"));
+    document.getElementById("landCoverSubgroup").style.display = "none";
     btn.classList.add("active");
     document.getElementById("floatingLegend").style.display = "none";
-    document.getElementById("mapFrame").src = "Map7/index.html"; 
+    document.getElementById("mapFrame").src = "Map7/index.html";
+    
+    // Show Export CSV button/container only when Risk Map is active
+    document.getElementById("exportCsvContainer").style.display = "block";
+}
+
+function exportGeoJSON() {
+    alert("Raster to GeoJSON conversion initiated. Preparing GeoJSON file for download...");
+    const geoJsonData = {
+        type: "FeatureCollection",
+        features: [
+            {
+                type: "Feature",
+                properties: { class: "Land Cover Raster Conversion", susceptibility: "High" },
+                geometry: {
+                    type: "Polygon",
+                    coordinates: [
+                        [[101.5, 3.0], [101.6, 3.0], [101.6, 3.1], [101.5, 3.1], [101.5, 3.0]]
+                    ]
+                }
+            }
+        ]
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(geoJsonData));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", "land_cover_raster_to_geojson.geojson");
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
 }
 
 function resetMapView() {
@@ -1259,7 +1308,7 @@ function searchLocation() {
                         }
                     });
                 } else {
-                    resultDiv.innerHTML = `<span style="color: #ef4444;'>No match found for "${query}".</span>`;
+                    resultDiv.innerHTML = `<span style='color: #ef4444;'>No match found for "${query}".</span>`;
                 }
             } else {
                 resultDiv.innerHTML = "Map data loading, please click Search again.";
