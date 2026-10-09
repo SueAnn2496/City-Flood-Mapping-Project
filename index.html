@@ -910,7 +910,7 @@
         }
         .tip-panel li { margin-bottom: 4px; }
 
-        /* 纯正深黑色页脚 */
+        /* Solid Dark Footer */
         .site-footer {
             background: #090d16;
             color: #94a3b8;
@@ -1429,7 +1429,7 @@
     </div>
     <p class="swipe-hint">Swipe sideways for "After a Flood" →</p>
 
-    <!-- 纯正深黑色页脚 -->
+    <!-- Solid Dark Footer -->
     <footer class="site-footer">
         City Flood & Waterlogging Risk Mapping Platform &nbsp;|&nbsp; GIS-Based Web Mapping Project <br>
         <div style="margin-top: 4px; font-size: 0.78rem;">
@@ -1607,26 +1607,26 @@ function searchLocation() {
     var result = document.getElementById("searchResult");
     var q = input.value.trim().toLowerCase().replace(/\s+/g, " ");
     if (!q) {
-        result.textContent = "请输入要查询的区域或点位名称（例如：Shah Alam, Klang, Meru）。";
+        result.textContent = "Please enter an area or point name (e.g., Shah Alam, Klang, Meru).";
         return;
     }
     
     if (q.indexOf("klang") !== -1) {
         switchDistrict('Map4/', document.getElementById("btnKlang"));
-        result.textContent = "已显示 Klang 区域地图。";
+        result.textContent = "Showing Klang district map.";
         return;
     } else if (q.indexOf("shah") !== -1 || q === "sa") {
         switchDistrict('Map5/', document.getElementById("btnShahAlam"));
-        result.textContent = "已显示 Shah Alam 区域地图。";
+        result.textContent = "Showing Shah Alam district map.";
         return;
     } else if (q.indexOf("petaling") !== -1 || q === "pj") {
         switchDistrict('Map6/', document.getElementById("btnPJ"));
-        result.textContent = "已显示 Petaling Jaya 区域地图。";
+        result.textContent = "Showing Petaling Jaya district map.";
         return;
     }
 
     switchLayer('Map1/', document.querySelector('.layer-btn'));
-    result.textContent = "已切换至总览风险点地图（查询点位：" + input.value.trim() + "）。";
+    result.textContent = "Switched to overview risk points map (Query: " + input.value.trim() + ").";
 }
 
 function resetMapView() {
