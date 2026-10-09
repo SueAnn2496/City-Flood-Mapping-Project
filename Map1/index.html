@@ -298,41 +298,7 @@
 
         // ===== ADD-ON START =====
         (function () {
-            // ---- 1. 历史事件圈(坐标直接沿用你 points 里的位置)----
-            map.createPane('incidentPane');
-            map.getPane('incidentPane').style.zIndex = 650;
-
-            var incidents = [
-                { id: "WR001", date: "11 Apr 2025", area: "Shah Alam", place: "Taman Sri Muda",
-                 lat: 3.0232, lng: 101.5273,
-                 src: "https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" },
-                { id: "WR002", date: "11 Apr 2025", area: "Klang", place: "Meru (Pekan Meru / Taman Daya)",
-                 lat: 3.1388, lng: 101.4402,
-                 src: "https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" },
-                { id: "WR005", date: "18 Jul 2026", area: "Petaling Jaya", place: "Medan Selera 223, Section 51A",
-                 lat: 3.1021, lng: 101.6322,
-                 src: "https://www.nadma.gov.my/bm/media-2/berita/6781-heavy-rain-triggers-flash-floods-across-parts-of-klang-valley" }
-                // WR003 (Jalan Sri Manja) 和 WR004 (NPE Exit 1005) 还没有核实过的坐标,
-                // 找到位置后照上面格式补一条即可。
-            ];
-
-            var incidentLayer = L.layerGroup().addTo(map);
-            incidents.forEach(function (d) {
-                L.circleMarker([d.lat, d.lng], {
-                    pane: 'incidentPane',
-                    radius: 15, color: '#0057ff', weight: 3, dashArray: '4 4',
-                    fill: false, opacity: 1
-                }).addTo(incidentLayer).bindPopup(
-                    '<div style="font-family:Arial;font-size:13px;">' +
-                    '<b>' + d.id + ' · ' + d.place + '</b><hr style="margin:4px 0;">' +
-                    '<b>Study area:</b> ' + d.area + '<br>' +
-                    '<b>Incident date:</b> ' + d.date + '<br>' +
-                    '<b>Depth / severity:</b> Not reported<br>' +
-                    '<a href="' + d.src + '" target="_blank" rel="noopener">Source ↗</a></div>'
-                );
-            });
-
-            // ---- 2. 控制面板:开关 + 区界透明度 ----
+            // ---- 1. 控制面板:开关 + 区界透明度 ----
             var panel = L.control({ position: 'topright' });
             panel.onAdd = function () {
                 var div = L.DomUtil.create('div', 'leaflet-bar');
@@ -340,7 +306,6 @@
                 div.innerHTML =
                     '<b>Layers</b><br>' +
                     '<label><input type="checkbox" id="fx-risk" checked> Risk points</label><br>' +
-                    '<label><input type="checkbox" id="fx-inc" checked> <span style="color:#0057ff">◌</span> Reported incidents</label><br>' +
                     '<label><input type="checkbox" id="fx-bnd" checked> District boundary</label>' +
                     '<div style="margin-top:6px">Boundary opacity<br>' +
                     '<input type="range" id="fx-op" min="0" max="1" step="0.05" value="1" style="width:100%"></div>';
@@ -354,7 +319,6 @@
                     e.target.checked ? map.addLayer(layer) : map.removeLayer(layer);
                 });
             }
-            toggle('fx-inc', incidentLayer);
             toggle('fx-bnd', layer_DAERAH_SELANGOR_3375fix_1);
             if (typeof riskLayer !== 'undefined') toggle('fx-risk', riskLayer);
 
@@ -363,7 +327,7 @@
                 layer_DAERAH_SELANGOR_3375fix_1.setStyle({ fillOpacity: v });
             });
 
-            // ---- 3. 图例 ----
+            // ---- 2. 图例 ----
             var legend = L.control({ position: 'bottomleft' });
             legend.onAdd = function () {
                 var div = L.DomUtil.create('div', 'leaflet-bar');
@@ -372,8 +336,7 @@
                     '<b>Risk status</b><br>' +
                     '<span style="color:#e74c3c">●</span> High &nbsp;' +
                     '<span style="color:#f39c12">●</span> Moderate &nbsp;' +
-                    '<span style="color:#2ecc71">●</span> Low<br>' +
-                    '<span style="color:#0057ff">◌</span> Reported incident (NADMA/MBPJ)';
+                    '<span style="color:#2ecc71">●</span> Low';
                 return div;
             };
             legend.addTo(map);
