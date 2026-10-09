@@ -692,24 +692,46 @@
             line-height: 1.5;
         }
 
-        .method-box {
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            border: 1px solid #e2e8f0;
-            margin-top: 40px;
-            box-shadow: 0 10px 30px rgba(15,23,42,0.04);
+        .workflow {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 30px;
         }
 
-        .method-box h3 {
-            margin-bottom: 12px;
+        .step {
+            background: #0f172a;
+            color: white;
+            border-radius: 16px;
+            padding: 24px 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: transform 0.3s ease;
+        }
+        .step:hover {
+            transform: translateY(-4px);
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #2dd4bf;
             color: #0f172a;
+            font-weight: 800;
+            margin-bottom: 14px;
         }
 
-        .method-box ul {
-            margin: 15px 0 0 20px;
-            color: #64748b;
-            line-height: 2.0;
+        .step h4 {
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        .step p {
+            font-size: .88rem;
+            color: #94a3b8;
+            line-height: 1.6;
         }
 
         .two-col-grid {
@@ -739,10 +761,12 @@
 
         @media (max-width: 900px) {
             .cards, .analysis-grid, .two-col-grid { grid-template-columns: 1fr !important; }
+            .workflow { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 600px) {
             .cards-4 { grid-template-columns: 1fr !important; }
+            .workflow { grid-template-columns: 1fr; }
             .info-section { padding: 60px 5vw; }
             .top-nav { gap: 6px; }
             .study-label { display: none; }
@@ -775,7 +799,6 @@
         the understanding of potential urban waterlogging-risk areas
         in Klang, Shah Alam and Petaling Jaya.
     </p>
-    <!-- 按钮顺序已按页面顺序重新排列：Explore Maps -> Project Overview -> Risk Analysis -> Historical Records -> Emergency Guide -->
     <div class="landing-buttons">
         <a href="#map-interface" class="scroll-btn primary-btn" onclick="scrollToMapAndReset()">
             Explore Maps <span>↓</span>
@@ -951,17 +974,63 @@
             </div>
         </div>
     </div>
+
+    <!-- 恢复的 How to Interpret the Maps 面板 -->
+    <div class="analysis-panel">
+        <h3>🔎 How to Interpret the Maps</h3>
+        <p class="analysis-text">
+            Compare the thematic layers together to understand locations where terrain and land-cover characteristics contribute to potential waterlogging.
+        </p>
+        <div class="analysis-grid">
+            <div class="analysis-item">
+                <strong>1. Check the Boundary</strong>
+                <span>Identify the selected study area before comparing information.</span>
+            </div>
+            <div class="analysis-item">
+                <strong>2. Compare Slope</strong>
+                <span>Observe the spatial distribution of gentle and steep terrain.</span>
+            </div>
+            <div class="analysis-item">
+                <strong>3. Compare Land Cover</strong>
+                <span>Examine built-up and vegetated areas together with slope patterns.</span>
+            </div>
+        </div>
+    </div>
 </section>
 
-<!-- RISK ANALYSIS -->
+<!-- RISK ANALYSIS & METHODOLOGY -->
 <section class="info-section" id="risk-analysis" style="background:#f1f5f9;">
-  <div class="section-kicker">Risk Analysis</div>
+  <div class="section-kicker">Risk Analysis & Methodology</div>
   <h2 class="section-title">Understanding Potential Waterlogging Susceptibility</h2>
   <p class="section-intro">
-    The current WebGIS contains boundary, slope and land-cover map views. These layers help describe terrain and land-surface characteristics.
+    The workflow below explains how spatial information is prepared and presented through the platform.
   </p>
 
-  <div class="cards">
+  <!-- 恢复的 四步工作流卡片 -->
+  <div class="workflow">
+        <div class="step">
+            <div class="step-number">1</div>
+            <h4>Data Preparation</h4>
+            <p>Prepare and organise required spatial datasets.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <h4>GIS Processing</h4>
+            <p>Process and classify thematic information.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <h4>Map Production</h4>
+            <p>Produce boundary, slope, and land-cover maps.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <h4>WebGIS Integration</h4>
+            <p>Integrate GIS outputs into an interactive mapping system.</p>
+        </div>
+  </div>
+
+  <div class="cards" style="margin-top: 40px;">
     <div class="info-card">
       <div class="card-icon">📐</div>
       <h3>Slope</h3>
@@ -989,28 +1058,24 @@
   </p>
 
   <div class="cards-4" id="newsGrid">
-      <!-- Item 1 -->
       <div class="info-card">
           <div class="card-icon">📰</div>
           <h3>Flash Floods in Klang & Shah Alam</h3>
           <p><strong>11 April 2025</strong><br>Temporary relief shelters set up in Klang and Shah Alam following heavy downpours.</p>
           <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/04/11/flash-floods-temporary-relief-shelters-set-up-in-klang-and-shah-alam" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
-      <!-- Item 2 -->
       <div class="info-card">
           <div class="card-icon">🌊</div>
           <h3>Klang Valley Flash Floods</h3>
           <p><strong>24 November 2025</strong><br>Morning downpour triggers widespread flash floods across multiple Klang Valley areas.</p>
           <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/11/24/klang-valley-areas-face-flash-floods-after-morning-downpour/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
-      <!-- Item 3 -->
       <div class="info-card">
           <div class="card-icon">🚨</div>
           <h3>Selangor MB Orders Urgent Action</h3>
           <p><strong>20 April 2025</strong><br>Selangor Menteri Besar orders immediate steps after flash floods hit Klang and Shah Alam.</p>
           <p style="margin-top:12px;"><a href="https://www.malaymail.com/news/malaysia/2025/04/20/selangor-mb-orders-urgent-action-after-flash-floods-hit-klang-shah-alam/173823" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
-      <!-- Item 4 -->
       <div class="info-card">
           <div class="card-icon">📄</div>
           <h3>1,000 Displaced in Districts</h3>
@@ -1018,7 +1083,7 @@
           <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/3849-1-000-displaced-by-floods-in-petaling-klang-districts" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
 
-      <!-- Hidden Initially (Loaded on Show More) -->
+      <!-- Hidden Initially -->
       <div class="info-card extra-news" style="display:none;">
           <div class="card-icon">🌧️</div>
           <h3>Heavy Rain Triggers Floods</h3>
@@ -1105,6 +1170,26 @@
             <div class="card-icon">🌧️</div>
             <h3>National Disaster Agency</h3>
             <p><strong>NADMA / NDCC</strong><br>Hotline: 03-8064 2400 (24/7)</p>
+        </div>
+    </div>
+
+    <!-- 恢复的 During a Flood 与 Post-Flood 安全指南两列卡片 -->
+    <div class="two-col-grid" style="margin-top: 30px;">
+        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
+            <h3 style="margin-bottom: 15px; color: #dc2626; font-size: 1.15rem;">⚡ During a Flood</h3>
+            <ul style="margin-left: 20px; color: #64748b; line-height: 1.8; font-size: 0.95rem;">
+                <li><strong>Shut off electricity & gas:</strong> Turn off main power switches to prevent electrocution.</li>
+                <li><strong>Move to higher ground:</strong> Evacuate to the second floor or evacuation centres.</li>
+                <li><strong>Avoid driving or walking through moving water:</strong> Never attempt to cross flooded roads.</li>
+            </ul>
+        </div>
+        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
+            <h3 style="margin-bottom: 15px; color: #059669; font-size: 1.15rem;">🧽 Post-Flood Safety & Cleanup</h3>
+            <ul style="margin-left: 20px; color: #64748b; line-height: 1.8; font-size: 0.95rem;">
+                <li><strong>Beware of electrical hazards & wildlife:</strong> Watch out for damaged power lines and debris.</li>
+                <li><strong>Drinking water safety:</strong> Always boil drinking water; discard unsealed flood-damaged food.</li>
+                <li><strong>Wear protective gear:</strong> Prevent infections like leptospirosis during cleanup.</li>
+            </ul>
         </div>
     </div>
 </section>
