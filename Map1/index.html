@@ -18,24 +18,6 @@
             padding: 0;
             margin: 0;
         }
-        /* Risk Legend 样式 */
-        .legend {
-            background: white;
-            padding: 10px 12px;
-            font: 13px/1.5 Arial, Helvetica, sans-serif;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            color: #333;
-        }
-        .legend i {
-            width: 14px;
-            height: 14px;
-            float: left;
-            margin-right: 8px;
-            opacity: 0.85;
-            border-radius: 50%;
-        }
         </style>
         <title></title>
     </head>
@@ -309,18 +291,6 @@
                 '</div>'
             );
         });
-
-        // 只保留并添加 Risk Legend 图例控件
-        var legend = L.control({position: 'bottomright'});
-        legend.onAdd = function (map) {
-            var div = L.DomUtil.create('div', 'legend');
-            div.innerHTML = '<b>Risk Legend</b><br>' +
-                '<i style="background: #e74c3c;"></i> High Risk<br>' +
-                '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
-                '<i style="background: #2ecc71;"></i> Low Risk';
-            return div;
-        };
-        legend.addTo(map);
         // ------------------------------------------------
 
         setBounds();
