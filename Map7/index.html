@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Map 7 - Risk Map with Live Rainfall</title>
+    <title>Map 7 - Risk Map with Live Rainfall & Warnings</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; }
@@ -24,7 +24,6 @@
             opacity: 0.85;
             border-radius: 50%;
         }
-        /* Live rainfall floating panel style */
         .rainfall-panel {
             background: rgba(255, 255, 255, 0.95);
             padding: 12px 15px;
@@ -45,14 +44,16 @@
             margin-bottom: 6px;
             font-size: 12px;
         }
-        /* Custom styling for warning icon marker */
-        .warning-icon {
-            background: transparent;
-            border: none;
+        /* Warning exclamation marker style */
+        .warning-badge {
+            background-color: #e74c3c;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
             text-align: center;
-            font-size: 16px;
             line-height: 24px;
-            text-shadow: 0 0 3px #fff, 0 0 3px #fff;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.8);
+            font-size: 16px;
         }
     </style>
 </head>
@@ -118,32 +119,17 @@
             { name: "Jalan Kebun Nenas / Kg Jawa", district: "Klang", lat: 3.0162, lng: 101.4785, easting: "775501.52", northing: "333697.51", zone: "47N", risk: "Moderate Risk" }
         ];
 
+        // Render base points
         points.forEach(function(p) {
             var color = (p.risk === "High Risk") ? "#e74c3c" : (p.risk === "Moderate Risk" ? "#f39c12" : "#2ecc71");
-            
-            var marker;
-            if (p.risk === "High Risk") {
-                // Add an exclamation mark icon overlay for High Risk locations
-                var warningIcon = L.divIcon({
-                    className: 'warning-icon',
-                    html: '⚠️',
-                    iconSize: [20, 20],
-                    iconAnchor: [10, 10]
-                });
-                marker = L.marker([p.lat, p.lng], { icon: warningIcon });
-            } else {
-                // Standard circle marker for Moderate and Low risk
-                marker = L.circleMarker([p.lat, p.lng], {
-                    radius: 8,
-                    fillColor: color,
-                    color: "#000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.85
-                });
-            }
-
-            marker.addTo(map).bindPopup(
+            L.circleMarker([p.lat, p.lng], {
+                radius: 8,
+                fillColor: color,
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.85
+            }).addTo(map).bindPopup(
                 '<div style="font-family: Arial; font-size: 13px;">' +
                 '<b style="color: #2c3e50; font-size: 14px;">' + p.name + '</b><hr style="margin: 4px 0;">' +
                 '<b>District:</b> ' + p.district + '<br>' +
@@ -159,14 +145,14 @@
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'legend');
             div.innerHTML = '<b>Risk Legend</b><br>' +
-                '<i style="background: #e74c3c;"></i> High Risk (⚠️)<br>' +
+                '<i style="background: #e74c3c;"></i> High Risk<br>' +
                 '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
                 '<i style="background: #2ecc71;"></i> Low Risk';
             return div;
         };
         legend.addTo(map);
 
-        // --- Live Rainfall Data Integration ---
+        // Add Live Rainfall Control Panel
         var rainfallControl = L.control({position: 'topright'});
         rainfallControl.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'rainfall-panel');
@@ -176,19 +162,25 @@
         };
         rainfallControl.addTo(map);
 
+        // Layer group to hold dynamic warning exclamation markers
+        var warningLayer = L.layerGroup().addTo(map);
+
         function loadLiveRainfallData() {
+            // Simulated live stations with matching names from your main points
             const liveStations = [
                 { name: "Shah Alam Section 2", rainfall: "12.5 mm", status: "Moderate", time: new Date().toLocaleTimeString() },
-                { name: "Klang Bandar", rainfall: "35.2 mm", status: "Heavy (Alert)", time: new Date().toLocaleTimeString() },
+                { name: "Klang Bandar", rainfall: "45.2 mm", status: "Heavy (Warning)", alert: true, lat: 3.0333, lng: 101.4500 }, // Example live warning location
                 { name: "Petaling Jaya SS2", rainfall: "4.1 mm", status: "Light", time: new Date().toLocaleTimeString() }
             ];
 
+            // Render live list to panel
             let htmlContent = '';
             liveStations.forEach(station => {
+                let badgeColor = station.alert ? '#e74c3c' : '#2c3e50';
                 htmlContent += `<div class="rainfall-item">
                     <b>${station.name}</b><br>
-                    Rainfall: <span style="color: #e74c3c; font-weight: bold;">${station.rainfall}</span> (${station.status})<br>
-                    <span style="font-size: 10px; color: #7f8c8d;">Updated: ${station.time}</span>
+                    Rainfall: <span style="color: ${badgeColor}; font-weight: bold;">${station.rainfall}</span> (${station.status})<br>
+                    <span style="font-size: 10px; color: #7f8c8d;">Updated: ${station.time || new Date().toLocaleTimeString()}</span>
                 </div>`;
             });
             
@@ -197,9 +189,27 @@
                 box.innerHTML = htmlContent;
             }
 
-            console.log("Synced Selangor Infobanjir live rainfall data:", liveStations);
+            // Clear old warning markers and add new exclamation markers for warning areas
+            warningLayer.clearLayers();
+            liveStations.forEach(station => {
+                if (station.alert && station.lat && station.lng) {
+                    var warningIcon = L.divIcon({
+                        className: 'custom-warning-icon',
+                        html: '<div class="warning-badge">!</div>',
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 12]
+                    });
+
+                    L.marker([station.lat, station.lng], { icon: warningIcon })
+                        .bindPopup('<b>WARNING!</b><br>Station: ' + station.name + '<br>Heavy Rainfall Alert!')
+                        .addTo(warningLayer);
+                }
+            });
+
+            console.log("Synced Selangor live rainfall data with warning checks.");
         }
 
+        // Auto refresh every 30 seconds
         setInterval(loadLiveRainfallData, 30000);
         loadLiveRainfallData();
     </script>
