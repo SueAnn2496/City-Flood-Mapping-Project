@@ -70,7 +70,7 @@
             border-bottom: none;
             padding-bottom: 0;
         }
-        /* Custom Exclamation Icon Marker for JPS Rainfall Warnings */
+        /* Custom Exclamation Icon Marker strictly for JPS Live Warnings */
         .warning-marker {
             background: #e74c3c;
             border: 2px solid #fff;
@@ -156,7 +156,7 @@
             { name: "Jalan Kebun Nenas / Kg Jawa", district: "Klang", lat: 3.0162, lng: 101.4785, easting: "775501.52", northing: "333697.51", zone: "47N", risk: "Moderate Risk" }
         ];
 
-        // 渲染所有基础风险点（High Risk 恢复标准红圈、Moderate 为橙色、Low 为绿色）
+        // 1. 渲染所有风险点（全部使用圆形标记：High Risk为红圆圈、Moderate为橙圆圈、Low为绿圆圈）
         points.forEach(function(p) {
             var color = (p.risk === "High Risk") ? "#e74c3c" : (p.risk === "Moderate Risk" ? "#f39c12" : "#2ecc71");
             
@@ -186,15 +186,15 @@
                 '<i style="background: #e74c3c;"></i> High Risk<br>' +
                 '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
                 '<i style="background: #2ecc71;"></i> Low Risk<br>' +
-                '<hr style="margin:4px 0;"><small><b>(!)</b> = JPS Warning Area</small>';
+                '<hr style="margin:4px 0;"><small><b>(!)</b> = JPS Live Warning</small>';
             return div;
         };
         legend.addTo(map);
 
-        // 动态 JPS 警示标记图层
+        // 2. 独立的 JPS 实时警示标记图层
         var warningLayerGroup = L.layerGroup().addTo(map);
 
-        // 模拟从 JPS 获取实时降雨数据逻辑（仅在需要注意的 warning 地方放感叹号）
+        // 模拟从 JPS 获取实时降雨数据（仅在有 warning 的地方生成感叹号标记）
         function loadLiveRainfallData() {
             const liveStations = [
                 { name: "Shah Alam Section 2", rainfall: "12.5 mm", status: "Moderate", time: new Date().toLocaleTimeString(), lat: 3.0512, lng: 101.5098, hasWarning: false },
@@ -202,12 +202,12 @@
                 { name: "Petaling Jaya SS2", rainfall: "4.1 mm", status: "Light", time: new Date().toLocaleTimeString(), lat: 3.1026, lng: 101.6447, hasWarning: false }
             ];
 
-            // 清除上一轮的感叹号警示标记
+            // 清除旧的感叹号标记
             warningLayerGroup.clearLayers();
 
             let htmlContent = "";
             liveStations.forEach(station => {
-                // 只有当该 JPS 监测站存在 warning 需要注意时，才在地图上放置带感叹号的标记
+                // 只有当 JPS 实时数据标明需要注意（hasWarning === true）时，才在对应位置放置感叹号
                 if (station.hasWarning) {
                     var warningIcon = L.divIcon({
                         className: 'warning-marker',
@@ -217,7 +217,7 @@
                     });
 
                     L.marker([station.lat, station.lng], { icon: warningIcon })
-                        .bindPopup('<div style="font-family: Arial; font-size: 13px;"><b style="color: #e74c3c;">⚠️ JPS Rainfall Warning</b><br><b>Station:</b> ' + station.name + '<br><b>Rainfall:</b> ' + station.rainfall + '<br><b>Status:</b> ' + station.status + '</div>')
+                        .bindPopup('<div style="font-family: Arial; font-size: 13px;"><b style="color: #e74c3c;">⚠️ JPS Live Rainfall Warning</b><br><b>Station:</b> ' + station.name + '<br><b>Rainfall:</b> ' + station.rainfall + '<br><b>Status:</b> ' + station.status + '</div>')
                         .addTo(warningLayerGroup);
                 }
 
