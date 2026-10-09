@@ -181,6 +181,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
 
         .toggle-btn:hover {
@@ -188,6 +189,27 @@
             color: #0f172a;
             border-color: #2dd4bf;
             transform: scale(1.05);
+        }
+
+        /* Dashboard Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(239, 68, 68, 0.5);
+            animation: pulseBadge 1.5s infinite;
+        }
+
+        @keyframes pulseBadge {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
 
         .study-label {
@@ -821,7 +843,11 @@
 <!-- 2. MAP INTERFACE -->
 <div class="map-section" id="map-interface">
     <div class="top-nav" id="topNav">
-        <button class="toggle-btn" id="dashToggleBtn" onclick="toggleDashboard()" title="Toggle Dashboard">☰</button>
+        <!-- 带有 Notification 1 的菜单按钮 -->
+        <button class="toggle-btn" id="dashToggleBtn" onclick="toggleDashboard()" title="Toggle Dashboard">
+            ☰
+            <span class="notification-badge">1</span>
+        </button>
         <span class="study-label">View Mode:</span>
         <button class="risk-btn" onclick="switchRiskMap(this)">
             🚨 Risk Map View
@@ -975,7 +1001,6 @@
         </div>
     </div>
 
-    <!-- 恢复的 How to Interpret the Maps 面板 -->
     <div class="analysis-panel">
         <h3>🔎 How to Interpret the Maps</h3>
         <p class="analysis-text">
@@ -1006,7 +1031,6 @@
     The workflow below explains how spatial information is prepared and presented through the platform.
   </p>
 
-  <!-- 恢复的 四步工作流卡片 -->
   <div class="workflow">
         <div class="step">
             <div class="step-number">1</div>
@@ -1173,7 +1197,6 @@
         </div>
     </div>
 
-    <!-- 恢复的 During a Flood 与 Post-Flood 安全指南两列卡片 -->
     <div class="two-col-grid" style="margin-top: 30px;">
         <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
             <h3 style="margin-bottom: 15px; color: #dc2626; font-size: 1.15rem;">⚡ During a Flood</h3>
@@ -1249,6 +1272,12 @@ function toggleLegendBody() {
 function toggleDashboard() {
     var sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("collapsed");
+    
+    // 点击打开 Dashboard 后，可以自动隐藏通知徽标（表示已读）
+    var badge = document.querySelector(".notification-badge");
+    if (badge) {
+        badge.style.display = "none";
+    }
 }
 
 let landCoverChartInstance = null;
