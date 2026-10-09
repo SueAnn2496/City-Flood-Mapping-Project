@@ -297,8 +297,8 @@
         // ------------------------------------------------
 
         // ===== ADD-ON START =====
-
-            // ---- 2. 控制面板:开关 + 区界透明度 ----
+        (function () {
+            // ---- 1. 控制面板:开关 + 区界透明度 ----
             var panel = L.control({ position: 'topright' });
             panel.onAdd = function () {
                 var div = L.DomUtil.create('div', 'leaflet-bar');
@@ -319,7 +319,6 @@
                     e.target.checked ? map.addLayer(layer) : map.removeLayer(layer);
                 });
             }
-            toggle('fx-inc', incidentLayer);
             toggle('fx-bnd', layer_DAERAH_SELANGOR_3375fix_1);
             if (typeof riskLayer !== 'undefined') toggle('fx-risk', riskLayer);
 
@@ -328,7 +327,7 @@
                 layer_DAERAH_SELANGOR_3375fix_1.setStyle({ fillOpacity: v });
             });
 
-            // ---- 3. 图例 ----
+            // ---- 2. 图例 (Risk status) ----
             var legend = L.control({ position: 'bottomleft' });
             legend.onAdd = function () {
                 var div = L.DomUtil.create('div', 'leaflet-bar');
@@ -337,7 +336,7 @@
                     '<b>Risk status</b><br>' +
                     '<span style="color:#e74c3c">●</span> High &nbsp;' +
                     '<span style="color:#f39c12">●</span> Moderate &nbsp;' +
-                    '<span style="color:#2ecc71">●</span> Low<br>';
+                    '<span style="color:#2ecc71">●</span> Low';
                 return div;
             };
             legend.addTo(map);
