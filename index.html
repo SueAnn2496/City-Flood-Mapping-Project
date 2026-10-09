@@ -1013,14 +1013,14 @@
 
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📊 Reported Flood Cases by District (Jan–Jun 2025)</h3>
-            <div style="position: relative; height: 260px; width: 100%;">
+            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">Figure 4.1: Spatial Distribution of Urban Flood/Waterlogging Hotspots</h3>
+            <div style="position: relative; height: 280px; width: 100%;">
                 <canvas id="spatialDistributionChart"></canvas>
             </div>
         </div>
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📍 Reported Flood-Affected Areas by District (Jan–Jun 2025)</h3>
-            <div style="position: relative; height: 260px; width: 100%;">
+            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">Figure 4.2: Flood Risk Severity Level Breakdown by District</h3>
+            <div style="position: relative; height: 280px; width: 100%;">
                 <canvas id="districtRiskChart"></canvas>
             </div>
         </div>
@@ -1100,9 +1100,12 @@
 
 <!-- 4. HISTORICAL RECORDS, NEWS & LITERATURE ARCHIVE -->
 <section class="info-section" id="historical-records" style="background:#ffffff;">
-  <div class="section-kicker" style="display: flex; align-items: center; gap: 10px;">
+  <div class="section-kicker" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
       Historical Records, News & Academic Archive 
-      <span style="background:#ef4444; color:white; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:bold;">1 New Update</span>
+      <span style="background:#ef4444; color:white; padding:2px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold; display:inline-flex; align-items:center; gap:4px;">
+          <span>1</span>
+          <span>New Update</span>
+      </span>
   </div>
   <h2 class="section-title">Recorded Flood Incidents, News & References</h2>
   <p class="section-intro">
@@ -1110,7 +1113,6 @@
   </p>
 
   <div class="cards-4" id="newsGrid">
-      <!-- 1 (NEWEST 2026) -->
       <div class="info-card" style="border-top: 4px solid #ef4444;">
           <div style="font-size:0.75rem; font-weight:bold; color:#ef4444; margin-bottom:6px;">NEW UPDATE (2026)</div>
           <div class="card-icon">🚨</div>
@@ -1119,7 +1121,6 @@
           <p style="margin-top:12px;"><a href="https://www.malaymail.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
 
-      <!-- 2 (2026 July PJ & Klang Floods) -->
       <div class="info-card" style="border-top: 4px solid #3b82f6;">
           <div style="font-size:0.75rem; font-weight:bold; color:#3b82f6; margin-bottom:6px;">2026 REPORT</div>
           <div class="card-icon">🌧️</div>
@@ -1128,7 +1129,6 @@
           <p style="margin-top:12px;"><a href="https://www.malaymail.com/news/malaysia/2026/07/18/flash-floods-swamp-petaling-jaya-after-heavy-rain-video/228134" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
 
-      <!-- 3 (2026 May Klang Valley Floods) -->
       <div class="info-card">
           <div class="card-icon">🌊</div>
           <h3>Klang Valley Torrential Rains</h3>
@@ -1136,7 +1136,6 @@
           <p style="margin-top:12px;"><a href="https://www.therakyatpost.com/news/2026/05/07/social-media-flooded-by-videos-of-klangvalley-floods-again-and-again/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
 
-      <!-- 4 (2026 April Selangor RM990M RTB) -->
       <div class="info-card">
           <div class="card-icon">💰</div>
           <h3>Selangor RM990M Flood Plan</h3>
@@ -1144,7 +1143,6 @@
           <p style="margin-top:12px;"><a href="https://www.thestar.com.my/metro/metronews/2026/04/13/selangor-ramps-up-flood-defences" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
 
-      <!-- Hidden Initially (Extra News & Academic Papers) -->
       <div class="info-card extra-news" style="display:none;">
           <div class="card-icon">📚</div>
           <h3>Spatial-Temporal Assessment (GIS & AHP)</h3>
@@ -1482,12 +1480,12 @@ window.addEventListener('DOMContentLoaded', () => {
     new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['Klang', 'Shah Alam', 'Petaling Jaya'],
+            labels: ['Shah Alam', 'Petaling Jaya', 'Klang'],
             datasets: [{
-                label: 'Reported flood cases (Jan–Jun 2025)',
-                data: [39, 28, 26],
-                backgroundColor: ['#2563eb', '#9333ea', '#60a5fa'],
-                borderRadius: 6
+                label: 'Number of Identified Flood Hotspots (2022-2026)',
+                data: [17, 15, 11],
+                backgroundColor: ['#1f4e78', '#3178c5', '#5b9bd5'],
+                borderRadius: 4
             }]
         },
         options: {
@@ -1495,9 +1493,21 @@ window.addEventListener('DOMContentLoaded', () => {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { beginAtZero: true, max: 45, title: { display: true, text: 'Reported cases' } }
+                x: { 
+                    beginAtZero: true, 
+                    max: 20, 
+                    title: { display: true, text: 'Number of Identified Flood Hotspots (2022-2026)', font: { weight: 'bold' } },
+                    grid: { color: 'rgba(0,0,0,0.05)', borderDash: [4, 4] }
+                },
+                y: {
+                    title: { display: true, text: 'District / Region', font: { weight: 'bold' } },
+                    grid: { display: false }
+                }
             },
-            plugins: { legend: { display: false } }
+            plugins: { 
+                legend: { display: false },
+                tooltip: { enabled: true }
+            }
         }
     });
 
@@ -1505,17 +1515,23 @@ window.addEventListener('DOMContentLoaded', () => {
     new Chart(ctx2, {
         type: 'bar',
         data: {
-            labels: ['Klang', 'Shah Alam', 'Petaling Jaya'],
+            labels: ['Shah Alam', 'Petaling Jaya', 'Klang'],
             datasets: [
-                { label: 'Flood-affected areas (Jan–Jun 2025)', data: [30, 22, 18], backgroundColor: ['#0f766e', '#a855f7', '#14b8a6'], borderRadius: 4 }
+                { label: 'Class 5 (Very High)', data: [1, 1, 0], backgroundColor: '#b91c1c', borderRadius: 0 },
+                { label: 'Class 4 (High)', data: [2, 4, 1], backgroundColor: '#ea580c', borderRadius: 0 },
+                { label: 'Class 3 (Moderate)', data: [5, 5, 5], backgroundColor: '#fb923c', borderRadius: 0 },
+                { label: 'Class 2 (Low)', data: [9, 5, 5], backgroundColor: '#fed7aa', borderRadius: 0 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { beginAtZero: true, title: { display: true, text: 'Reported areas' } },
-                y: { beginAtZero: true }
+                x: { stacked: true, title: { display: true, text: 'District / Region', font: { weight: 'bold' } }, grid: { display: false } },
+                y: { stacked: true, beginAtZero: true, max: 18, title: { display: true, text: 'Number of Locations', font: { weight: 'bold' } }, grid: { color: 'rgba(0,0,0,0.05)', borderDash: [4, 4] } }
+            },
+            plugins: {
+                legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } }
             }
         }
     });
