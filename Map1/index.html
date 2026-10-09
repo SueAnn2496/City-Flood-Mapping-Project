@@ -139,25 +139,6 @@
                 if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
                     popup._contentNode.classList.add('media');
                     setTimeout(function() { popup.update(); }, 10);
-                } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
-                    var audio = document.createElement('audio');
-                    audio.controls = true;
-                    audio.src = src;
-                    imgTd.parentNode.replaceChild(audio, imgTd);
-                    popup._contentNode.classList.add('media');
-                    setTimeout(function() { popup.setContent(tempDiv.innerHTML); popup.update(); }, 10);
-                } else if (/\.(mp4|webm|ogg|mov)$/i.test(src)) {
-                    var video = document.createElement('video');
-                    video.controls = true;
-                    video.src = src;
-                    video.style.width = "400px";
-                    video.style.height = "300px";
-                    video.style.maxHeight = "60vh";
-                    video.style.maxWidth = "60vw";
-                    imgTd.parentNode.replaceChild(video, imgTd);
-                    popup._contentNode.classList.add('media');
-                    video.addEventListener('loadedmetadata', function() { popup.update(); });
-                    setTimeout(function() { popup.setContent(tempDiv.innerHTML); popup.update(); }, 10);
                 } else {
                     popup._contentNode.classList.remove('media');
                 }
@@ -298,7 +279,6 @@
         var liveWarningLayerGroup = L.layerGroup().addTo(map);
 
         function loadLiveRainfallData() {
-            // 模拟实时降雨数据：若 status 带有 Heavy (Alert)，会自动在对应坐标生成感叹号 (!)
             const liveStations = [
                 { name: "Shah Alam Section 2", rainfall: "12.5 mm", status: "Moderate", time: new Date().toLocaleTimeString(), lat: 3.0512, lng: 101.5098 },
                 { name: "Klang Bandar", rainfall: "42.8 mm", status: "Heavy (Alert)", time: new Date().toLocaleTimeString(), lat: 3.0375, lng: 101.4372 },
@@ -345,7 +325,6 @@
             document.getElementById('stationList').innerHTML = htmlContent;
         }
 
-        // 每隔 30 秒自动获取/刷新一次实时数据
         setInterval(loadLiveRainfallData, 30000);
         loadLiveRainfallData();
         </script>
