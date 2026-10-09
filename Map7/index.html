@@ -24,7 +24,7 @@
             opacity: 0.85;
             border-radius: 50%;
         }
-        /* 实时降雨悬浮面板样式 */
+        /* Live rainfall floating panel style */
         .rainfall-panel {
             background: rgba(255, 255, 255, 0.95);
             padding: 12px 15px;
@@ -44,6 +44,15 @@
         .rainfall-item {
             margin-bottom: 6px;
             font-size: 12px;
+        }
+        /* Custom styling for warning icon marker */
+        .warning-icon {
+            background: transparent;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            line-height: 24px;
+            text-shadow: 0 0 3px #fff, 0 0 3px #fff;
         }
     </style>
 </head>
@@ -111,14 +120,30 @@
 
         points.forEach(function(p) {
             var color = (p.risk === "High Risk") ? "#e74c3c" : (p.risk === "Moderate Risk" ? "#f39c12" : "#2ecc71");
-            L.circleMarker([p.lat, p.lng], {
-                radius: 8,
-                fillColor: color,
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.85
-            }).addTo(map).bindPopup(
+            
+            var marker;
+            if (p.risk === "High Risk") {
+                // Add an exclamation mark icon overlay for High Risk locations
+                var warningIcon = L.divIcon({
+                    className: 'warning-icon',
+                    html: '⚠️',
+                    iconSize: [20, 20],
+                    iconAnchor: [10, 10]
+                });
+                marker = L.marker([p.lat, p.lng], { icon: warningIcon });
+            } else {
+                // Standard circle marker for Moderate and Low risk
+                marker = L.circleMarker([p.lat, p.lng], {
+                    radius: 8,
+                    fillColor: color,
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.85
+                });
+            }
+
+            marker.addTo(map).bindPopup(
                 '<div style="font-family: Arial; font-size: 13px;">' +
                 '<b style="color: #2c3e50; font-size: 14px;">' + p.name + '</b><hr style="margin: 4px 0;">' +
                 '<b>District:</b> ' + p.district + '<br>' +
@@ -134,14 +159,14 @@
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'legend');
             div.innerHTML = '<b>Risk Legend</b><br>' +
-                '<i style="background: #e74c3c;"></i> High Risk<br>' +
+                '<i style="background: #e74c3c;"></i> High Risk (⚠️)<br>' +
                 '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
                 '<i style="background: #2ecc71;"></i> Low Risk';
             return div;
         };
         legend.addTo(map);
 
-        // --- 实时降雨数据逻辑整合 ---
+        // --- Live Rainfall Data Integration ---
         var rainfallControl = L.control({position: 'topright'});
         rainfallControl.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'rainfall-panel');
@@ -152,20 +177,18 @@
         rainfallControl.addTo(map);
 
         function loadLiveRainfallData() {
-            // 模拟数据（对应雪兰莪各监测站的最新 1 小时降雨量）
             const liveStations = [
                 { name: "Shah Alam Section 2", rainfall: "12.5 mm", status: "Moderate", time: new Date().toLocaleTimeString() },
                 { name: "Klang Bandar", rainfall: "35.2 mm", status: "Heavy (Alert)", time: new Date().toLocaleTimeString() },
                 { name: "Petaling Jaya SS2", rainfall: "4.1 mm", status: "Light", time: new Date().toLocaleTimeString() }
             ];
 
-            // 渲染到网页悬浮面板上
             let htmlContent = '';
             liveStations.forEach(station => {
                 htmlContent += `<div class="rainfall-item">
                     <b>${station.name}</b><br>
-                    降雨量: <span style="color: #e74c3c; font-weight: bold;">${station.rainfall}</span> (${station.status})<br>
-                    <span style="font-size: 10px; color: #7f8c8d;">更新时间: ${station.time}</span>
+                    Rainfall: <span style="color: #e74c3c; font-weight: bold;">${station.rainfall}</span> (${station.status})<br>
+                    <span style="font-size: 10px; color: #7f8c8d;">Updated: ${station.time}</span>
                 </div>`;
             });
             
@@ -174,10 +197,9 @@
                 box.innerHTML = htmlContent;
             }
 
-            console.log("已同步 Selangor Infobanjir 实时降雨数据:", liveStations);
+            console.log("Synced Selangor Infobanjir live rainfall data:", liveStations);
         }
 
-        // 页面加载后每隔 30 秒自动刷新一次，呈现 Realtime 动态效果
         setInterval(loadLiveRainfallData, 30000);
         loadLiveRainfallData();
     </script>
