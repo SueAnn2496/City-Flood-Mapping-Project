@@ -839,6 +839,12 @@
         <a href="#map-interface" class="scroll-btn primary-btn" onclick="scrollToMapAndReset()">
             Explore Maps <span>↓</span>
         </a>
+        <a href="#historical-records" class="scroll-btn" style="border-color:#93c5fd;color:#bfdbfe;">
+            Historical Records <span>→</span>
+        </a>
+        <a href="#risk-analysis" class="scroll-btn" style="border-color:#fca5a5;color:#fecaca;">
+            Risk Analysis <span>→</span>
+        </a>
         <a href="#overview" class="scroll-btn" style="border-color:white;color:white;">
             Project Overview <span>→</span>
         </a>
@@ -917,6 +923,12 @@
                 </div>
             </div>
 
+            <a href="#historical-records" style="display:block; text-align:center; text-decoration:none; color:#bfdbfe; border:1px solid #3b82f6; border-radius:8px; padding:10px; margin-bottom:10px; font-size:.85rem; font-weight:bold;">
+                📚 Historical Records
+            </a>
+            <a href="#risk-analysis" style="display:block; text-align:center; text-decoration:none; color:#fecaca; border:1px solid #ef4444; border-radius:8px; padding:10px; margin-bottom:10px; font-size:.85rem; font-weight:bold;">
+                📊 Risk Analysis
+            </a>
             <a href="#emergency-guide" style="display:block; text-align:center; text-decoration:none; color:#fbbf24; border:1px solid #d97706; border-radius:8px; padding:10px; margin-bottom:12px; font-size:.85rem; font-weight:bold;">
                 🛡️ Emergency Guide
             </a>
@@ -989,13 +1001,13 @@
     <!-- CHARTS SECTION -->
     <div class="charts-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📊 Spatial Distribution of Flood Hotspots (2022-2026)</h3>
+            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📊 Reported Flood Cases by District (Jan–Jun 2025)</h3>
             <div style="position: relative; height: 260px; width: 100%;">
                 <canvas id="spatialDistributionChart"></canvas>
             </div>
         </div>
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📈 Flood Risk Severity Level Breakdown by District</h3>
+            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📍 Reported Flood-Affected Areas by District (Jan–Jun 2025)</h3>
             <div style="position: relative; height: 260px; width: 100%;">
                 <canvas id="districtRiskChart"></canvas>
             </div>
@@ -1062,6 +1074,151 @@
         </ul>
     </div>
 </section>
+
+
+<!-- HISTORICAL RECORDS -->
+<section class="info-section" id="historical-records" style="background:#ffffff;">
+  <div class="section-kicker">Historical Records</div>
+  <h2 class="section-title">Recorded Flood & Waterlogging Incidents</h2>
+  <p class="section-intro">
+    This section lists incidents reported by public agencies or official statements for the study areas.
+    Records are based on published reports; exact coordinates and street-level boundaries should be verified
+    before placing points on the GIS map. A reported flood incident is not the same as a verified urban-waterlogging measurement.
+  </p>
+
+  <div class="cards-4">
+    <div class="info-card">
+      <div class="card-icon">🏙️</div>
+      <h3>Shah Alam</h3>
+      <p><strong>11 April 2025</strong><br>Reported affected locations included Taman Sri Muda, Persiaran Budiman, Persiaran Jubli Perak, parts of Section 23, Jalan Mantap Section 25/129 and a Shell station in Section 19.</p>
+      <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">Source: NADMA report, 12 Apr 2025 ↗</a></p>
+    </div>
+    <div class="info-card">
+      <div class="card-icon">🌊</div>
+      <h3>Klang</h3>
+      <p><strong>11 April 2025</strong><br>Reported flash-flood locations included Bukit Payung, Taman Daya (Meru), Pekan Meru, Taman Mutiara and Taman Sri Muda. The report stated that 137 people were affected in Meru, Klang alone.</p>
+      <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">Source: NADMA report, 12 Apr 2025 ↗</a></p>
+    </div>
+    <div class="info-card">
+      <div class="card-icon">🏢</div>
+      <h3>Petaling Jaya</h3>
+      <p><strong>18 July 2026</strong><br>Flash flooding was reported at Medan Selera 223, Section 51A, with other reports around Amway Malaysia’s headquarters and nearby roads after heavy rain. Reported water depth at the food court was almost 2 metres when responders arrived.</p>
+      <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/6781-heavy-rain-triggers-flash-floods-across-parts-of-klang-valley" target="_blank" rel="noopener">Source: NADMA report, 20 Jul 2026 ↗</a></p>
+    </div>
+    <div class="info-card">
+      <div class="card-icon">📄</div>
+      <h3>Petaling Jaya</h3>
+      <p><strong>17 Nov & 30 Dec 2025</strong><br>MBPJ reported flash-flood incidents at Jalan Sri Manja (near Taman Buana Perdana / Jalan PJS 3/25) and the NPE Exit 1005 U-turn near Taman Dato’ Harun / Jalan Maju Jaya.</p>
+      <p style="margin-top:12px;"><a href="https://www.mbpj.gov.my/sites/default/files/kenyataan_akhbar_feb_2026.pdf" target="_blank" rel="noopener">Source: MBPJ media statement, 12 Feb 2026 ↗</a></p>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;background:white;border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 10px 30px rgba(15,23,42,0.04);">
+    <table style="width:100%;border-collapse:collapse;min-width:760px;font-size:.92rem;">
+      <thead style="background:#0f172a;color:white;">
+        <tr>
+          <th style="padding:14px;text-align:left;">Record ID</th>
+          <th style="padding:14px;text-align:left;">Incident date</th>
+          <th style="padding:14px;text-align:left;">Study area</th>
+          <th style="padding:14px;text-align:left;">Reported location / summary</th>
+          <th style="padding:14px;text-align:left;">Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid #e2e8f0;">
+          <td style="padding:14px;">WR001</td><td style="padding:14px;">11 Apr 2025</td><td style="padding:14px;">Shah Alam</td>
+          <td style="padding:14px;">Taman Sri Muda and several nearby roads/sections reported flooded.</td>
+          <td style="padding:14px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">NADMA</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0;">
+          <td style="padding:14px;">WR002</td><td style="padding:14px;">11 Apr 2025</td><td style="padding:14px;">Klang</td>
+          <td style="padding:14px;">Bukit Payung, Taman Daya (Meru), Pekan Meru, Taman Mutiara and Taman Sri Muda listed in the report.</td>
+          <td style="padding:14px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">NADMA</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0;">
+          <td style="padding:14px;">WR003</td><td style="padding:14px;">17 Nov 2025</td><td style="padding:14px;">Petaling Jaya</td>
+          <td style="padding:14px;">Jalan Sri Manja near Taman Buana Perdana / Jalan PJS 3/25 (as cited in MBPJ statement).</td>
+          <td style="padding:14px;"><a href="https://www.mbpj.gov.my/sites/default/files/kenyataan_akhbar_feb_2026.pdf" target="_blank" rel="noopener">MBPJ</a></td>
+        </tr>
+        <tr style="border-bottom:1px solid #e2e8f0;">
+          <td style="padding:14px;">WR004</td><td style="padding:14px;">30 Dec 2025</td><td style="padding:14px;">Petaling Jaya</td>
+          <td style="padding:14px;">NPE Exit 1005 U-turn near Taman Dato’ Harun / Jalan Maju Jaya (as cited in MBPJ statement).</td>
+          <td style="padding:14px;"><a href="https://www.mbpj.gov.my/sites/default/files/kenyataan_akhbar_feb_2026.pdf" target="_blank" rel="noopener">MBPJ</a></td>
+        </tr>
+        <tr>
+          <td style="padding:14px;">WR005</td><td style="padding:14px;">18 Jul 2026</td><td style="padding:14px;">Petaling Jaya</td>
+          <td style="padding:14px;">Medan Selera 223, Section 51A; reports also mentioned nearby roads and the Amway Malaysia headquarters area.</td>
+          <td style="padding:14px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/6781-heavy-rain-triggers-flash-floods-across-parts-of-klang-valley" target="_blank" rel="noopener">NADMA</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:18px;color:#64748b;font-size:.9rem;line-height:1.7;">
+    Data note: incident dates and place names above are transcribed from the cited reports. Coordinates, exact flood polygons, water depth for every event and severity categories are not supplied for every record, so they should remain blank/“Not reported” until independently verified.
+  </p>
+</section>
+
+<!-- RISK ANALYSIS -->
+<section class="info-section" id="risk-analysis" style="background:#f1f5f9;">
+  <div class="section-kicker">Risk Analysis</div>
+  <h2 class="section-title">Understanding Potential Waterlogging Susceptibility</h2>
+  <p class="section-intro">
+    The current WebGIS contains boundary, slope and land-cover map views. These layers help describe terrain and land-surface characteristics,
+    but the website should only display a final Low/Moderate/High susceptibility class after the GIS analysis and classification have been completed and documented.
+  </p>
+
+  <div class="cards">
+    <div class="info-card">
+      <div class="card-icon">📐</div>
+      <h3>Slope</h3>
+      <p>Gentle terrain may allow water to collect in some settings, while steeper terrain can increase runoff. Interpret slope together with local drainage and elevation, not on its own.</p>
+    </div>
+    <div class="info-card">
+      <div class="card-icon">🏙️</div>
+      <h3>Land Cover</h3>
+      <p>Built-up and paved surfaces can increase surface runoff. Vegetation and other land-cover classes provide context for how water may infiltrate or flow.</p>
+    </div>
+    <div class="info-card">
+      <div class="card-icon">📍</div>
+      <h3>Historical Incidents</h3>
+      <p>Published incident locations can be compared with the susceptibility map after locations are geocoded and their positional accuracy is checked.</p>
+    </div>
+  </div>
+
+  <div class="method-box">
+    <h3>Current data status by study area</h3>
+    <p style="color:#64748b;line-height:1.7;">The table below summarises the source-supported information currently added to this prototype. It is not a measured risk ranking of the three cities.</p>
+    <div style="overflow-x:auto;margin-top:16px;">
+      <table style="width:100%;border-collapse:collapse;min-width:620px;font-size:.92rem;">
+        <thead style="background:#e2e8f0;">
+          <tr><th style="padding:12px;text-align:left;">Study area</th><th style="padding:12px;text-align:left;">Historical evidence added</th><th style="padding:12px;text-align:left;">Risk classification status</th></tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:12px;">Shah Alam</td><td style="padding:12px;">11 Apr 2025 report includes Taman Sri Muda and nearby locations.</td><td style="padding:12px;">Not yet validated from a complete weighted GIS analysis.</td></tr>
+          <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:12px;">Petaling Jaya</td><td style="padding:12px;">MBPJ reports for Nov/Dec 2025; NADMA report for 18 Jul 2026.</td><td style="padding:12px;">Not yet validated from a complete weighted GIS analysis.</td></tr>
+          <tr><td style="padding:12px;">Klang</td><td style="padding:12px;">11 Apr 2025 report lists multiple affected locations in Klang.</td><td style="padding:12px;">Not yet validated from a complete weighted GIS analysis.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="analysis-panel">
+    <h3>Recommended GIS workflow</h3>
+    <p class="analysis-text">Use the following workflow before publishing a risk score or class as a result.</p>
+    <div class="analysis-grid">
+      <div class="analysis-item"><strong>1. Prepare layers</strong><span>Check coordinate systems, study-area boundaries, raster resolution and data dates.</span></div>
+      <div class="analysis-item"><strong>2. Reclassify factors</strong><span>Set and document the susceptibility ranking for each factor using suitable references.</span></div>
+      <div class="analysis-item"><strong>3. Weighted overlay</strong><span>Use justified weights and document the formula; do not use example weights as measured facts.</span></div>
+      <div class="analysis-item"><strong>4. Validate</strong><span>Compare the output against geocoded historical records where accurate locations are available.</span></div>
+      <div class="analysis-item"><strong>5. Publish limitations</strong><span>Label the map as susceptibility, not live flood status or guaranteed prediction.</span></div>
+      <div class="analysis-item"><strong>6. Cite sources</strong><span>Show the dataset/report source and date beside each map or record.</span></div>
+    </div>
+  </div>
+  <p style="margin-top:18px;color:#475569;font-size:.9rem;line-height:1.7;">
+    Important: Selangor district statistics for “Petaling” cover a wider administrative district and should not be presented as Petaling Jaya-only counts. Historical news reports also do not provide a complete inventory of every waterlogging event.
+  </p>
+</section>
+
 
 <!-- 5. EMERGENCY & PREPAREDNESS GUIDE -->
 <section class="info-section" id="emergency-guide" style="background:#f1f5f9;">
@@ -1409,11 +1566,11 @@ window.addEventListener('DOMContentLoaded', () => {
     new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['Shah Alam (39.5%)', 'Petaling Jaya (34.9%)', 'Klang (25.6%)'],
+            labels: ['Klang district', 'Petaling district'],
             datasets: [{
-                label: 'Identified Flood Hotspots (2022-2026)',
-                data: [17, 15, 11],
-                backgroundColor: ['#1e3a8a', '#2563eb', '#60a5fa'],
+                label: 'Reported flood cases (Jan–Jun 2025)',
+                data: [39, 26],
+                backgroundColor: ['#2563eb', '#60a5fa'],
                 borderRadius: 6
             }]
         },
@@ -1422,7 +1579,7 @@ window.addEventListener('DOMContentLoaded', () => {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { beginAtZero: true, max: 20 }
+                x: { beginAtZero: true, max: 45, title: { display: true, text: 'Reported cases' } }
             },
             plugins: {
                 legend: { display: false }
@@ -1434,20 +1591,17 @@ window.addEventListener('DOMContentLoaded', () => {
     new Chart(ctx2, {
         type: 'bar',
         data: {
-            labels: ['Shah Alam', 'Petaling Jaya', 'Klang'],
+            labels: ['Klang district', 'Petaling district'],
             datasets: [
-                { label: 'Class 5 (Very High)', data: [1, 1, 0], backgroundColor: '#991b1b', borderRadius: 4 },
-                { label: 'Class 4 (High)', data: [2, 4, 1], backgroundColor: '#ea580c', borderRadius: 4 },
-                { label: 'Class 3 (Moderate)', data: [5, 5, 5], backgroundColor: '#f59e0b', borderRadius: 4 },
-                { label: 'Class 2 (Low)', data: [9, 5, 5], backgroundColor: '#fde68a', borderRadius: 4 }
+                { label: 'Flood-affected areas (Jan–Jun 2025)', data: [30, 18], backgroundColor: ['#0f766e', '#14b8a6'], borderRadius: 4 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { stacked: true },
-                y: { stacked: true, beginAtZero: true }
+                x: { beginAtZero: true, title: { display: true, text: 'Reported areas' } },
+                y: { beginAtZero: true }
             }
         }
     });
