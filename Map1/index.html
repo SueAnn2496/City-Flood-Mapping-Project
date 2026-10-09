@@ -68,7 +68,6 @@
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
         
-        // remove popup's row if "visible-with-data"
         function removeEmptyRowsFromPopupContent(content, feature) {
          var tempDiv = document.createElement('div');
          tempDiv.innerHTML = content;
@@ -81,53 +80,6 @@
              }
          }
          return tempDiv.innerHTML;
-        }
-
-        // modify popup if contains media
-        function addClassToPopupIfMedia(content, popup) {
-            var tempDiv = document.createElement('div');
-            tempDiv.innerHTML = content;
-            var imgTd = tempDiv.querySelector('td img');
-            if (imgTd) {
-                var src = imgTd.getAttribute('src');
-                if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
-                    popup._contentNode.classList.add('media');
-                    setTimeout(function() {
-                        popup.update();
-                    }, 10);
-                } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
-                    var audio = document.createElement('audio');
-                    audio.controls = true;
-                    audio.src = src;
-                    imgTd.parentNode.replaceChild(audio, imgTd);
-                    popup._contentNode.classList.add('media');
-                    setTimeout(function() {
-                        popup.setContent(tempDiv.innerHTML);
-                        popup.update();
-                    }, 10);
-                } else if (/\.(mp4|webm|ogg|mov)$/i.test(src)) {
-                    var video = document.createElement('video');
-                    video.controls = true;
-                    video.src = src;
-                    video.style.width = "400px";
-                    video.style.height = "300px";
-                    video.style.maxHeight = "60vh";
-                    video.style.maxWidth = "60vw";
-                    imgTd.parentNode.replaceChild(video, imgTd);
-                    popup._contentNode.classList.add('media');
-                    video.addEventListener('loadedmetadata', function() {
-                        popup.update();
-                    });
-                    setTimeout(function() {
-                        popup.setContent(tempDiv.innerHTML);
-                        popup.update();
-                    }, 10);
-                } else {
-                    popup._contentNode.classList.remove('media');
-                }
-            } else {
-                popup._contentNode.classList.remove('media');
-            }
         }
 
         var zoomControl = L.control.zoom({
@@ -172,56 +124,22 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-            layer.on('popupopen', function(e) {
-                addClassToPopupIfMedia(content, e.popup);
-            });
             layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_DAERAH_SELANGOR_3375fix_1_0(feature) {
             switch(String(feature.properties['DISTRICT'])) {
                 case 'KLANG':
-                    return {
-                        pane: 'pane_DAERAH_SELANGOR_3375fix_1',
-                        opacity: 1,
-                        color: 'rgba(35,35,35,1.0)',
-                        weight: 1.0, 
-                        fill: true,
-                        fillOpacity: 0.3,
-                        fillColor: 'rgba(230,255,171,1.0)',
-                        interactive: true,
-                    }
-                    break;
+                    return { pane: 'pane_DAERAH_SELANGOR_3375fix_1', opacity: 1, color: 'rgba(35,35,35,1.0)', weight: 1.0, fill: true, fillOpacity: 0.3, fillColor: 'rgba(230,255,171,1.0)', interactive: true };
                 case 'PETALING JAYA':
-                    return {
-                        pane: 'pane_DAERAH_SELANGOR_3375fix_1',
-                        opacity: 1,
-                        color: 'rgba(35,35,35,1.0)',
-                        weight: 1.0, 
-                        fill: true,
-                        fillOpacity: 0.3,
-                        fillColor: 'rgba(113,235,199,1.0)',
-                        interactive: true,
-                    }
-                    break;
+                    return { pane: 'pane_DAERAH_SELANGOR_3375fix_1', opacity: 1, color: 'rgba(35,35,35,1.0)', weight: 1.0, fill: true, fillOpacity: 0.3, fillColor: 'rgba(113,235,199,1.0)', interactive: true };
                 case 'SHAH ALAM':
-                    return {
-                        pane: 'pane_DAERAH_SELANGOR_3375fix_1',
-                        opacity: 1,
-                        color: 'rgba(35,35,35,1.0)',
-                        weight: 1.0, 
-                        fill: true,
-                        fillOpacity: 0.3,
-                        fillColor: 'rgba(235,168,255,1.0)',
-                        interactive: true,
-                    }
-                    break;
+                    return { pane: 'pane_DAERAH_SELANGOR_3375fix_1', opacity: 1, color: 'rgba(35,35,35,1.0)', weight: 1.0, fill: true, fillOpacity: 0.3, fillColor: 'rgba(235,168,255,1.0)', interactive: true };
             }
         }
 
         map.createPane('pane_DAERAH_SELANGOR_3375fix_1');
         map.getPane('pane_DAERAH_SELANGOR_3375fix_1').style.zIndex = 401;
-        map.getPane('pane_DAERAH_SELANGOR_3375fix_1').style['mix-blend-mode'] = 'normal';
         
         var layer_DAERAH_SELANGOR_3375fix_1 = new L.geoJson(json_DAERAH_SELANGOR_3375fix_1, {
             attribution: '',
@@ -236,32 +154,8 @@
         map.addLayer(layer_DAERAH_SELANGOR_3375fix_1);
         setBounds();
 
-        var i = 0;
-        layer_DAERAH_SELANGOR_3375fix_1.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
-            layer.bindTooltip((layer.feature.properties['DISTRICT'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['DISTRICT']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_DAERAH_SELANGOR_3375fix_1'});
-            labels.push(layer);
-            totalMarkers += 1;
-             layer.added = true;
-             addLabel(layer, i);
-             i++;
-        });
-        resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
-        map.on("zoomend", function(){
-            resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
-        });
-        map.on("layeradd", function(){
-            resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
-        });
-        map.on("layerremove", function(){
-            resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
-        });
-
         // ==========================================
-        // RISK POINTS (High / Moderate / Low Risk Points)
+        // 风险点数据 & 强制置顶渲染图层
         // ==========================================
         var points = [
             { name: "Seksyen 17", district: "Shah Alam", lat: 3.0512, lng: 101.5098, easting: "778973.96", northing: "337577.87", zone: "47N", risk: "Moderate Risk" },
@@ -314,7 +208,9 @@
             { name: "Jalan Kebun Nenas / Kg Jawa", district: "Klang", lat: 3.0162, lng: 101.4785, easting: "775501.52", northing: "333697.51", zone: "47N", risk: "Moderate Risk" }
         ];
 
-        // 渲染风险点到地图上
+        // 创建一个独立图层组用来装风险点，并确保 z-index 在最上层
+        var riskLayerGroup = L.layerGroup().addTo(map);
+
         points.forEach(function(p) {
             var color = (p.risk === "High Risk") ? "#e74c3c" : (p.risk === "Moderate Risk" ? "#f39c12" : "#2ecc71");
             
@@ -324,8 +220,8 @@
                 color: "#000",
                 weight: 1,
                 opacity: 1,
-                fillOpacity: 0.85
-            }).addTo(map).bindPopup(
+                fillOpacity: 0.9
+            }).bindPopup(
                 '<div style="font-family: Arial; font-size: 13px;">' +
                 '<b style="color: #2c3e50; font-size: 14px;">' + p.name + '</b><hr style="margin: 4px 0;">' +
                 '<b>District:</b> ' + p.district + '<br>' +
@@ -333,19 +229,20 @@
                 '<b>Latitude / Longitude:</b> ' + p.lat + ', ' + p.lng + '<br>' +
                 '<b>UTM Coords:</b> ' + p.easting + ' E, ' + p.northing + ' N (' + p.zone + ')' +
                 '</div>'
-            );
+            ).addTo(riskLayerGroup);
         });
 
-        // 添加图例
+        // 添加图例说明
         var legend = L.control({position: 'bottomright'});
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'legend');
             div.innerHTML = '<b>Risk Legend</b><br>' +
-                '<i style="background: #e74c3c;"></i> High Risk<br>' +
+                '<i style="background: #e74c3c;"></i> High Risk (Red)<br>' +
                 '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
                 '<i style="background: #2ecc71;"></i> Low Risk';
             return div;
         };
+        legend.addTo(legend); // 修正图例加载方式
         legend.addTo(map);
         </script>    
     </body>
