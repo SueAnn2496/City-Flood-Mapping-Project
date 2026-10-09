@@ -261,7 +261,6 @@
             opacity: 0.2;
         }
 
-        /* 侧边栏收起箭头按钮 */
         .sidebar-collapse-arrow {
             position: absolute;
             top: 20px;
@@ -291,7 +290,7 @@
             border-bottom: 2px solid #1e293b;
             padding-bottom: 8px;
             font-weight: 700;
-            padding-right: 30px; /* 留出箭头空间 */
+            padding-right: 30px;
         }
 
         .map-help {
@@ -883,7 +882,6 @@
 
     <div class="workspace">
         <div class="sidebar" id="sidebar">
-            <!-- 侧边栏收起箭头 -->
             <button class="sidebar-collapse-arrow" onclick="toggleDashboard()" title="Collapse Dashboard">❮</button>
 
             <h3>🔍 Area Risk Search</h3>
@@ -967,7 +965,8 @@
             <button class="map-center-ctrl" onclick="resetMapView()" title="Center Map">🎯</button>
         </div>
 
-        <div class="floating-legend" id="floatingLegend">
+        <!-- 浮动图例（Map 1 时默认隐藏） -->
+        <div class="floating-legend" id="floatingLegend" style="display: none;">
             <div class="legend-header-row">
                 <h4 id="floatingLegendTitle">Legend</h4>
                 <button class="legend-toggle-btn" onclick="toggleLegendBody()" title="Minimize/Expand">−</button>
@@ -1100,7 +1099,7 @@
   </div>
 </section>
 
-<!-- 4. HISTORICAL RECORDS & NEWS ARCHIVE (New to Old, Clean Layout) -->
+<!-- 4. HISTORICAL RECORDS & NEWS ARCHIVE -->
 <section class="info-section" id="historical-records" style="background:#ffffff;">
   <div class="section-kicker" style="display: flex; align-items: center; gap: 10px;">
       Historical Records & News Database 
@@ -1112,7 +1111,6 @@
   </p>
 
   <div class="cards-4" id="newsGrid">
-      <!-- 1. 最新 (Newest) -->
       <div class="info-card" style="border-top: 4px solid #ef4444;">
           <div style="font-size:0.75rem; font-weight:bold; color:#ef4444; margin-bottom:6px;">NEW UPDATE (2026)</div>
           <div class="card-icon">🚨</div>
@@ -1120,21 +1118,18 @@
           <p><strong>20 July 2026</strong><br>Selangor state government steps up drainage improvement following recent flash floods in Petaling Jaya and Klang.</p>
           <p style="margin-top:12px;"><a href="https://www.malaymail.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
-      <!-- 2 -->
       <div class="info-card">
           <div class="card-icon">🌊</div>
           <h3>Klang Valley Flash Floods</h3>
           <p><strong>24 November 2025</strong><br>Morning downpour triggers widespread flash floods across multiple Klang Valley areas.</p>
           <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/11/24/klang-valley-areas-face-flash-floods-after-morning-downpour/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
-      <!-- 3 -->
       <div class="info-card">
           <div class="card-icon">📰</div>
           <h3>Flash Floods in Klang & Shah Alam</h3>
           <p><strong>11 April 2025</strong><br>Temporary relief shelters set up in Klang and Shah Alam following heavy downpours.</p>
           <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/04/11/flash-floods-temporary-relief-shelters-set-up-in-klang-and-shah-alam" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
-      <!-- 4 -->
       <div class="info-card">
           <div class="card-icon">📄</div>
           <h3>1,000 Displaced in Districts</h3>
@@ -1142,7 +1137,7 @@
           <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/3849-1-000-displaced-by-floods-in-petaling-klang-districts" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
 
-      <!-- Hidden Initially (Extra News) -->
+      <!-- Hidden Initially -->
       <div class="info-card extra-news" style="display:none;">
           <div class="card-icon">🌧️</div>
           <h3>Heavy Rain Triggers Floods</h3>
@@ -1362,7 +1357,7 @@ function switchLayer(mapFolder, btn) {
     mapFrame.style.opacity = "0";
     setTimeout(() => {
         if (mapFolder === "Map1/") {
-            floatingLegend.style.display = "none";
+            floatingLegend.style.display = "none"; // Map 1 隐藏图例
             mapFrame.src = "Map1/index.html";
         } else if (mapFolder === "Map2/") {
             floatingLegendTitle.innerText = "Slope Legend";
@@ -1390,7 +1385,7 @@ function switchDistrict(mapFolder, btn) {
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.getElementById("exportCsvContainer").style.display = "none";
     btn.classList.add("active");
-    document.getElementById("floatingLegend").style.display = "none";
+    document.getElementById("floatingLegend").style.display = "none"; // 行政区默认也隐藏图例
     
     mapFrame.style.opacity = "0";
     setTimeout(() => {
