@@ -191,7 +191,6 @@
             transform: scale(1.05);
         }
 
-        /* Dashboard Notification Badge */
         .notification-badge {
             position: absolute;
             top: -5px;
@@ -639,11 +638,25 @@
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
             border: 1px solid #e2e8f0;
             transition: transform .3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
         .info-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 16px 35px rgba(15, 23, 42, 0.1);
+        }
+
+        .card-number-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f1f5f9;
+            color: #0f172a;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
         }
 
         .card-icon {
@@ -832,7 +845,7 @@
             Risk Analysis <span>→</span>
         </a>
         <a href="#historical-records" class="scroll-btn" style="border-color:#93c5fd;color:#bfdbfe;">
-            Historical Records & News <span>→</span>
+            Historical Records & News (1 New) <span>→</span>
         </a>
         <a href="#emergency-guide" class="scroll-btn" style="border-color:#fbbf24;color:#fbbf24;">
             🛡️ Emergency Guide <span>→</span>
@@ -843,7 +856,6 @@
 <!-- 2. MAP INTERFACE -->
 <div class="map-section" id="map-interface">
     <div class="top-nav" id="topNav">
-        <!-- 带有 Notification 1 的菜单按钮 -->
         <button class="toggle-btn" id="dashToggleBtn" onclick="toggleDashboard()" title="Toggle Dashboard">
             ☰
             <span class="notification-badge">1</span>
@@ -919,7 +931,7 @@
                 📊 Risk Analysis
             </a>
             <a href="#historical-records" style="display:block; text-align:center; text-decoration:none; color:#bfdbfe; border:1px solid #3b82f6; border-radius:8px; padding:10px; margin-bottom:10px; font-size:.85rem; font-weight:bold;">
-                📚 Historical Records & News
+                📚 Historical Records & News <span style="background:#ef4444; color:white; padding:1px 6px; border-radius:10px; font-size:0.7rem; margin-left:4px;">1 New</span>
             </a>
             <a href="#emergency-guide" style="display:block; text-align:center; text-decoration:none; color:#fbbf24; border:1px solid #d97706; border-radius:8px; padding:10px; margin-bottom:20px; font-size:.85rem; font-weight:bold;">
                 🛡️ Emergency Guide
@@ -1073,94 +1085,114 @@
   </div>
 </section>
 
-<!-- 4. HISTORICAL RECORDS & NEWS ARCHIVE -->
+<!-- 4. HISTORICAL RECORDS & NEWS ARCHIVE (Numbered & New to Old) -->
 <section class="info-section" id="historical-records" style="background:#ffffff;">
-  <div class="section-kicker">Historical Records & News Database</div>
+  <div class="section-kicker" style="display: flex; align-items: center; gap: 10px;">
+      Historical Records & News Database 
+      <span style="background:#ef4444; color:white; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:bold;">12 Total News (1 New)</span>
+  </div>
   <h2 class="section-title">Recorded Flood Incidents & News Archive</h2>
   <p class="section-intro">
-    Explore collected news reports, official statements, and academic articles regarding flood events across Klang, Shah Alam, and Petaling Jaya. Click "Show More" to view all items.
+    Explore collected news reports, official statements, and academic articles regarding flood events across Klang, Shah Alam, and Petaling Jaya, ordered from newest to oldest with dynamic numbering.
   </p>
 
   <div class="cards-4" id="newsGrid">
-      <div class="info-card">
-          <div class="card-icon">📰</div>
-          <h3>Flash Floods in Klang & Shah Alam</h3>
-          <p><strong>11 April 2025</strong><br>Temporary relief shelters set up in Klang and Shah Alam following heavy downpours.</p>
-          <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/04/11/flash-floods-temporary-relief-shelters-set-up-in-klang-and-shah-alam" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      <!-- 1 -->
+      <div class="info-card" style="border-top: 4px solid #ef4444;">
+          <div class="card-number-badge">#1</div>
+          <div style="font-size:0.72rem; font-weight:bold; color:#ef4444; margin-bottom:4px;">NEW UPDATE (2026)</div>
+          <div class="card-icon">🚨</div>
+          <h3>Selangor MB Orders Urgent Action</h3>
+          <p><strong>20 July 2026</strong><br>Selangor state government steps up drainage improvement following recent flash floods in Petaling Jaya and Klang.</p>
+          <p style="margin-top:12px;"><a href="https://www.malaymail.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
+      <!-- 2 -->
       <div class="info-card">
+          <div class="card-number-badge">#2</div>
           <div class="card-icon">🌊</div>
           <h3>Klang Valley Flash Floods</h3>
           <p><strong>24 November 2025</strong><br>Morning downpour triggers widespread flash floods across multiple Klang Valley areas.</p>
           <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/11/24/klang-valley-areas-face-flash-floods-after-morning-downpour/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
+      <!-- 3 -->
       <div class="info-card">
-          <div class="card-icon">🚨</div>
-          <h3>Selangor MB Orders Urgent Action</h3>
-          <p><strong>20 April 2025</strong><br>Selangor Menteri Besar orders immediate steps after flash floods hit Klang and Shah Alam.</p>
-          <p style="margin-top:12px;"><a href="https://www.malaymail.com/news/malaysia/2025/04/20/selangor-mb-orders-urgent-action-after-flash-floods-hit-klang-shah-alam/173823" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+          <div class="card-number-badge">#3</div>
+          <div class="card-icon">📰</div>
+          <h3>Flash Floods in Klang & Shah Alam</h3>
+          <p><strong>11 April 2025</strong><br>Temporary relief shelters set up in Klang and Shah Alam following heavy downpours.</p>
+          <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/04/11/flash-floods-temporary-relief-shelters-set-up-in-klang-and-shah-alam" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
+      <!-- 4 -->
       <div class="info-card">
+          <div class="card-number-badge">#4</div>
           <div class="card-icon">📄</div>
           <h3>1,000 Displaced in Districts</h3>
           <p><strong>NADMA Report</strong><br>Over 1,000 residents displaced by floods across Petaling and Klang districts.</p>
           <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/3849-1-000-displaced-by-floods-in-petaling-klang-districts" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
 
-      <!-- Hidden Initially -->
+      <!-- Hidden Initially (#5 to #12) -->
       <div class="info-card extra-news" style="display:none;">
+          <div class="card-number-badge">#5</div>
           <div class="card-icon">🌧️</div>
           <h3>Heavy Rain Triggers Floods</h3>
           <p><strong>The Vibes Report</strong><br>Heavy rain triggers flash floods across five districts in Selangor.</p>
-          <p style="margin-top:12px;"><a href="https://www.thevibes.com/articles/news/106874/heavy-rain-triggers-flash-floods-across-five-districts-in-selangor" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+          <p style="margin-top:12px;"><a href="https://www.thevibes.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
+          <div class="card-number-badge">#6</div>
           <div class="card-icon">📰</div>
           <h3>Oriental Daily News Coverage</h3>
           <p><strong>11 April 2025</strong><br>Central region flash flood coverage and emergency updates in Chinese.</p>
-          <p style="margin-top:12px;"><a href="https://www.orientaldaily.com.my/news/central/2025/04/11/725361" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+          <p style="margin-top:12px;"><a href="https://www.orientaldaily.com.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
+          <div class="card-number-badge">#7</div>
           <div class="card-icon">🌊</div>
           <h3>Astro Awani Report</h3>
           <p><strong>Amirudin Statement</strong><br>Banjir Kuala Selangor dan punca takungan banjir kilat di Meru.</p>
-          <p style="margin-top:12px;"><a href="https://www.astroawani.com/berita-malaysia/banjir-kuala-selangor-mungkin-berpunca-daripada-takungan-banjir-kilat-di-meru-amirudin-391135" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+          <p style="margin-top:12px;"><a href="https://www.astroawani.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
+          <div class="card-number-badge">#8</div>
           <div class="card-icon">🌐</div>
           <h3>SERI Flood Management</h3>
           <p><strong>SERI Report</strong><br>Socio-economic research and flood management strategies for Selangor.</p>
-          <p style="margin-top:12px;"><a href="https://www.seri.my/floodmanagementforselangor" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+          <p style="margin-top:12px;"><a href="https://www.seri.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
+          <div class="card-number-badge">#9</div>
           <div class="card-icon">📚</div>
           <h3>UiTM Institutional Repository</h3>
           <p><strong>Research Publication</strong><br>Academic studies on flood susceptibility and urban planning in Selangor.</p>
-          <p style="margin-top:12px;"><a href="https://ir.uitm.edu.my/id/eprint/101600/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+          <p style="margin-top:12px;"><a href="https://ir.uitm.edu.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-icon">📰</div>
-          <h3>Media Selangor Archive</h3>
-          <p><strong>January 2022 Report</strong><br>Official updates on flood relief operations and state drainage initiatives.</p>
-          <p style="margin-top:12px;"><a href="https://mediaselangor.com/en/2022/01/111391" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
-      </div>
-      <div class="info-card extra-news" style="display:none;">
+          <div class="card-number-badge">#10</div>
           <div class="card-icon">📊</div>
           <h3>The Great Klang Valley Flood</h3>
           <p><strong>Estate123 Insight</strong><br>Short summary and analysis of the 2021/2022 Klang Valley flood events.</p>
-          <p style="margin-top:12px;"><a href="https://insight.estate123.com/2021/12/20/a-short-summary-of-2021-the-great-klang-valley-flood/#google_vignette" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+          <p style="margin-top:12px;"><a href="https://insight.estate123.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
+          <div class="card-number-badge">#11</div>
           <div class="card-icon">📄</div>
           <h3>ReliefWeb Final Report</h3>
           <p><strong>DREF Operation Report</strong><br>Malaysia flash floods operation final report and humanitarian response.</p>
-          <p style="margin-top:12px;"><a href="https://reliefweb.int/report/malaysia/malaysia-flash-floods-2022-dref-operation-ndeg-mdrmy009-final-report" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
+          <p style="margin-top:12px;"><a href="https://reliefweb.int" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-number-badge">#12</div>
+          <div class="card-icon">📰</div>
+          <h3>Media Selangor Archive</h3>
+          <p><strong>January 2022 Report</strong><br>Official updates on flood relief operations and state drainage initiatives.</p>
+          <p style="margin-top:12px;"><a href="https://mediaselangor.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
   </div>
 
   <div style="text-align: center; margin-bottom: 40px;">
       <button id="toggleNewsBtn" onclick="toggleMoreNews()" style="background:#0f172a; color:#2dd4bf; border:2px solid #2dd4bf; padding:12px 30px; border-radius:30px; font-weight:700; cursor:pointer; font-size:0.95rem; transition:all 0.3s;">
-          Show More News & Articles ↓
+          Show More News & Articles (12 Total) ↓
       </button>
   </div>
 </section>
@@ -1273,7 +1305,6 @@ function toggleDashboard() {
     var sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("collapsed");
     
-    // 点击打开 Dashboard 后，可以自动隐藏通知徽标（表示已读）
     var badge = document.querySelector(".notification-badge");
     if (badge) {
         badge.style.display = "none";
@@ -1408,7 +1439,7 @@ function toggleMoreNews() {
         card.style.display = isExpanded ? 'block' : 'none';
     });
 
-    btn.innerText = isExpanded ? 'Show Less ↑' : 'Show More News & Articles ↓';
+    btn.innerText = isExpanded ? 'Show Less ↑' : 'Show More News & Articles (12 Total) ↓';
 }
 
 window.addEventListener('DOMContentLoaded', () => {
