@@ -775,18 +775,19 @@
         the understanding of potential urban waterlogging-risk areas
         in Klang, Shah Alam and Petaling Jaya.
     </p>
+    <!-- 按钮顺序已按页面顺序重新排列：Explore Maps -> Project Overview -> Risk Analysis -> Historical Records -> Emergency Guide -->
     <div class="landing-buttons">
         <a href="#map-interface" class="scroll-btn primary-btn" onclick="scrollToMapAndReset()">
             Explore Maps <span>↓</span>
         </a>
-        <a href="#historical-records" class="scroll-btn" style="border-color:#93c5fd;color:#bfdbfe;">
-            Historical Records <span>→</span>
+        <a href="#overview" class="scroll-btn" style="border-color:white;color:white;">
+            Project Overview <span>→</span>
         </a>
         <a href="#risk-analysis" class="scroll-btn" style="border-color:#fca5a5;color:#fecaca;">
             Risk Analysis <span>→</span>
         </a>
-        <a href="#overview" class="scroll-btn" style="border-color:white;color:white;">
-            Project Overview <span>→</span>
+        <a href="#historical-records" class="scroll-btn" style="border-color:#93c5fd;color:#bfdbfe;">
+            Historical Records & News <span>→</span>
         </a>
         <a href="#emergency-guide" class="scroll-btn" style="border-color:#fbbf24;color:#fbbf24;">
             🛡️ Emergency Guide <span>→</span>
@@ -862,17 +863,17 @@
                 </div>
             </div>
 
-            <a href="#historical-records" style="display:block; text-align:center; text-decoration:none; color:#bfdbfe; border:1px solid #3b82f6; border-radius:8px; padding:10px; margin-bottom:10px; font-size:.85rem; font-weight:bold;">
-                📚 Historical Records
+            <a href="#overview" style="display:block; text-align:center; text-decoration:none; color:#5eead4; border:1px solid #14b8a6; border-radius:8px; padding:10px; margin-bottom:10px; font-size:.85rem;">
+                ← Project Overview
             </a>
             <a href="#risk-analysis" style="display:block; text-align:center; text-decoration:none; color:#fecaca; border:1px solid #ef4444; border-radius:8px; padding:10px; margin-bottom:10px; font-size:.85rem; font-weight:bold;">
                 📊 Risk Analysis
             </a>
-            <a href="#emergency-guide" style="display:block; text-align:center; text-decoration:none; color:#fbbf24; border:1px solid #d97706; border-radius:8px; padding:10px; margin-bottom:12px; font-size:.85rem; font-weight:bold;">
-                🛡️ Emergency Guide
+            <a href="#historical-records" style="display:block; text-align:center; text-decoration:none; color:#bfdbfe; border:1px solid #3b82f6; border-radius:8px; padding:10px; margin-bottom:10px; font-size:.85rem; font-weight:bold;">
+                📚 Historical Records & News
             </a>
-            <a href="#overview" style="display:block; text-align:center; text-decoration:none; color:#5eead4; border:1px solid #14b8a6; border-radius:8px; padding:10px; margin-bottom:20px; font-size:.85rem;">
-                ← Project Overview
+            <a href="#emergency-guide" style="display:block; text-align:center; text-decoration:none; color:#fbbf24; border:1px solid #d97706; border-radius:8px; padding:10px; margin-bottom:20px; font-size:.85rem; font-weight:bold;">
+                🛡️ Emergency Guide
             </a>
 
             <h3>🌐 Base Layer</h3>
@@ -950,107 +951,6 @@
             </div>
         </div>
     </div>
-
-    <div class="analysis-panel">
-        <h3>🔎 How to Interpret the Maps</h3>
-        <p class="analysis-text">
-            Compare the thematic layers together to understand locations where terrain and land-cover characteristics contribute to potential waterlogging.
-        </p>
-        <div class="analysis-grid">
-            <div class="analysis-item">
-                <strong>1. Check the Boundary</strong>
-                <span>Identify the selected study area before comparing information.</span>
-            </div>
-            <div class="analysis-item">
-                <strong>2. Compare Slope</strong>
-                <span>Observe the spatial distribution of gentle and steep terrain.</span>
-            </div>
-            <div class="analysis-item">
-                <strong>3. Compare Land Cover</strong>
-                <span>Examine built-up and vegetated areas together with slope patterns.</span>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- 4. HISTORICAL RECORDS (Updated strictly with sources from PREVIOUS RESEARCH.pdf & news/articles) -->
-<section class="info-section" id="historical-records" style="background:#ffffff;">
-  <div class="section-kicker">Historical Records & Research</div>
-  <h2 class="section-title">Recorded Flood Incidents & Previous Research</h2>
-  <p class="section-intro">
-    This section consolidates academic literature, research articles, and official news reports regarding flood events and waterlogging studies across Klang, Shah Alam, and Petaling Jaya.
-  </p>
-
-  <div class="cards-4">
-    <div class="info-card">
-      <div class="card-icon">📚</div>
-      <h3>Selangor Flood Assessment</h3>
-      <p><strong>Nurfashareena & Husna Aini (2022)</strong><br>Evaluated flood events in Selangor between 2012 and 2021, noting an increase in frequency and utilizing kernel density spatial analysis.</p>
-      <p style="margin-top:12px;"><span style="color:#0d9488; font-size:0.85rem; font-weight:bold;">Source: Previous Research (Ref 1)</span></p>
-    </div>
-    <div class="info-card">
-      <div class="card-icon">🏙️</div>
-      <h3>Shah Alam Section 13 Floods</h3>
-      <p><strong>Mohamad Athir Bin Ismail (2023)</strong><br>Documented flash flood occurrences across six specific locations in Section 13, Shah Alam due to heavy precipitation and drainage pumps failure.</p>
-      <p style="margin-top:12px;"><span style="color:#0d9488; font-size:0.85rem; font-weight:bold;">Source: Previous Research (Ref 2)</span></p>
-    </div>
-    <div class="info-card">
-      <div class="card-icon">📐</div>
-      <h3>Shah Alam FFPI Analysis</h3>
-      <p><strong>Nurul A. Mohd Yassin et al. (2023)</strong><br>Applied GIS methods to analyze the Flash Flood Potential Index (FFPI) and scenario assessments within Shah Alam.</p>
-      <p style="margin-top:12px;"><span style="color:#0d9488; font-size:0.85rem; font-weight:bold;">Source: Previous Research (Ref 15)</span></p>
-    </div>
-    <div class="info-card">
-      <div class="card-icon">📰</div>
-      <h3>Klang Valley Flash Floods</h3>
-      <p><strong>NADMA / News Reports (2025/2026)</strong><br>Reported widespread heavy downpours and flash floods affecting multi-districts including Klang, Shah Alam, and Petaling Jaya (e.g., Section 51A / 223).</p>
-      <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">Source: Official News Report ↗</a></p>
-    </div>
-  </div>
-
-  <div style="overflow-x:auto;background:white;border:1px solid #e2e8f0;border-radius:16px;box-shadow:0 10px 30px rgba(15,23,42,0.04);">
-    <table style="width:100%;border-collapse:collapse;min-width:760px;font-size:.92rem;">
-      <thead style="background:#0f172a;color:white;">
-        <tr>
-          <th style="padding:14px;text-align:left;">Record ID</th>
-          <th style="padding:14px;text-align:left;">Type</th>
-          <th style="padding:14px;text-align:left;">Study Area</th>
-          <th style="padding:14px;text-align:left;">Description & Findings</th>
-          <th style="padding:14px;text-align:left;">Reference / Source</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="border-bottom:1px solid #e2e8f0;">
-          <td style="padding:14px;">HR-01</td>
-          <td style="padding:14px;">Research Article</td>
-          <td style="padding:14px;">Selangor</td>
-          <td style="padding:14px;">Assessment of flood events in Selangor showing spatial concentration and trends.</td>
-          <td style="padding:14px;">Nurfashareena & Husna Aini (2022)</td>
-        </tr>
-        <tr style="border-bottom:1px solid #e2e8f0;">
-          <td style="padding:14px;">HR-02</td>
-          <td style="padding:14px;">Research Article</td>
-          <td style="padding:14px;">Shah Alam</td>
-          <td style="padding:14px;">Flash flood analysis in Section 13, Shah Alam across six locations.</td>
-          <td style="padding:14px;">Mohamad Athir Bin Ismail (2023)</td>
-        </tr>
-        <tr style="border-bottom:1px solid #e2e8f0;">
-          <td style="padding:14px;">HR-03</td>
-          <td style="padding:14px;">Research Article</td>
-          <td style="padding:14px;">Shah Alam</td>
-          <td style="padding:14px;">Flash Flood Potential Index (FFPI) and GIS scenario assessment.</td>
-          <td style="padding:14px;">Nurul A. Mohd Yassin et al. (2023)</td>
-        </tr>
-        <tr>
-          <td style="padding:14px;">HR-04</td>
-          <td style="padding:14px;">News / Report</td>
-          <td style="padding:14px;">Klang & Petaling</td>
-          <td style="padding:14px;">Heavy rains and flash floods reported across Selangor districts.</td>
-          <td style="padding:14px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">NADMA Report</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
 </section>
 
 <!-- RISK ANALYSIS -->
@@ -1077,6 +977,102 @@
       <h3>Historical Incidents</h3>
       <p>Published incident locations from research and reports can be compared with spatial susceptibility.</p>
     </div>
+  </div>
+</section>
+
+<!-- 4. HISTORICAL RECORDS & NEWS ARCHIVE -->
+<section class="info-section" id="historical-records" style="background:#ffffff;">
+  <div class="section-kicker">Historical Records & News Database</div>
+  <h2 class="section-title">Recorded Flood Incidents & News Archive</h2>
+  <p class="section-intro">
+    Explore collected news reports, official statements, and academic articles regarding flood events across Klang, Shah Alam, and Petaling Jaya. Click "Show More" to view all items.
+  </p>
+
+  <div class="cards-4" id="newsGrid">
+      <!-- Item 1 -->
+      <div class="info-card">
+          <div class="card-icon">📰</div>
+          <h3>Flash Floods in Klang & Shah Alam</h3>
+          <p><strong>11 April 2025</strong><br>Temporary relief shelters set up in Klang and Shah Alam following heavy downpours.</p>
+          <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/04/11/flash-floods-temporary-relief-shelters-set-up-in-klang-and-shah-alam" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      </div>
+      <!-- Item 2 -->
+      <div class="info-card">
+          <div class="card-icon">🌊</div>
+          <h3>Klang Valley Flash Floods</h3>
+          <p><strong>24 November 2025</strong><br>Morning downpour triggers widespread flash floods across multiple Klang Valley areas.</p>
+          <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/11/24/klang-valley-areas-face-flash-floods-after-morning-downpour/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      </div>
+      <!-- Item 3 -->
+      <div class="info-card">
+          <div class="card-icon">🚨</div>
+          <h3>Selangor MB Orders Urgent Action</h3>
+          <p><strong>20 April 2025</strong><br>Selangor Menteri Besar orders immediate steps after flash floods hit Klang and Shah Alam.</p>
+          <p style="margin-top:12px;"><a href="https://www.malaymail.com/news/malaysia/2025/04/20/selangor-mb-orders-urgent-action-after-flash-floods-hit-klang-shah-alam/173823" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      </div>
+      <!-- Item 4 -->
+      <div class="info-card">
+          <div class="card-icon">📄</div>
+          <h3>1,000 Displaced in Districts</h3>
+          <p><strong>NADMA Report</strong><br>Over 1,000 residents displaced by floods across Petaling and Klang districts.</p>
+          <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/3849-1-000-displaced-by-floods-in-petaling-klang-districts" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
+      </div>
+
+      <!-- Hidden Initially (Loaded on Show More) -->
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">🌧️</div>
+          <h3>Heavy Rain Triggers Floods</h3>
+          <p><strong>The Vibes Report</strong><br>Heavy rain triggers flash floods across five districts in Selangor.</p>
+          <p style="margin-top:12px;"><a href="https://www.thevibes.com/articles/news/106874/heavy-rain-triggers-flash-floods-across-five-districts-in-selangor" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">📰</div>
+          <h3>Oriental Daily News Coverage</h3>
+          <p><strong>11 April 2025</strong><br>Central region flash flood coverage and emergency updates in Chinese.</p>
+          <p style="margin-top:12px;"><a href="https://www.orientaldaily.com.my/news/central/2025/04/11/725361" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">🌊</div>
+          <h3>Astro Awani Report</h3>
+          <p><strong>Amirudin Statement</strong><br>Banjir Kuala Selangor dan punca takungan banjir kilat di Meru.</p>
+          <p style="margin-top:12px;"><a href="https://www.astroawani.com/berita-malaysia/banjir-kuala-selangor-mungkin-berpunca-daripada-takungan-banjir-kilat-di-meru-amirudin-391135" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">🌐</div>
+          <h3>SERI Flood Management</h3>
+          <p><strong>SERI Report</strong><br>Socio-economic research and flood management strategies for Selangor.</p>
+          <p style="margin-top:12px;"><a href="https://www.seri.my/floodmanagementforselangor" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">📚</div>
+          <h3>UiTM Institutional Repository</h3>
+          <p><strong>Research Publication</strong><br>Academic studies on flood susceptibility and urban planning in Selangor.</p>
+          <p style="margin-top:12px;"><a href="https://ir.uitm.edu.my/id/eprint/101600/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">📰</div>
+          <h3>Media Selangor Archive</h3>
+          <p><strong>January 2022 Report</strong><br>Official updates on flood relief operations and state drainage initiatives.</p>
+          <p style="margin-top:12px;"><a href="https://mediaselangor.com/en/2022/01/111391" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">📊</div>
+          <h3>The Great Klang Valley Flood</h3>
+          <p><strong>Estate123 Insight</strong><br>Short summary and analysis of the 2021/2022 Klang Valley flood events.</p>
+          <p style="margin-top:12px;"><a href="https://insight.estate123.com/2021/12/20/a-short-summary-of-2021-the-great-klang-valley-flood/#google_vignette" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">📄</div>
+          <h3>ReliefWeb Final Report</h3>
+          <p><strong>DREF Operation Report</strong><br>Malaysia flash floods operation final report and humanitarian response.</p>
+          <p style="margin-top:12px;"><a href="https://reliefweb.int/report/malaysia/malaysia-flash-floods-2022-dref-operation-ndeg-mdrmy009-final-report" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
+      </div>
+  </div>
+
+  <div style="text-align: center; margin-bottom: 40px;">
+      <button id="toggleNewsBtn" onclick="toggleMoreNews()" style="background:#0f172a; color:#2dd4bf; border:2px solid #2dd4bf; padding:12px 30px; border-radius:30px; font-weight:700; cursor:pointer; font-size:0.95rem; transition:all 0.3s;">
+          Show More News & Articles ↓
+      </button>
   </div>
 </section>
 
@@ -1109,25 +1105,6 @@
             <div class="card-icon">🌧️</div>
             <h3>National Disaster Agency</h3>
             <p><strong>NADMA / NDCC</strong><br>Hotline: 03-8064 2400 (24/7)</p>
-        </div>
-    </div>
-
-    <div class="two-col-grid">
-        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 15px; color: #dc2626; font-size: 1.15rem;">⚡ During a Flood</h3>
-            <ul style="margin-left: 20px; color: #64748b; line-height: 1.8; font-size: 0.95rem;">
-                <li><strong>Shut off electricity & gas:</strong> Turn off main power switches to prevent electrocution.</li>
-                <li><strong>Move to higher ground:</strong> Evacuate to the second floor or evacuation centres.</li>
-                <li><strong>Avoid driving or walking through moving water:</strong> Never attempt to cross flooded roads.</li>
-            </ul>
-        </div>
-        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 15px; color: #059669; font-size: 1.15rem;">🧽 Post-Flood Safety & Cleanup</h3>
-            <ul style="margin-left: 20px; color: #64748b; line-height: 1.8; font-size: 0.95rem;">
-                <li><strong>Beware of electrical hazards & wildlife:</strong> Watch out for damaged power lines and debris.</li>
-                <li><strong>Drinking water safety:</strong> Always boil drinking water; discard unsealed flood-damaged food.</li>
-                <li><strong>Wear protective gear:</strong> Prevent infections like leptospirosis during cleanup.</li>
-            </ul>
         </div>
     </div>
 </section>
@@ -1307,90 +1284,17 @@ function scrollToMapAndReset() {
     setTimeout(resetMapView, 300);
 }
 
-function openMapAndSearchFocus() {
-    var sidebar = document.getElementById("sidebar");
-    if (sidebar.classList.contains("collapsed")) {
-        sidebar.classList.remove("collapsed");
-    }
-    setTimeout(() => {
-        var searchInput = document.getElementById("searchInput");
-        if (searchInput) searchInput.focus();
-    }, 300);
-}
-
-function searchLocation() {
-    var query = document.getElementById("searchInput").value.trim().toLowerCase();
-    var resultDiv = document.getElementById("searchResult");
+let isExpanded = false;
+function toggleMoreNews() {
+    const extraCards = document.querySelectorAll('.extra-news');
+    const btn = document.getElementById('toggleNewsBtn');
+    isExpanded = !isExpanded;
     
-    if (!query) {
-        resultDiv.innerHTML = "<span style='color: #ef4444;'>Please type an area name.</span>";
-        return;
-    }
+    extraCards.forEach(card => {
+        card.style.display = isExpanded ? 'block' : 'none';
+    });
 
-    var riskBtn = document.querySelector('.risk-btn');
-    switchRiskMap(riskBtn);
-    resultDiv.innerHTML = "Searching...";
-
-    setTimeout(function() {
-        var iframe = document.getElementById("mapFrame");
-        try {
-            var win = iframe.contentWindow;
-            if (win && win.points && win.map) {
-                var matches = win.points.filter(p => 
-                    p.name.toLowerCase().includes(query) || p.district.toLowerCase().includes(query)
-                );
-
-                if (matches.length > 0) {
-                    var p = matches[0];
-                    win.map.setView([p.lat, p.lng], 14);
-                    resultDiv.innerHTML = `<span style="color: #10b981;"><b>Found:</b> ${p.name} (${p.district})<br><b>Risk:</b> ${p.risk}</span>`;
-                    
-                    win.map.eachLayer(function(layer) {
-                        if (layer.getLatLng && layer.getLatLng().lat === p.lat && layer.getLatLng().lng === p.lng) {
-                            layer.openPopup();
-                        }
-                    });
-                } else {
-                    resultDiv.innerHTML = `<span style='color: #ef4444;'>No match found for "${query}".</span>`;
-                }
-            } else {
-                resultDiv.innerHTML = "Map data loading, please click Search again.";
-            }
-        } catch (e) {
-            console.log("Search error:", e);
-            resultDiv.innerHTML = "<span style='color: #ef4444;'>Unable to search.</span>";
-        }
-    }, 600);
-}
-
-function toggleGoogleSatellite(enabled) {
-    var iframe = document.getElementById("mapFrame");
-    try {
-        var iframeWin = iframe.contentWindow;
-        if (iframeWin && iframeWin.map) {
-            if (iframeWin.map.eachLayer) {
-                iframeWin.map.eachLayer(function(layer) {
-                    if (layer._url && layer._url.toLowerCase().includes("google")) {
-                        if (typeof layer.setOpacity === "function") {
-                            layer.setOpacity(enabled ? 1 : 0);
-                        }
-                    }
-                });
-            }
-        }
-    } catch (e) {
-        console.log("Could not toggle satellite layer:", e);
-    }
-}
-
-document.getElementById("mapFrame").addEventListener("load", function() {
-    var isChecked = document.getElementById("satToggle").checked;
-    setTimeout(function() { toggleGoogleSatellite(isChecked); }, 500);
-});
-
-if (window.innerWidth <= 600) {
-    var sidebar = document.getElementById("sidebar");
-    if (sidebar) sidebar.classList.add("collapsed");
+    btn.innerText = isExpanded ? 'Show Less ↑' : 'Show More News & Articles ↓';
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -1398,11 +1302,11 @@ window.addEventListener('DOMContentLoaded', () => {
     new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['Klang district', 'Petaling district'],
+            labels: ['Klang', 'Shah Alam', 'Petaling Jaya'],
             datasets: [{
                 label: 'Reported flood cases (Jan–Jun 2025)',
-                data: [39, 26],
-                backgroundColor: ['#2563eb', '#60a5fa'],
+                data: [39, 28, 26],
+                backgroundColor: ['#2563eb', '#9333ea', '#60a5fa'],
                 borderRadius: 6
             }]
         },
@@ -1421,9 +1325,9 @@ window.addEventListener('DOMContentLoaded', () => {
     new Chart(ctx2, {
         type: 'bar',
         data: {
-            labels: ['Klang district', 'Petaling district'],
+            labels: ['Klang', 'Shah Alam', 'Petaling Jaya'],
             datasets: [
-                { label: 'Flood-affected areas (Jan–Jun 2025)', data: [30, 18], backgroundColor: ['#0f766e', '#14b8a6'], borderRadius: 4 }
+                { label: 'Flood-affected areas (Jan–Jun 2025)', data: [30, 22, 18], backgroundColor: ['#0f766e', '#a855f7', '#14b8a6'], borderRadius: 4 }
             ]
         },
         options: {
