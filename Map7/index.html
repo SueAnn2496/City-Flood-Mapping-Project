@@ -24,7 +24,7 @@
             opacity: 0.85;
             border-radius: 50%;
         }
-        /* Live ticker panel on top left */
+        /* Live panel on top right */
         .live-panel {
             position: absolute;
             top: 10px;
@@ -70,7 +70,7 @@
             border-bottom: none;
             padding-bottom: 0;
         }
-        /* Custom Warning Exclamation Icon Marker */
+        /* Custom Exclamation Icon Marker for JPS Rainfall Warnings */
         .warning-marker {
             background: #e74c3c;
             border: 2px solid #fff;
@@ -80,7 +80,7 @@
             font-weight: bold;
             font-size: 12px;
             line-height: 20px;
-            box-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.8);
         }
     </style>
 </head>
@@ -90,7 +90,7 @@
     <!-- Live Panel UI Container -->
     <div class="live-panel">
         <h4>
-            <span>Live Rainfall Feed</span>
+            <span>Live Rainfall Feed (JPS)</span>
             <span class="live-dot" id="liveIndicator"></span>
         </h4>
         <div id="stationList">Loading live data...</div>
@@ -156,46 +156,26 @@
             { name: "Jalan Kebun Nenas / Kg Jawa", district: "Klang", lat: 3.0162, lng: 101.4785, easting: "775501.52", northing: "333697.51", zone: "47N", risk: "Moderate Risk" }
         ];
 
+        // Render base risk points (High Risk points use standard Red circles)
         points.forEach(function(p) {
             var color = (p.risk === "High Risk") ? "#e74c3c" : (p.risk === "Moderate Risk" ? "#f39c12" : "#2ecc71");
             
-            // If High Risk or Moderate Risk, use an exclamation mark warning icon marker
-            if (p.risk === "High Risk" || p.risk === "Moderate Risk") {
-                var warningIcon = L.divIcon({
-                    className: 'warning-marker',
-                    html: '!',
-                    iconSize: [22, 22],
-                    iconAnchor: [11, 11]
-                });
-                
-                L.marker([p.lat, p.lng], { icon: warningIcon }).addTo(map).bindPopup(
-                    '<div style="font-family: Arial; font-size: 13px;">' +
-                    '<b style="color: #2c3e50; font-size: 14px;">⚠️ ' + p.name + '</b><hr style="margin: 4px 0;">' +
-                    '<b>District:</b> ' + p.district + '<br>' +
-                    '<b>Risk Status:</b> <span style="color: ' + color + '; font-weight: bold;">' + p.risk + '</span><br>' +
-                    '<b>Latitude / Longitude:</b> ' + p.lat + ', ' + p.lng + '<br>' +
-                    '<b>UTM Coords:</b> ' + p.easting + ' E, ' + p.northing + ' N (' + p.zone + ')' +
-                    '</div>'
-                );
-            } else {
-                // Regular circle marker for low risk
-                L.circleMarker([p.lat, p.lng], {
-                    radius: 8,
-                    fillColor: color,
-                    color: "#000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.85
-                }).addTo(map).bindPopup(
-                    '<div style="font-family: Arial; font-size: 13px;">' +
-                    '<b style="color: #2c3e50; font-size: 14px;">' + p.name + '</b><hr style="margin: 4px 0;">' +
-                    '<b>District:</b> ' + p.district + '<br>' +
-                    '<b>Risk Status:</b> <span style="color: ' + color + '; font-weight: bold;">' + p.risk + '</span><br>' +
-                    '<b>Latitude / Longitude:</b> ' + p.lat + ', ' + p.lng + '<br>' +
-                    '<b>UTM Coords:</b> ' + p.easting + ' E, ' + p.northing + ' N (' + p.zone + ')' +
-                    '</div>'
-                );
-            }
+            L.circleMarker([p.lat, p.lng], {
+                radius: 8,
+                fillColor: color,
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.85
+            }).addTo(map).bindPopup(
+                '<div style="font-family: Arial; font-size: 13px;">' +
+                '<b style="color: #2c3e50; font-size: 14px;">' + p.name + '</b><hr style="margin: 4px 0;">' +
+                '<b>District:</b> ' + p.district + '<br>' +
+                '<b>Risk Status:</b> <span style="color: ' + color + '; font-weight: bold;">' + p.risk + '</span><br>' +
+                '<b>Latitude / Longitude:</b> ' + p.lat + ', ' + p.lng + '<br>' +
+                '<b>UTM Coords:</b> ' + p.easting + ' E, ' + p.northing + ' N (' + p.zone + ')' +
+                '</div>'
+            );
         });
 
         // Add Legend Control
@@ -203,28 +183,50 @@
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'legend');
             div.innerHTML = '<b>Risk Legend</b><br>' +
-                '<i style="background: #e74c3c;"></i> High Risk / Warning (!)<br>' +
-                '<i style="background: #f39c12;"></i> Moderate Risk / Warning (!)<br>' +
-                '<i style="background: #2ecc71;"></i> Low Risk';
+                '<i style="background: #e74c3c;"></i> High Risk<br>' +
+                '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
+                '<i style="background: #2ecc71;"></i> Low Risk<br>' +
+                '<hr style="margin:4px 0;"><small><b>(!)</b> = JPS Rainfall Warning</small>';
             return div;
         };
         legend.addTo(map);
 
-        // Live Rainfall Data Simulation logic integrated with UI display
+        // Layer group for dynamic JPS warning markers
+        var warningLayerGroup = L.layerGroup().addTo(map);
+
+        // Live Rainfall Data Simulation logic with JPS Warning Exclamation Markers
         function loadLiveRainfallData() {
+            // Simulated live JPS stations where specific ones have heavy warnings requiring attention
             const liveStations = [
-                { name: "Shah Alam Section 2", rainfall: (Math.random() * 20 + 5).toFixed(1) + " mm", status: "Moderate", time: new Date().toLocaleTimeString() },
-                { name: "Klang Bandar", rainfall: (Math.random() * 30 + 20).toFixed(1) + " mm", status: "Heavy (Alert)", time: new Date().toLocaleTimeString() },
-                { name: "Petaling Jaya SS2", rainfall: (Math.random() * 5 + 1).toFixed(1) + " mm", status: "Light", time: new Date().toLocaleTimeString() }
+                { name: "Shah Alam Section 2", rainfall: "12.5 mm", status: "Moderate", time: new Date().toLocaleTimeString(), lat: 3.07, lng: 101.52, hasWarning: false },
+                { name: "Klang Bandar", rainfall: "35.2 mm", status: "Heavy (Alert)", time: new Date().toLocaleTimeString(), lat: 3.04, lng: 101.45, hasWarning: true },
+                { name: "Petaling Jaya SS2", rainfall: "4.1 mm", status: "Light", time: new Date().toLocaleTimeString(), lat: 3.11, lng: 101.62, hasWarning: false }
             ];
+
+            // Clear previous warning markers
+            warningLayerGroup.clearLayers();
 
             let htmlContent = "";
             liveStations.forEach(station => {
+                // If JPS data indicates a warning/alert, place an exclamation mark (!) marker on the map
+                if (station.hasWarning) {
+                    var warningIcon = L.divIcon({
+                        className: 'warning-marker',
+                        html: '!',
+                        iconSize: [24, 24],
+                        iconAnchor: [12, 12]
+                    });
+
+                    L.marker([station.lat, station.lng], { icon: warningIcon })
+                        .bindPopup('<b>⚠️ JPS Rainfall Warning</b><br>Station: ' + station.name + '<br>Rainfall: ' + station.rainfall + '<br>Status: ' + station.status)
+                        .addTo(warningLayerGroup);
+                }
+
                 htmlContent += `
                     <div class="station-item">
-                        <b>${station.name}</b><br>
+                        <b>${station.name}</b> ${station.hasWarning ? '<span style="color:red; font-weight:bold;">(!)</span>' : ''}<br>
                         Rainfall: <b>${station.rainfall}</b><br>
-                        Status: <span style="color: ${station.status.includes('Heavy') ? '#e74c3c' : '#f39c12'};">${station.status}</span><br>
+                        Status: <span style="color: ${station.hasWarning ? '#e74c3c' : '#f39c12'};">${station.status}</span><br>
                         <small style="color: #7f8c8d;">Updated: ${station.time}</small>
                     </div>
                 `;
