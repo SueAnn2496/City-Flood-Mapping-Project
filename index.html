@@ -965,7 +965,6 @@
             <button class="map-center-ctrl" onclick="resetMapView()" title="Center Map">🎯</button>
         </div>
 
-        <!-- 浮动图例（Map 1 时默认隐藏） -->
         <div class="floating-legend" id="floatingLegend" style="display: none;">
             <div class="legend-header-row">
                 <h4 id="floatingLegendTitle">Legend</h4>
@@ -1099,18 +1098,19 @@
   </div>
 </section>
 
-<!-- 4. HISTORICAL RECORDS & NEWS ARCHIVE -->
+<!-- 4. HISTORICAL RECORDS, NEWS & LITERATURE ARCHIVE -->
 <section class="info-section" id="historical-records" style="background:#ffffff;">
   <div class="section-kicker" style="display: flex; align-items: center; gap: 10px;">
-      Historical Records & News Database 
+      Historical Records, News & Academic Archive 
       <span style="background:#ef4444; color:white; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:bold;">1 New Update</span>
   </div>
-  <h2 class="section-title">Recorded Flood Incidents & News Archive</h2>
+  <h2 class="section-title">Recorded Flood Incidents, News & References</h2>
   <p class="section-intro">
-    Explore collected news reports, official statements, and academic articles regarding flood events across Klang, Shah Alam, and Petaling Jaya, ordered from newest to oldest.
+    Explore collected news reports, official statements, and academic references regarding flood events across Klang, Shah Alam, and Petaling Jaya, ordered from newest to oldest.
   </p>
 
   <div class="cards-4" id="newsGrid">
+      <!-- 1 (NEWEST 2026) -->
       <div class="info-card" style="border-top: 4px solid #ef4444;">
           <div style="font-size:0.75rem; font-weight:bold; color:#ef4444; margin-bottom:6px;">NEW UPDATE (2026)</div>
           <div class="card-icon">🚨</div>
@@ -1118,79 +1118,86 @@
           <p><strong>20 July 2026</strong><br>Selangor state government steps up drainage improvement following recent flash floods in Petaling Jaya and Klang.</p>
           <p style="margin-top:12px;"><a href="https://www.malaymail.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
-      <div class="info-card">
-          <div class="card-icon">🌊</div>
-          <h3>Klang Valley Flash Floods</h3>
-          <p><strong>24 November 2025</strong><br>Morning downpour triggers widespread flash floods across multiple Klang Valley areas.</p>
-          <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/11/24/klang-valley-areas-face-flash-floods-after-morning-downpour/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">📰</div>
-          <h3>Flash Floods in Klang & Shah Alam</h3>
-          <p><strong>11 April 2025</strong><br>Temporary relief shelters set up in Klang and Shah Alam following heavy downpours.</p>
-          <p style="margin-top:12px;"><a href="https://www.thestar.com.my/news/nation/2025/04/11/flash-floods-temporary-relief-shelters-set-up-in-klang-and-shah-alam" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">📄</div>
-          <h3>1,000 Displaced in Districts</h3>
-          <p><strong>NADMA Report</strong><br>Over 1,000 residents displaced by floods across Petaling and Klang districts.</p>
-          <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/3849-1-000-displaced-by-floods-in-petaling-klang-districts" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
+
+      <!-- 2 (2026 July PJ & Klang Floods) -->
+      <div class="info-card" style="border-top: 4px solid #3b82f6;">
+          <div style="font-size:0.75rem; font-weight:bold; color:#3b82f6; margin-bottom:6px;">2026 REPORT</div>
+          <div class="card-icon">🌧️</div>
+          <h3>PJ & Klang Flash Floods</h3>
+          <p><strong>18 July 2026</strong><br>Flash floods swamp Petaling Jaya, submerging 223 Food Court and Amway HQ areas after a heavy afternoon downpour.</p>
+          <p style="margin-top:12px;"><a href="https://www.malaymail.com/news/malaysia/2026/07/18/flash-floods-swamp-petaling-jaya-after-heavy-rain-video/228134" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
 
-      <!-- Hidden Initially -->
-      <div class="info-card extra-news" style="display:none;">
-          <div class="card-icon">🌧️</div>
-          <h3>Heavy Rain Triggers Floods</h3>
-          <p><strong>The Vibes Report</strong><br>Heavy rain triggers flash floods across five districts in Selangor.</p>
-          <p style="margin-top:12px;"><a href="https://www.thevibes.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
-      </div>
-      <div class="info-card extra-news" style="display:none;">
-          <div class="card-icon">📰</div>
-          <h3>Oriental Daily News Coverage</h3>
-          <p><strong>11 April 2025</strong><br>Central region flash flood coverage and emergency updates in Chinese.</p>
-          <p style="margin-top:12px;"><a href="https://www.orientaldaily.com.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
-      </div>
-      <div class="info-card extra-news" style="display:none;">
+      <!-- 3 (2026 May Klang Valley Floods) -->
+      <div class="info-card">
           <div class="card-icon">🌊</div>
-          <h3>Astro Awani Report</h3>
-          <p><strong>Amirudin Statement</strong><br>Banjir Kuala Selangor dan punca takungan banjir kilat di Meru.</p>
-          <p style="margin-top:12px;"><a href="https://www.astroawani.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+          <h3>Klang Valley Torrential Rains</h3>
+          <p><strong>6-7 May 2026</strong><br>Flash floods strike Petaling Jaya, Shah Alam and Kuchai Lama, trapping vehicles on Federal Highway and major expressways.</p>
+          <p style="margin-top:12px;"><a href="https://www.therakyatpost.com/news/2026/05/07/social-media-flooded-by-videos-of-klangvalley-floods-again-and-again/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
-      <div class="info-card extra-news" style="display:none;">
-          <div class="card-icon">🌐</div>
-          <h3>SERI Flood Management</h3>
-          <p><strong>SERI Report</strong><br>Socio-economic research and flood management strategies for Selangor.</p>
-          <p style="margin-top:12px;"><a href="https://www.seri.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+
+      <!-- 4 (2026 April Selangor RM990M RTB) -->
+      <div class="info-card">
+          <div class="card-icon">💰</div>
+          <h3>Selangor RM990M Flood Plan</h3>
+          <p><strong>13 April 2026</strong><br>Selangor state approves RM990.41 million for 13 Flood Mitigation Plans (RTB) via DID to ramp up defenses.</p>
+          <p style="margin-top:12px;"><a href="https://www.thestar.com.my/metro/metronews/2026/04/13/selangor-ramps-up-flood-defences" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
+
+      <!-- Hidden Initially (Extra News & Academic Papers) -->
       <div class="info-card extra-news" style="display:none;">
           <div class="card-icon">📚</div>
-          <h3>UiTM Institutional Repository</h3>
-          <p><strong>Research Publication</strong><br>Academic studies on flood susceptibility and urban planning in Selangor.</p>
-          <p style="margin-top:12px;"><a href="https://ir.uitm.edu.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+          <h3>Spatial-Temporal Assessment (GIS & AHP)</h3>
+          <p><strong>Rushdi et al. (2026)</strong><br>Environment-Behaviour Proceedings Journal, 11(36), 135–145 on Klang River Basin vulnerability.</p>
+          <p style="margin-top:12px;"><a href="https://doi.org/10.21834/e-bpj.v11i36.7819" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">📑</div>
+          <h3>Mitigating Flood Risk at Shah Alam</h3>
+          <p><strong>Leeonis et al. (2024)</strong><br>Discover Sustainability, 5(1), 352. Focuses on sustainable urban flood mitigation strategies.</p>
+          <p style="margin-top:12px;"><a href="https://doi.org/10.1007/s43621-024-00504-y" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">🔍</div>
+          <h3>Challenges of GIS in Shah Alam</h3>
+          <p><strong>Leeonis et al. (2024)</strong><br>Sustainability, 16, 216–223. Discusses practical barriers in managing flash floods via GIS.</p>
+          <p style="margin-top:12px;"><a href="https://www.mdpi.com/2071-1050/16/1/216" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
           <div class="card-icon">📊</div>
-          <h3>The Great Klang Valley Flood</h3>
-          <p><strong>Estate123 Insight</strong><br>Short summary and analysis of the 2021/2022 Klang Valley flood events.</p>
-          <p style="margin-top:12px;"><a href="https://insight.estate123.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
-      </div>
-      <div class="info-card extra-news" style="display:none;">
-          <div class="card-icon">📄</div>
-          <h3>ReliefWeb Final Report</h3>
-          <p><strong>DREF Operation Report</strong><br>Malaysia flash floods operation final report and humanitarian response.</p>
-          <p style="margin-top:12px;"><a href="https://reliefweb.int" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
+          <h3>Reviewing Flood Risk Management</h3>
+          <p><strong>Rosmadi et al. (2023)</strong><br>Water, 15(13), 2390. Comprehensive review of challenges in Malaysia's flood management.</p>
+          <p style="margin-top:12px;"><a href="https://doi.org/10.3390/w15132390" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
           <div class="card-icon">📰</div>
-          <h3>Media Selangor Archive</h3>
-          <p><strong>January 2022 Report</strong><br>Official updates on flood relief operations and state drainage initiatives.</p>
-          <p style="margin-top:12px;"><a href="https://mediaselangor.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+          <h3>Shah Alam Flash Floods (August 2023)</h3>
+          <p><strong>New Straits Times (2023)</strong><br>Heavy rain causes flash floods across Shah Alam, nearly submerging Section 13 cars.</p>
+          <p style="margin-top:12px;"><a href="https://www.nst.com.my/news/nation/2023/08/943719/heavy-rain-causesflash-floods-shah-alam" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">📄</div>
+          <h3>Catastrophic Shah Alam Floods</h3>
+          <p><strong>Cilisos Report (2022)</strong><br>Detailed overview of the December 2021/2022 floods and government mitigation responses.</p>
+          <p style="margin-top:12px;"><a href="https://cilisos.my/shah-alam-flood-mitigation-projects/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">🌐</div>
+          <h3>ESA WorldCover 10m Dataset</h3>
+          <p><strong>Zanaga et al. (2022)</strong><br>European Space Agency land cover dataset used for spatial land cover mapping.</p>
+          <p style="margin-top:12px;"><a href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Dataset ↗</a></p>
+      </div>
+      <div class="info-card extra-news" style="display:none;">
+          <div class="card-icon">🗺️</div>
+          <h3>JPS Selangor GIS Portal</h3>
+          <p><strong>JPS Selangor (n.d.)</strong><br>Public spatial data infrastructure and drainage information portal for Selangor.</p>
+          <p style="margin-top:12px;"><a href="https://jpsselgis.selangor.gov.my/jpsselgis/" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Visit Portal ↗</a></p>
       </div>
   </div>
 
   <div style="text-align: center; margin-bottom: 40px;">
       <button id="toggleNewsBtn" onclick="toggleMoreNews()" style="background:#0f172a; color:#2dd4bf; border:2px solid #2dd4bf; padding:12px 30px; border-radius:30px; font-weight:700; cursor:pointer; font-size:0.95rem; transition:all 0.3s;">
-          Show More News & Articles ↓
+          Show More News & References ↓
       </button>
   </div>
 </section>
@@ -1357,7 +1364,7 @@ function switchLayer(mapFolder, btn) {
     mapFrame.style.opacity = "0";
     setTimeout(() => {
         if (mapFolder === "Map1/") {
-            floatingLegend.style.display = "none"; // Map 1 隐藏图例
+            floatingLegend.style.display = "none";
             mapFrame.src = "Map1/index.html";
         } else if (mapFolder === "Map2/") {
             floatingLegendTitle.innerText = "Slope Legend";
@@ -1385,7 +1392,7 @@ function switchDistrict(mapFolder, btn) {
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.getElementById("exportCsvContainer").style.display = "none";
     btn.classList.add("active");
-    document.getElementById("floatingLegend").style.display = "none"; // 行政区默认也隐藏图例
+    document.getElementById("floatingLegend").style.display = "none";
     
     mapFrame.style.opacity = "0";
     setTimeout(() => {
@@ -1437,7 +1444,7 @@ function toggleMoreNews() {
         card.style.display = isExpanded ? 'block' : 'none';
     });
 
-    btn.innerText = isExpanded ? 'Show Less ↑' : 'Show More News & Articles ↓';
+    btn.innerText = isExpanded ? 'Show Less ↑' : 'Show More News & References ↓';
 }
 
 function toggleGoogleSatellite(enabled) {
