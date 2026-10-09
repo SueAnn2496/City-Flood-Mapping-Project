@@ -70,7 +70,7 @@
             border-bottom: none;
             padding-bottom: 0;
         }
-        /* Custom Exclamation Icon Marker strictly for JPS Live Warnings */
+        /* Custom Exclamation Icon Marker for JPS Rainfall Warnings ONLY */
         .warning-marker {
             background: #e74c3c;
             border: 2px solid #fff;
@@ -78,9 +78,15 @@
             color: white;
             text-align: center;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
             line-height: 20px;
-            box-shadow: 0 0 10px rgba(231, 76, 60, 0.8);
+            box-shadow: 0 0 12px rgba(231, 76, 60, 0.9);
+            animation: warningPulse 1.5s infinite;
+        }
+        @keyframes warningPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
@@ -156,7 +162,7 @@
             { name: "Jalan Kebun Nenas / Kg Jawa", district: "Klang", lat: 3.0162, lng: 101.4785, easting: "775501.52", northing: "333697.51", zone: "47N", risk: "Moderate Risk" }
         ];
 
-        // 1. 渲染所有风险点（全部使用圆形标记：High Risk为红圆圈、Moderate为橙圆圈、Low为绿圆圈）
+        // Render base points normally (High Risk = Red circles)
         points.forEach(function(p) {
             var color = (p.risk === "High Risk") ? "#e74c3c" : (p.risk === "Moderate Risk" ? "#f39c12" : "#2ecc71");
             
@@ -183,41 +189,42 @@
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'legend');
             div.innerHTML = '<b>Risk Legend</b><br>' +
-                '<i style="background: #e74c3c;"></i> High Risk<br>' +
+                '<i style="background: #e74c3c;"></i> High Risk (Red)<br>' +
                 '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
                 '<i style="background: #2ecc71;"></i> Low Risk<br>' +
-                '<hr style="margin:4px 0;"><small><b>(!)</b> = JPS Live Warning</small>';
+                '<hr style="margin:4px 0;"><small><b>(!)</b> = Active JPS Rainfall Warning</small>';
             return div;
         };
         legend.addTo(map);
 
-        // 2. 独立的 JPS 实时警示标记图层
+        // Layer group for JPS warning markers
         var warningLayerGroup = L.layerGroup().addTo(map);
 
-        // 模拟从 JPS 获取实时降雨数据（仅在有 warning 的地方生成感叹号标记）
+        // Live Rainfall Data Simulation logic with JPS Warning Exclamation Markers
         function loadLiveRainfallData() {
+            // Simulated live JPS stations
             const liveStations = [
-                { name: "Shah Alam Section 2", rainfall: "12.5 mm", status: "Moderate", time: new Date().toLocaleTimeString(), lat: 3.0512, lng: 101.5098, hasWarning: false },
-                { name: "Klang Bandar", rainfall: "35.2 mm", status: "Heavy (Alert)", time: new Date().toLocaleTimeString(), lat: 3.0375, lng: 101.4372, hasWarning: true },
-                { name: "Petaling Jaya SS2", rainfall: "4.1 mm", status: "Light", time: new Date().toLocaleTimeString(), lat: 3.1026, lng: 101.6447, hasWarning: false }
+                { name: "Shah Alam Section 2", rainfall: "12.5 mm", status: "Moderate", time: new Date().toLocaleTimeString(), lat: 3.07, lng: 101.52, hasWarning: false },
+                { name: "Klang Bandar", rainfall: "35.2 mm", status: "Heavy (Alert)", time: new Date().toLocaleTimeString(), lat: 3.04, lng: 101.45, hasWarning: true },
+                { name: "Petaling Jaya SS2", rainfall: "4.1 mm", status: "Light", time: new Date().toLocaleTimeString(), lat: 3.11, lng: 101.62, hasWarning: false }
             ];
 
-            // 清除旧的感叹号标记
+            // Clear previous warning markers
             warningLayerGroup.clearLayers();
 
             let htmlContent = "";
             liveStations.forEach(station => {
-                // 只有当 JPS 实时数据标明需要注意（hasWarning === true）时，才在对应位置放置感叹号
+                // If JPS data indicates a warning/alert, place an exclamation mark (!) marker on the map
                 if (station.hasWarning) {
                     var warningIcon = L.divIcon({
                         className: 'warning-marker',
                         html: '!',
-                        iconSize: [24, 24],
-                        iconAnchor: [12, 12]
+                        iconSize: [26, 26],
+                        iconAnchor: [13, 13]
                     });
 
                     L.marker([station.lat, station.lng], { icon: warningIcon })
-                        .bindPopup('<div style="font-family: Arial; font-size: 13px;"><b style="color: #e74c3c;">⚠️ JPS Live Rainfall Warning</b><br><b>Station:</b> ' + station.name + '<br><b>Rainfall:</b> ' + station.rainfall + '<br><b>Status:</b> ' + station.status + '</div>')
+                        .bindPopup('<div style="font-family: Arial; font-size: 13px;"><b style="color:#e74c3c;">⚠️ JPS Rainfall Warning</b><br><b>Station:</b> ' + station.name + '<br><b>Rainfall:</b> ' + station.rainfall + '<br><b>Status:</b> ' + station.status + '</div>')
                         .addTo(warningLayerGroup);
                 }
 
@@ -235,7 +242,7 @@
             console.log("Synchronized Selangor Infobanjir live rainfall data:", liveStations);
         }
 
-        // 每隔 30 秒自动刷新一次，呈现实时动态效果
+        // Refresh every 30 seconds automatically for real-time effect
         setInterval(loadLiveRainfallData, 30000);
         loadLiveRainfallData();
     </script>
