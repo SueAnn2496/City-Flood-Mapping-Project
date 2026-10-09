@@ -1011,17 +1011,16 @@
         </div>
     </div>
 
-    <!-- 恢复的两个 Chart 图表 -->
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">Figure 4.1: Spatial Distribution of Urban Flood/Waterlogging Hotspots</h3>
-            <div style="position: relative; height: 280px; width: 100%;">
+            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📊 Reported Flood Cases by District (Jan–Jun 2025)</h3>
+            <div style="position: relative; height: 260px; width: 100%;">
                 <canvas id="spatialDistributionChart"></canvas>
             </div>
         </div>
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
-            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">Figure 4.2: Flood Risk Severity Level Breakdown by District</h3>
-            <div style="position: relative; height: 280px; width: 100%;">
+            <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📍 Reported Flood-Affected Areas by District (Jan–Jun 2025)</h3>
+            <div style="position: relative; height: 260px; width: 100%;">
                 <canvas id="districtRiskChart"></canvas>
             </div>
         </div>
@@ -1478,19 +1477,17 @@ document.getElementById("mapFrame").addEventListener("load", function() {
     setTimeout(function() { toggleGoogleSatellite(isChecked); }, 500);
 });
 
-// 初始化 Figure 4.1 和 Figure 4.2 图表数据
 window.addEventListener('DOMContentLoaded', () => {
-    // Figure 4.1: Spatial Distribution of Urban Flood/Waterlogging Hotspots
     const ctx1 = document.getElementById('spatialDistributionChart').getContext('2d');
     new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['Shah Alam', 'Petaling Jaya', 'Klang'],
+            labels: ['Klang', 'Shah Alam', 'Petaling Jaya'],
             datasets: [{
-                label: 'Number of Identified Flood Hotspots (2022-2026)',
-                data: [17, 15, 11],
-                backgroundColor: ['#1f4e78', '#3178c5', '#5b9bd5'],
-                borderRadius: 4
+                label: 'Reported flood cases (Jan–Jun 2025)',
+                data: [39, 28, 26],
+                backgroundColor: ['#2563eb', '#9333ea', '#60a5fa'],
+                borderRadius: 6
             }]
         },
         options: {
@@ -1498,79 +1495,27 @@ window.addEventListener('DOMContentLoaded', () => {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { 
-                    beginAtZero: true, 
-                    max: 20, 
-                    title: { display: true, text: 'Number of Identified Flood Hotspots (2022-2026)', font: { weight: 'bold' } },
-                    grid: { color: 'rgba(0,0,0,0.05)', borderDash: [4, 4] }
-                },
-                y: {
-                    title: { display: true, text: 'District / Region', font: { weight: 'bold' } },
-                    grid: { display: false }
-                }
+                x: { beginAtZero: true, max: 45, title: { display: true, text: 'Reported cases' } }
             },
-            plugins: { 
-                legend: { display: false },
-                tooltip: { enabled: true }
-            }
+            plugins: { legend: { display: false } }
         }
     });
 
-    // Figure 4.2: Flood Risk Severity Level Breakdown by District (Stacked Bar)
     const ctx2 = document.getElementById('districtRiskChart').getContext('2d');
     new Chart(ctx2, {
         type: 'bar',
         data: {
-            labels: ['Shah Alam', 'Petaling Jaya', 'Klang'],
+            labels: ['Klang', 'Shah Alam', 'Petaling Jaya'],
             datasets: [
-                {
-                    label: 'Class 5 (Very High)',
-                    data: [1, 1, 0],
-                    backgroundColor: '#b91c1c',
-                    borderRadius: 0
-                },
-                {
-                    label: 'Class 4 (High)',
-                    data: [2, 4, 1],
-                    backgroundColor: '#ea580c',
-                    borderRadius: 0
-                },
-                {
-                    label: 'Class 3 (Moderate)',
-                    data: [5, 5, 5],
-                    backgroundColor: '#fb923c',
-                    borderRadius: 0
-                },
-                {
-                    label: 'Class 2 (Low)',
-                    data: [9, 5, 5],
-                    backgroundColor: '#fed7aa',
-                    borderRadius: 0
-                }
+                { label: 'Flood-affected areas (Jan–Jun 2025)', data: [30, 22, 18], backgroundColor: ['#0f766e', '#a855f7', '#14b8a6'], borderRadius: 4 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { 
-                    stacked: true,
-                    title: { display: true, text: 'District / Region', font: { weight: 'bold' } },
-                    grid: { display: false }
-                },
-                y: { 
-                    stacked: true,
-                    beginAtZero: true,
-                    max: 18,
-                    title: { display: true, text: 'Number of Locations', font: { weight: 'bold' } },
-                    grid: { color: 'rgba(0,0,0,0.05)', borderDash: [4, 4] }
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: { boxWidth: 12, font: { size: 11 } }
-                }
+                x: { beginAtZero: true, title: { display: true, text: 'Reported areas' } },
+                y: { beginAtZero: true }
             }
         }
     });
