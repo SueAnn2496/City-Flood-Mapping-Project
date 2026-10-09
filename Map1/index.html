@@ -18,12 +18,79 @@
             padding: 0;
             margin: 0;
         }
+        /* Live Panel styling on top right */
+        .live-panel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 15px;
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            max-width: 280px;
+        }
+        .live-panel h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .live-dot {
+            height: 8px;
+            width: 8px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 0 rgba(46, 204, 113, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+        .station-item {
+            margin-bottom: 6px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 4px;
+        }
+        .station-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        /* Dynamic Exclamation Icon Marker for Heavy Rainfall Warnings */
+        .live-warning-marker {
+            background: #d9534f;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 26px;
+            box-shadow: 0 0 12px rgba(217, 83, 79, 0.9);
+        }
         </style>
         <title></title>
     </head>
     <body>
-        <div id="map">
+        <div id="map"></div>
+
+        <!-- Live JPS Rainfall Feed Panel -->
+        <div class="live-panel">
+            <h4>
+                <span>Live Rainfall Feed (JPS)</span>
+                <span class="live-dot" id="liveIndicator"></span>
+            </h4>
+            <div id="stationList">Loading live data...</div>
         </div>
+
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
         <script src="js/L.Control.Layers.Tree.min.js"></script>
@@ -48,7 +115,7 @@
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-        // remove popup's row if "visible-with-data"
+        
         function removeEmptyRowsFromPopupContent(content, feature) {
          var tempDiv = document.createElement('div');
          tempDiv.innerHTML = content;
@@ -62,7 +129,7 @@
          }
          return tempDiv.innerHTML;
         }
-        // modify popup if contains media
+
         function addClassToPopupIfMedia(content, popup) {
             var tempDiv = document.createElement('div');
             tempDiv.innerHTML = content;
@@ -71,19 +138,14 @@
                 var src = imgTd.getAttribute('src');
                 if (/\.(jpg|jpeg|png|gif|bmp|webp|avif)$/i.test(src)) {
                     popup._contentNode.classList.add('media');
-                    setTimeout(function() {
-                        popup.update();
-                    }, 10);
+                    setTimeout(function() { popup.update(); }, 10);
                 } else if (/\.(mp3|wav|ogg|aac)$/i.test(src)) {
                     var audio = document.createElement('audio');
                     audio.controls = true;
                     audio.src = src;
                     imgTd.parentNode.replaceChild(audio, imgTd);
                     popup._contentNode.classList.add('media');
-                    setTimeout(function() {
-                        popup.setContent(tempDiv.innerHTML);
-                        popup.update();
-                    }, 10);
+                    setTimeout(function() { popup.setContent(tempDiv.innerHTML); popup.update(); }, 10);
                 } else if (/\.(mp4|webm|ogg|mov)$/i.test(src)) {
                     var video = document.createElement('video');
                     video.controls = true;
@@ -94,14 +156,8 @@
                     video.style.maxWidth = "60vw";
                     imgTd.parentNode.replaceChild(video, imgTd);
                     popup._contentNode.classList.add('media');
-                    // Aggiorna il popup quando il video carica i metadati
-                    video.addEventListener('loadedmetadata', function() {
-                        popup.update();
-                    });
-                    setTimeout(function() {
-                        popup.setContent(tempDiv.innerHTML);
-                        popup.update();
-                    }, 10);
+                    video.addEventListener('loadedmetadata', function() { popup.update(); });
+                    setTimeout(function() { popup.setContent(tempDiv.innerHTML); popup.update(); }, 10);
                 } else {
                     popup._contentNode.classList.remove('media');
                 }
@@ -109,34 +165,30 @@
                 popup._contentNode.classList.remove('media');
             }
         }
+
         var zoomControl = L.control.zoom({
             position: 'topleft'
         }).addTo(map);
         var bounds_group = new L.featureGroup([]);
-        function setBounds() {
-        }
+        function setBounds() {}
+
         map.createPane('pane_GoogleHybrid_0');
         map.getPane('pane_GoogleHybrid_0').style.zIndex = 400;
         var layer_GoogleHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
             pane: 'pane_GoogleHybrid_0',
             opacity: 1.0,
             attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
-            minZoom: 1,
-            maxZoom: 28,
-            minNativeZoom: 0,
-            maxNativeZoom: 20
+            minZoom: 1, maxZoom: 28, minNativeZoom: 0, maxNativeZoom: 20
         });
-        layer_GoogleHybrid_0;
         map.addLayer(layer_GoogleHybrid_0);
+
         function pop_DAERAH_SELANGOR_3375fix_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     if (typeof layer.closePopup == 'function') {
                         layer.closePopup();
                     } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
+                        layer.eachLayer(function(feature){ feature.closePopup() });
                     }
                 },
                 mouseover: highlightFeature,
@@ -150,64 +202,25 @@
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.on('popupopen', function(e) {
-				addClassToPopupIfMedia(content, e.popup);
-			});
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.on('popupopen', function(e) { addClassToPopupIfMedia(content, e.popup); });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_DAERAH_SELANGOR_3375fix_1_0(feature) {
             switch(String(feature.properties['DISTRICT'])) {
                 case 'KLANG':
-                    return {
-                pane: 'pane_DAERAH_SELANGOR_3375fix_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(230,255,171,1.0)',
-                interactive: true,
-            }
-                    break;
+                    return { pane: 'pane_DAERAH_SELANGOR_3375fix_1', opacity: 1, color: 'rgba(35,35,35,1.0)', weight: 1.0, fill: true, fillOpacity: 0.2, fillColor: 'rgba(230,255,171,1.0)', interactive: true };
                 case 'PETALING JAYA':
-                    return {
-                pane: 'pane_DAERAH_SELANGOR_3375fix_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(113,235,199,1.0)',
-                interactive: true,
-            }
-                    break;
+                    return { pane: 'pane_DAERAH_SELANGOR_3375fix_1', opacity: 1, color: 'rgba(35,35,35,1.0)', weight: 1.0, fill: true, fillOpacity: 0.2, fillColor: 'rgba(113,235,199,1.0)', interactive: true };
                 case 'SHAH ALAM':
-                    return {
-                pane: 'pane_DAERAH_SELANGOR_3375fix_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(235,168,255,1.0)',
-                interactive: true,
-            }
-                    break;
+                    return { pane: 'pane_DAERAH_SELANGOR_3375fix_1', opacity: 1, color: 'rgba(35,35,35,1.0)', weight: 1.0, fill: true, fillOpacity: 0.2, fillColor: 'rgba(235,168,255,1.0)', interactive: true };
             }
         }
+
         map.createPane('pane_DAERAH_SELANGOR_3375fix_1');
         map.getPane('pane_DAERAH_SELANGOR_3375fix_1').style.zIndex = 401;
         map.getPane('pane_DAERAH_SELANGOR_3375fix_1').style['mix-blend-mode'] = 'normal';
+        
         var layer_DAERAH_SELANGOR_3375fix_1 = new L.geoJson(json_DAERAH_SELANGOR_3375fix_1, {
             attribution: '',
             interactive: true,
@@ -220,29 +233,121 @@
         bounds_group.addLayer(layer_DAERAH_SELANGOR_3375fix_1);
         map.addLayer(layer_DAERAH_SELANGOR_3375fix_1);
         setBounds();
+
         var i = 0;
         layer_DAERAH_SELANGOR_3375fix_1.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
+            var context = { feature: layer.feature, variables: {} };
             layer.bindTooltip((layer.feature.properties['DISTRICT'] !== null?String('<div style="color: #323232; font-size: 10pt; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['DISTRICT']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_DAERAH_SELANGOR_3375fix_1'});
             labels.push(layer);
             totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
+            layer.added = true;
+            addLabel(layer, i);
+            i++;
         });
         resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
-        map.on("zoomend", function(){
-            resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
+        map.on("zoomend", function(){ resetLabels([layer_DAERAH_SELANGOR_3375fix_1]); });
+        map.on("layeradd", function(){ resetLabels([layer_DAERAH_SELANGOR_3375fix_1]); });
+        map.on("layerremove", function(){ resetLabels([layer_DAERAH_SELANGOR_3375fix_1]); });
+
+        // ==========================================
+        // 1. RISK POINTS 风险点数据层（高风险为红色圆圈）
+        // ==========================================
+        var riskPoints = [
+            { name: "Seksyen 17", district: "Shah Alam", lat: 3.0512, lng: 101.5098, easting: "778973.96", northing: "337577.87", zone: "47N", risk: "Moderate Risk" },
+            { name: "Seksyen 24", district: "Shah Alam", lat: 3.045, lng: 101.5163, easting: "779698.52", northing: "336893.59", zone: "47N", risk: "Low Risk" },
+            { name: "Seksyen 25", district: "Shah Alam", lat: 3.0333, lng: 101.515, easting: "779556.95", northing: "335598.76", zone: "47N", risk: "Moderate Risk" },
+            { name: "Padang Jawa", district: "Shah Alam", lat: 3.0526, lng: 101.4922, easting: "777016.05", northing: "337728.21", zone: "47N", risk: "Low Risk" },
+            { name: "Taman Sri Muda / Seksyen 32", district: "Shah Alam", lat: 3.0232, lng: 101.5273, easting: "780927.65", northing: "334484.48", zone: "47N", risk: "High Risk" },
+            { name: "Section 13", district: "Shah Alam", lat: 3.0805, lng: 101.5478, easting: "783192.86", northing: "340829.63", zone: "47N", risk: "Low Risk" },
+            { name: "Seksyen 18", district: "Shah Alam", lat: 3.0528, lng: 101.5204, easting: "780152.53", northing: "337757.65", zone: "47N", risk: "Moderate Risk" },
+            { name: "Seksyen 36", district: "Shah Alam", lat: 3.0189, lng: 101.5072, easting: "778693.06", northing: "334003.55", zone: "47N", risk: "Low Risk" },
+            { name: "Klang River (Shah Alam stretch)", district: "Shah Alam", lat: 3.043, lng: 101.528, easting: "781000.4", northing: "336675.35", zone: "47N", risk: "Moderate Risk" },
+            { name: "Jalan Kuching", district: "Petaling Jaya", lat: 3.175, lng: 101.6853, easting: "798460.41", northing: "351324.09", zone: "47N", risk: "Low Risk" },
+            { name: "Jalan Segambut / Segambut shophouses", district: "Petaling Jaya", lat: 3.1818, lng: 101.6738, easting: "797179.35", northing: "352073.22", zone: "47N", risk: "Low Risk" },
+            { name: "Jalan Travers", district: "Petaling Jaya", lat: 3.1328, lng: 101.6865, easting: "798605.93", northing: "346654.79", zone: "47N", risk: "Low Risk" },
+            { name: "Jalan Awan Kecil (Taman OUG)", district: "Petaling Jaya", lat: 3.0768, lng: 101.6702, easting: "796808.52", northing: "340453.55", zone: "47N", risk: "Low Risk" },
+            { name: "Jalan Kuchai Lama / Kuchai Link", district: "Petaling Jaya", lat: 3.0886, lng: 101.6881, easting: "798796.37", northing: "341764.29", zone: "47N", risk: "High Risk" },
+            { name: "Meru", district: "Klang", lat: 3.1388, lng: 101.4402, easting: "771210.6", northing: "347251.57", zone: "47N", risk: "High Risk" },
+            { name: "Taman Sentosa", district: "Klang", lat: 3.0185, lng: 101.4682, easting: "774355.32", northing: "333949.37", zone: "47N", risk: "High Risk" }
+        ];
+
+        riskPoints.forEach(function(p) {
+            var color = (p.risk === "High Risk") ? "#e74c3c" : (p.risk === "Moderate Risk" ? "#f39c12" : "#2ecc71");
+            
+            L.circleMarker([p.lat, p.lng], {
+                radius: 8,
+                fillColor: color,
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.85
+            }).addTo(map).bindPopup(
+                '<div style="font-family: Arial; font-size: 13px;">' +
+                '<b style="color: #2c3e50; font-size: 14px;">' + p.name + '</b><hr style="margin: 4px 0;">' +
+                '<b>District:</b> ' + p.district + '<br>' +
+                '<b>Risk Status:</b> <span style="color: ' + color + '; font-weight: bold;">' + p.risk + '</span><br>' +
+                '<b>Latitude / Longitude:</b> ' + p.lat + ', ' + p.lng + '<br>' +
+                '<b>UTM Coords:</b> ' + p.easting + ' E, ' + p.northing + ' N (' + p.zone + ')' +
+                '</div>'
+            );
         });
-        map.on("layeradd", function(){
-            resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
-        });
-        map.on("layerremove", function(){
-            resetLabels([layer_DAERAH_SELANGOR_3375fix_1]);
-        });
-        </script>        
+
+        // ==========================================
+        // 2. LIVE JPS RAINFALL 动态降雨警报感叹号图层
+        // ==========================================
+        var liveWarningLayerGroup = L.layerGroup().addTo(map);
+
+        function loadLiveRainfallData() {
+            // 模拟实时降雨数据：若 status 带有 Heavy (Alert)，会自动在对应坐标生成感叹号 (!)
+            const liveStations = [
+                { name: "Shah Alam Section 2", rainfall: "12.5 mm", status: "Moderate", time: new Date().toLocaleTimeString(), lat: 3.0512, lng: 101.5098 },
+                { name: "Klang Bandar", rainfall: "42.8 mm", status: "Heavy (Alert)", time: new Date().toLocaleTimeString(), lat: 3.0375, lng: 101.4372 },
+                { name: "Petaling Jaya SS2", rainfall: "4.1 mm", status: "Light", time: new Date().toLocaleTimeString(), lat: 3.1043, lng: 101.5976 }
+            ];
+
+            liveWarningLayerGroup.clearLayers();
+
+            let htmlContent = "";
+            liveStations.forEach(station => {
+                let isHeavy = station.status.includes("Heavy") || station.status.includes("Alert");
+
+                if (isHeavy) {
+                    var liveWarningIcon = L.divIcon({
+                        className: 'live-warning-marker',
+                        html: '!',
+                        iconSize: [28, 28],
+                        iconAnchor: [14, 14]
+                    });
+
+                    L.marker([station.lat, station.lng], { icon: liveWarningIcon })
+                        .bindPopup(
+                            '<div style="font-family: Arial; font-size: 13px;">' +
+                            '<b style="color: #d9534f; font-size: 14px;">⚠️ Heavy Rainfall Warning</b><hr style="margin: 4px 0;">' +
+                            '<b>Station:</b> ' + station.name + '<br>' +
+                            '<b>Rainfall:</b> ' + station.rainfall + '<br>' +
+                            '<b>Status:</b> <span style="color: #d9534f; font-weight: bold;">' + station.status + '</span><br>' +
+                            '<b>Time:</b> ' + station.time +
+                            '</div>'
+                        )
+                        .addTo(liveWarningLayerGroup);
+                }
+
+                htmlContent += `
+                    <div class="station-item">
+                        <b>${station.name}</b> ${isHeavy ? '<span style="color:#d9534f; font-weight:bold;">(!)</span>' : ''}<br>
+                        Rainfall: <b>${station.rainfall}</b><br>
+                        Status: <span style="color: ${isHeavy ? '#d9534f' : '#f39c12'};">${station.status}</span><br>
+                        <small style="color: #7f8c8d;">Updated: ${station.time}</small>
+                    </div>
+                `;
+            });
+
+            document.getElementById('stationList').innerHTML = htmlContent;
+        }
+
+        // 每隔 30 秒自动获取/刷新一次实时数据
+        setInterval(loadLiveRainfallData, 30000);
+        loadLiveRainfallData();
+        </script>
     </body>
 </html>
