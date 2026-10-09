@@ -18,47 +18,29 @@
             padding: 0;
             margin: 0;
         }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
-            70% { box-shadow: 0 0 0 6px rgba(46, 204, 113, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        /* Legend styling */
+        .legend {
+            background: white;
+            padding: 10px 12px;
+            font: 13px/1.5 Arial, Helvetica, sans-serif;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            color: #333;
         }
-        .station-item {
-            margin-bottom: 6px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 4px;
-        }
-        .station-item:last-child {
-            margin-bottom: 0;
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        /* Dynamic Exclamation Icon Marker for Heavy Rainfall Warnings */
-        .live-warning-marker {
-            background: #d9534f;
-            border: 2px solid #fff;
+        .legend i {
+            width: 14px;
+            height: 14px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.85;
             border-radius: 50%;
-            color: white;
-            text-align: center;
-            font-weight: bold;
-            font-size: 15px;
-            line-height: 26px;
-            box-shadow: 0 0 12px rgba(217, 83, 79, 0.9);
         }
         </style>
         <title></title>
     </head>
     <body>
         <div id="map"></div>
-
-        <!-- Live JPS Rainfall Feed Panel -->
-        <div class="live-panel">
-            <h4>
-                <span>Live Rainfall Feed (JPS)</span>
-                <span class="live-dot" id="liveIndicator"></span>
-            </h4>
-            <div id="stationList">Loading live data...</div>
-        </div>
 
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
@@ -200,7 +182,7 @@
         map.on("layerremove", function(){ resetLabels([layer_DAERAH_SELANGOR_3375fix_1]); });
 
         // ==========================================
-        // 1. RISK POINTS 风险点数据层（高风险为红色圆圈）
+        // RISK POINTS 风险点数据层（高风险为红色圆圈）
         // ==========================================
         var riskPoints = [
             { name: "Seksyen 17", district: "Shah Alam", lat: 3.0512, lng: 101.5098, easting: "778973.96", northing: "337577.87", zone: "47N", risk: "Moderate Risk" },
@@ -241,11 +223,18 @@
                 '</div>'
             );
         });
-            document.getElementById('stationList').innerHTML = htmlContent;
-        }
 
-        setInterval(loadLiveRainfallData, 30000);
-        loadLiveRainfallData();
+        // Add Legend Control
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = '<b>Risk Legend</b><br>' +
+                '<i style="background: #e74c3c;"></i> High Risk<br>' +
+                '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
+                '<i style="background: #2ecc71;"></i> Low Risk';
+            return div;
+        };
+        legend.addTo(map);
         </script>
     </body>
 </html>
