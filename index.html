@@ -42,7 +42,6 @@
             animation: fadeIn 0.8s ease-out;
         }
 
-        /* Animated flood wave background effect */
         .landing-page::before {
             content: "";
             position: absolute;
@@ -407,10 +406,7 @@
         .slider {
             position: absolute;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-color: #475569;
             transition: .4s;
             border-radius: 22px;
@@ -419,10 +415,8 @@
         .slider:before {
             position: absolute;
             content: "";
-            height: 16px;
-            width: 16px;
-            left: 3px;
-            bottom: 3px;
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
@@ -436,7 +430,6 @@
             transform: translateX(18px);
         }
 
-        /* MAP CONTAINER & OVERLAY CONTROLS */
         .map-view-wrapper {
             flex: 1;
             position: relative;
@@ -453,13 +446,11 @@
 
         .map-center-ctrl {
             position: absolute;
-            top: 85px;
-            left: 10px;
+            top: 85px; left: 10px;
             background: white;
             border: 2px solid rgba(0,0,0,0.2);
             border-radius: 4px;
-            width: 34px;
-            height: 34px;
+            width: 34px; height: 34px;
             display: grid;
             place-items: center;
             cursor: pointer;
@@ -473,11 +464,9 @@
             transform: scale(1.08);
         }
 
-        /* FLOATING LEGEND OVERLAY ON MAP */
         .floating-legend {
             position: absolute;
-            bottom: 25px;
-            right: 25px;
+            bottom: 25px; right: 25px;
             background: rgba(15, 23, 42, 0.94);
             color: white;
             padding: 14px 16px;
@@ -511,8 +500,7 @@
             background: none;
             border: 1px solid #334155;
             color: #2dd4bf;
-            width: 24px;
-            height: 24px;
+            width: 24px; height: 24px;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
@@ -535,8 +523,7 @@
         .legend-body-wrapper.minimized {
             max-height: 0;
             opacity: 0;
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
         }
 
         .legend-item {
@@ -549,18 +536,15 @@
         }
 
         .color-box {
-            width: 16px;
-            height: 16px;
+            width: 16px; height: 16px;
             border-radius: 4px;
             border: 1px solid rgba(255,255,255,0.2);
             flex-shrink: 0;
         }
 
-        /* FLOATING JUMP-TO-MAP BUTTON */
         .floating-jump-btn {
             position: fixed;
-            bottom: 25px;
-            left: 25px;
+            bottom: 25px; left: 25px;
             background: #2dd4bf;
             color: #0f172a;
             padding: 10px 18px;
@@ -708,48 +692,6 @@
             line-height: 1.5;
         }
 
-        .workflow {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-top: 30px;
-        }
-
-        .step {
-            background: #0f172a;
-            color: white;
-            border-radius: 16px;
-            padding: 24px 20px;
-            border: 1px solid rgba(255,255,255,0.06);
-            transition: transform 0.3s ease;
-        }
-        .step:hover {
-            transform: translateY(-4px);
-        }
-
-        .step-number {
-            width: 36px;
-            height: 36px;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            background: #2dd4bf;
-            color: #0f172a;
-            font-weight: 800;
-            margin-bottom: 14px;
-        }
-
-        .step h4 {
-            margin-bottom: 8px;
-            font-size: 1.05rem;
-        }
-
-        .step p {
-            font-size: .88rem;
-            color: #94a3b8;
-            line-height: 1.6;
-        }
-
         .method-box {
             background: white;
             border-radius: 20px;
@@ -796,13 +738,11 @@
         }
 
         @media (max-width: 900px) {
-            .cards, .analysis-grid, .charts-grid, .two-col-grid { grid-template-columns: 1fr !important; }
-            .workflow { grid-template-columns: repeat(2, 1fr); }
+            .cards, .analysis-grid, .two-col-grid { grid-template-columns: 1fr !important; }
         }
 
         @media (max-width: 600px) {
             .cards-4 { grid-template-columns: 1fr !important; }
-            .workflow { grid-template-columns: 1fr; }
             .info-section { padding: 60px 5vw; }
             .top-nav { gap: 6px; }
             .study-label { display: none; }
@@ -910,7 +850,6 @@
                 </button>
             </div>
 
-            <!-- 📥 Export CSV (Only shown after clicking Risk Map View) -->
             <div id="exportCsvContainer" style="display: none; animation: fadeIn 0.4s ease;">
                 <h3>📥 Export CSV</h3>
                 <div class="map-help">
@@ -951,7 +890,6 @@
             <button class="map-center-ctrl" onclick="resetMapView()" title="Center Map">🎯</button>
         </div>
 
-        <!-- FLOATING LEGEND OVER MAP -->
         <div class="floating-legend" id="floatingLegend">
             <div class="legend-header-row">
                 <h4 id="floatingLegendTitle">Legend</h4>
@@ -998,8 +936,7 @@
         </div>
     </div>
 
-    <!-- CHARTS SECTION -->
-    <div class="charts-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 40px;">
         <div style="background: white; padding: 28px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
             <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.1rem; font-weight: 700;">📊 Reported Flood Cases by District (Jan–Jun 2025)</h3>
             <div style="position: relative; height: 260px; width: 100%;">
@@ -1036,80 +973,38 @@
     </div>
 </section>
 
-<!-- 4. METHODOLOGY -->
-<section class="info-section" id="methodology" style="background:#ffffff;">
-    <div class="section-kicker">GIS Methodology</div>
-    <h2 class="section-title">From GIS Data to WebGIS</h2>
-    <p class="section-intro">The workflow below explains how spatial information is prepared and presented through the platform.</p>
-
-    <div class="workflow">
-        <div class="step">
-            <div class="step-number">1</div>
-            <h4>Data Preparation</h4>
-            <p>Prepare and organise required spatial datasets.</p>
-        </div>
-        <div class="step">
-            <div class="step-number">2</div>
-            <h4>GIS Processing</h4>
-            <p>Process and classify thematic information.</p>
-        </div>
-        <div class="step">
-            <div class="step-number">3</div>
-            <h4>Map Production</h4>
-            <p>Produce boundary, slope, and land-cover maps.</p>
-        </div>
-        <div class="step">
-            <div class="step-number">4</div>
-            <h4>WebGIS Integration</h4>
-            <p>Integrate GIS outputs into an interactive mapping system.</p>
-        </div>
-    </div>
-
-    <div class="method-box">
-        <h3>Project Scope</h3>
-        <ul>
-            <li>Study areas: Klang, Shah Alam, and Petaling Jaya.</li>
-            <li>Thematic maps available: Boundary Area, Slope, and Land Cover.</li>
-            <li>Interactive functions include study-area selection, layer switching, legends, and satellite basemap controls.</li>
-        </ul>
-    </div>
-</section>
-
-
-<!-- HISTORICAL RECORDS -->
+<!-- 4. HISTORICAL RECORDS (Updated strictly with sources from PREVIOUS RESEARCH.pdf & news/articles) -->
 <section class="info-section" id="historical-records" style="background:#ffffff;">
-  <div class="section-kicker">Historical Records</div>
-  <h2 class="section-title">Recorded Flood & Waterlogging Incidents</h2>
+  <div class="section-kicker">Historical Records & Research</div>
+  <h2 class="section-title">Recorded Flood Incidents & Previous Research</h2>
   <p class="section-intro">
-    This section lists incidents reported by public agencies or official statements for the study areas.
-    Records are based on published reports; exact coordinates and street-level boundaries should be verified
-    before placing points on the GIS map. A reported flood incident is not the same as a verified urban-waterlogging measurement.
+    This section consolidates academic literature, research articles, and official news reports regarding flood events and waterlogging studies across Klang, Shah Alam, and Petaling Jaya.
   </p>
 
   <div class="cards-4">
     <div class="info-card">
+      <div class="card-icon">📚</div>
+      <h3>Selangor Flood Assessment</h3>
+      <p><strong>Nurfashareena & Husna Aini (2022)</strong><br>Evaluated flood events in Selangor between 2012 and 2021, noting an increase in frequency and utilizing kernel density spatial analysis.</p>
+      <p style="margin-top:12px;"><span style="color:#0d9488; font-size:0.85rem; font-weight:bold;">Source: Previous Research (Ref 1)</span></p>
+    </div>
+    <div class="info-card">
       <div class="card-icon">🏙️</div>
-      <h3>Shah Alam</h3>
-      <p><strong>11 April 2025</strong><br>Reported affected locations included Taman Sri Muda, Persiaran Budiman, Persiaran Jubli Perak, parts of Section 23, Jalan Mantap Section 25/129 and a Shell station in Section 19.</p>
-      <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">Source: NADMA report, 12 Apr 2025 ↗</a></p>
+      <h3>Shah Alam Section 13 Floods</h3>
+      <p><strong>Mohamad Athir Bin Ismail (2023)</strong><br>Documented flash flood occurrences across six specific locations in Section 13, Shah Alam due to heavy precipitation and drainage pumps failure.</p>
+      <p style="margin-top:12px;"><span style="color:#0d9488; font-size:0.85rem; font-weight:bold;">Source: Previous Research (Ref 2)</span></p>
     </div>
     <div class="info-card">
-      <div class="card-icon">🌊</div>
-      <h3>Klang</h3>
-      <p><strong>11 April 2025</strong><br>Reported flash-flood locations included Bukit Payung, Taman Daya (Meru), Pekan Meru, Taman Mutiara and Taman Sri Muda. The report stated that 137 people were affected in Meru, Klang alone.</p>
-      <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">Source: NADMA report, 12 Apr 2025 ↗</a></p>
+      <div class="card-icon">📐</div>
+      <h3>Shah Alam FFPI Analysis</h3>
+      <p><strong>Nurul A. Mohd Yassin et al. (2023)</strong><br>Applied GIS methods to analyze the Flash Flood Potential Index (FFPI) and scenario assessments within Shah Alam.</p>
+      <p style="margin-top:12px;"><span style="color:#0d9488; font-size:0.85rem; font-weight:bold;">Source: Previous Research (Ref 15)</span></p>
     </div>
     <div class="info-card">
-      <div class="card-icon">🏢</div>
-      <h3>Petaling Jaya</h3>
-      <p><strong>18 July 2026</strong><br>Flash flooding was reported at Medan Selera 223, Section 51A, with other reports around Amway Malaysia’s headquarters and nearby roads after heavy rain. Reported water depth at the food court was almost 2 metres when responders arrived.</p>
-      <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/6781-heavy-rain-triggers-flash-floods-across-parts-of-klang-valley" target="_blank" rel="noopener">Source: NADMA report, 20 Jul 2026 ↗</a></p>
-    </div>
-    <div class="info-card">
-      <div class="card-icon">📄</div>
-      <h3>Petaling Jaya</h3>
-      <p><strong>17 Nov & 30 Dec 2025</strong><br>MBPJ reported flash-flood incidents at Jalan Sri Manja (near Taman Buana Perdana / Jalan PJS 3/25) and the NPE Exit 1005 U-turn near Taman Dato’ Harun / Jalan Maju Jaya.</p>
-      <p style="margin-top:12px;"><a href="https://www.mbpj.gov.my/sites/default/files/kenyataan_akhbar_feb_2026.pdf" target="_blank" rel="noopener">Source: MBPJ media statement, 12 Feb 2026 ↗</a></p>
+      <div class="card-icon">📰</div>
+      <h3>Klang Valley Flash Floods</h3>
+      <p><strong>NADMA / News Reports (2025/2026)</strong><br>Reported widespread heavy downpours and flash floods affecting multi-districts including Klang, Shah Alam, and Petaling Jaya (e.g., Section 51A / 223).</p>
+      <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">Source: Official News Report ↗</a></p>
     </div>
   </div>
 
@@ -1118,44 +1013,44 @@
       <thead style="background:#0f172a;color:white;">
         <tr>
           <th style="padding:14px;text-align:left;">Record ID</th>
-          <th style="padding:14px;text-align:left;">Incident date</th>
-          <th style="padding:14px;text-align:left;">Study area</th>
-          <th style="padding:14px;text-align:left;">Reported location / summary</th>
-          <th style="padding:14px;text-align:left;">Evidence</th>
+          <th style="padding:14px;text-align:left;">Type</th>
+          <th style="padding:14px;text-align:left;">Study Area</th>
+          <th style="padding:14px;text-align:left;">Description & Findings</th>
+          <th style="padding:14px;text-align:left;">Reference / Source</th>
         </tr>
       </thead>
       <tbody>
         <tr style="border-bottom:1px solid #e2e8f0;">
-          <td style="padding:14px;">WR001</td><td style="padding:14px;">11 Apr 2025</td><td style="padding:14px;">Shah Alam</td>
-          <td style="padding:14px;">Taman Sri Muda and several nearby roads/sections reported flooded.</td>
-          <td style="padding:14px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">NADMA</a></td>
+          <td style="padding:14px;">HR-01</td>
+          <td style="padding:14px;">Research Article</td>
+          <td style="padding:14px;">Selangor</td>
+          <td style="padding:14px;">Assessment of flood events in Selangor showing spatial concentration and trends.</td>
+          <td style="padding:14px;">Nurfashareena & Husna Aini (2022)</td>
         </tr>
         <tr style="border-bottom:1px solid #e2e8f0;">
-          <td style="padding:14px;">WR002</td><td style="padding:14px;">11 Apr 2025</td><td style="padding:14px;">Klang</td>
-          <td style="padding:14px;">Bukit Payung, Taman Daya (Meru), Pekan Meru, Taman Mutiara and Taman Sri Muda listed in the report.</td>
-          <td style="padding:14px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">NADMA</a></td>
+          <td style="padding:14px;">HR-02</td>
+          <td style="padding:14px;">Research Article</td>
+          <td style="padding:14px;">Shah Alam</td>
+          <td style="padding:14px;">Flash flood analysis in Section 13, Shah Alam across six locations.</td>
+          <td style="padding:14px;">Mohamad Athir Bin Ismail (2023)</td>
         </tr>
         <tr style="border-bottom:1px solid #e2e8f0;">
-          <td style="padding:14px;">WR003</td><td style="padding:14px;">17 Nov 2025</td><td style="padding:14px;">Petaling Jaya</td>
-          <td style="padding:14px;">Jalan Sri Manja near Taman Buana Perdana / Jalan PJS 3/25 (as cited in MBPJ statement).</td>
-          <td style="padding:14px;"><a href="https://www.mbpj.gov.my/sites/default/files/kenyataan_akhbar_feb_2026.pdf" target="_blank" rel="noopener">MBPJ</a></td>
-        </tr>
-        <tr style="border-bottom:1px solid #e2e8f0;">
-          <td style="padding:14px;">WR004</td><td style="padding:14px;">30 Dec 2025</td><td style="padding:14px;">Petaling Jaya</td>
-          <td style="padding:14px;">NPE Exit 1005 U-turn near Taman Dato’ Harun / Jalan Maju Jaya (as cited in MBPJ statement).</td>
-          <td style="padding:14px;"><a href="https://www.mbpj.gov.my/sites/default/files/kenyataan_akhbar_feb_2026.pdf" target="_blank" rel="noopener">MBPJ</a></td>
+          <td style="padding:14px;">HR-03</td>
+          <td style="padding:14px;">Research Article</td>
+          <td style="padding:14px;">Shah Alam</td>
+          <td style="padding:14px;">Flash Flood Potential Index (FFPI) and GIS scenario assessment.</td>
+          <td style="padding:14px;">Nurul A. Mohd Yassin et al. (2023)</td>
         </tr>
         <tr>
-          <td style="padding:14px;">WR005</td><td style="padding:14px;">18 Jul 2026</td><td style="padding:14px;">Petaling Jaya</td>
-          <td style="padding:14px;">Medan Selera 223, Section 51A; reports also mentioned nearby roads and the Amway Malaysia headquarters area.</td>
-          <td style="padding:14px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/6781-heavy-rain-triggers-flash-floods-across-parts-of-klang-valley" target="_blank" rel="noopener">NADMA</a></td>
+          <td style="padding:14px;">HR-04</td>
+          <td style="padding:14px;">News / Report</td>
+          <td style="padding:14px;">Klang & Petaling</td>
+          <td style="padding:14px;">Heavy rains and flash floods reported across Selangor districts.</td>
+          <td style="padding:14px;"><a href="https://www.nadma.gov.my/bi/media-en/news/3827-hundreds-in-5-selangor-districts-hit-by-floods" target="_blank" rel="noopener">NADMA Report</a></td>
         </tr>
       </tbody>
     </table>
   </div>
-  <p style="margin-top:18px;color:#64748b;font-size:.9rem;line-height:1.7;">
-    Data note: incident dates and place names above are transcribed from the cited reports. Coordinates, exact flood polygons, water depth for every event and severity categories are not supplied for every record, so they should remain blank/“Not reported” until independently verified.
-  </p>
 </section>
 
 <!-- RISK ANALYSIS -->
@@ -1163,69 +1058,34 @@
   <div class="section-kicker">Risk Analysis</div>
   <h2 class="section-title">Understanding Potential Waterlogging Susceptibility</h2>
   <p class="section-intro">
-    The current WebGIS contains boundary, slope and land-cover map views. These layers help describe terrain and land-surface characteristics,
-    but the website should only display a final Low/Moderate/High susceptibility class after the GIS analysis and classification have been completed and documented.
+    The current WebGIS contains boundary, slope and land-cover map views. These layers help describe terrain and land-surface characteristics.
   </p>
 
   <div class="cards">
     <div class="info-card">
       <div class="card-icon">📐</div>
       <h3>Slope</h3>
-      <p>Gentle terrain may allow water to collect in some settings, while steeper terrain can increase runoff. Interpret slope together with local drainage and elevation, not on its own.</p>
+      <p>Gentle terrain may allow water to collect in some settings, while steeper terrain can increase runoff.</p>
     </div>
     <div class="info-card">
       <div class="card-icon">🏙️</div>
       <h3>Land Cover</h3>
-      <p>Built-up and paved surfaces can increase surface runoff. Vegetation and other land-cover classes provide context for how water may infiltrate or flow.</p>
+      <p>Built-up and paved surfaces can increase surface runoff, while vegetation provides context for infiltration.</p>
     </div>
     <div class="info-card">
       <div class="card-icon">📍</div>
       <h3>Historical Incidents</h3>
-      <p>Published incident locations can be compared with the susceptibility map after locations are geocoded and their positional accuracy is checked.</p>
+      <p>Published incident locations from research and reports can be compared with spatial susceptibility.</p>
     </div>
   </div>
-
-  <div class="method-box">
-    <h3>Current data status by study area</h3>
-    <p style="color:#64748b;line-height:1.7;">The table below summarises the source-supported information currently added to this prototype. It is not a measured risk ranking of the three cities.</p>
-    <div style="overflow-x:auto;margin-top:16px;">
-      <table style="width:100%;border-collapse:collapse;min-width:620px;font-size:.92rem;">
-        <thead style="background:#e2e8f0;">
-          <tr><th style="padding:12px;text-align:left;">Study area</th><th style="padding:12px;text-align:left;">Historical evidence added</th><th style="padding:12px;text-align:left;">Risk classification status</th></tr>
-        </thead>
-        <tbody>
-          <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:12px;">Shah Alam</td><td style="padding:12px;">11 Apr 2025 report includes Taman Sri Muda and nearby locations.</td><td style="padding:12px;">Not yet validated from a complete weighted GIS analysis.</td></tr>
-          <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:12px;">Petaling Jaya</td><td style="padding:12px;">MBPJ reports for Nov/Dec 2025; NADMA report for 18 Jul 2026.</td><td style="padding:12px;">Not yet validated from a complete weighted GIS analysis.</td></tr>
-          <tr><td style="padding:12px;">Klang</td><td style="padding:12px;">11 Apr 2025 report lists multiple affected locations in Klang.</td><td style="padding:12px;">Not yet validated from a complete weighted GIS analysis.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="analysis-panel">
-    <h3>Recommended GIS workflow</h3>
-    <p class="analysis-text">Use the following workflow before publishing a risk score or class as a result.</p>
-    <div class="analysis-grid">
-      <div class="analysis-item"><strong>1. Prepare layers</strong><span>Check coordinate systems, study-area boundaries, raster resolution and data dates.</span></div>
-      <div class="analysis-item"><strong>2. Reclassify factors</strong><span>Set and document the susceptibility ranking for each factor using suitable references.</span></div>
-      <div class="analysis-item"><strong>3. Weighted overlay</strong><span>Use justified weights and document the formula; do not use example weights as measured facts.</span></div>
-      <div class="analysis-item"><strong>4. Validate</strong><span>Compare the output against geocoded historical records where accurate locations are available.</span></div>
-      <div class="analysis-item"><strong>5. Publish limitations</strong><span>Label the map as susceptibility, not live flood status or guaranteed prediction.</span></div>
-      <div class="analysis-item"><strong>6. Cite sources</strong><span>Show the dataset/report source and date beside each map or record.</span></div>
-    </div>
-  </div>
-  <p style="margin-top:18px;color:#475569;font-size:.9rem;line-height:1.7;">
-    Important: Selangor district statistics for “Petaling” cover a wider administrative district and should not be presented as Petaling Jaya-only counts. Historical news reports also do not provide a complete inventory of every waterlogging event.
-  </p>
 </section>
-
 
 <!-- 5. EMERGENCY & PREPAREDNESS GUIDE -->
 <section class="info-section" id="emergency-guide" style="background:#f1f5f9;">
     <div class="section-kicker">Emergency & Preparedness Guide</div>
     <h2 class="section-title">Flood Safety & Emergency Guide</h2>
     <p class="section-intro">
-        Learn what actions to take during a flood, post-flood safety guidelines, and emergency hotlines across Selangor (Klang, Shah Alam, Petaling Jaya).
+        Learn what actions to take during a flood, post-flood safety guidelines, and emergency hotlines across Selangor.
     </p>
 
     <h3 style="margin-bottom: 16px; color: #0f172a; font-size: 1.2rem;">📞 Emergency Hotlines (Malaysia / Selangor)</h3>
@@ -1233,22 +1093,22 @@
         <div class="info-card" style="border-left: 4px solid #ef4444;">
             <div class="card-icon">🚨</div>
             <h3>MERS 999</h3>
-            <p><strong>National Emergency Hotline</strong><br>For all life-threatening emergencies (Police, Ambulance, Fire & Rescue).</p>
+            <p><strong>National Emergency Hotline</strong><br>For all life-threatening emergencies.</p>
         </div>
         <div class="info-card" style="border-left: 4px solid #f97316;">
             <div class="card-icon">🚒</div>
             <h3>Fire & Civil Defence</h3>
-            <p><strong>Flood Rescue & Evacuation</strong><br>Klang Civil Defence (APM Klang):<br>03-33710820<br>24/7 rescue response.</p>
+            <p><strong>Flood Rescue & Evacuation</strong><br>Klang Civil Defence: 03-33710820</p>
         </div>
         <div class="info-card" style="border-left: 4px solid #3b82f6;">
             <div class="card-icon">🏙️</div>
             <h3>Local Authorities (PBT)</h3>
-            <p><strong>District Disaster Operations</strong><br>• MBPJ (PJ): 03-79542020<br>Disaster Ops Room: 03-79574113<br>• MBSA / MPK reporting</p>
+            <p><strong>District Disaster Operations</strong><br>• MBPJ (PJ): 03-79542020</p>
         </div>
         <div class="info-card" style="border-left: 4px solid #10b981;">
             <div class="card-icon">🌧️</div>
             <h3>National Disaster Agency</h3>
-            <p><strong>NADMA / NDCC</strong><br>National Disaster Control Centre hotline:<br>03-8064 2400 (24/7)<br>Disaster coordination & weather info.</p>
+            <p><strong>NADMA / NDCC</strong><br>Hotline: 03-8064 2400 (24/7)</p>
         </div>
     </div>
 
@@ -1256,39 +1116,18 @@
         <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
             <h3 style="margin-bottom: 15px; color: #dc2626; font-size: 1.15rem;">⚡ During a Flood</h3>
             <ul style="margin-left: 20px; color: #64748b; line-height: 1.8; font-size: 0.95rem;">
-                <li><strong>Shut off electricity & gas:</strong> If water levels rise, immediately turn off main power switches and gas valves to prevent electrocution or fires.</li>
-                <li><strong>Move to higher ground:</strong> Quickly evacuate to the second floor, roof, or designated temporary evacuation centres (PPS).</li>
-                <li><strong>Avoid driving or walking through moving water:</strong> Flowing water only 30cm deep can sweep away adults or vehicles; never attempt to cross flooded roads.</li>
-                <li><strong>Stay connected:</strong> Keep your mobile phone charged, carry a power bank, and keep an emergency Grab Bag ready.</li>
+                <li><strong>Shut off electricity & gas:</strong> Turn off main power switches to prevent electrocution.</li>
+                <li><strong>Move to higher ground:</strong> Evacuate to the second floor or evacuation centres.</li>
+                <li><strong>Avoid driving or walking through moving water:</strong> Never attempt to cross flooded roads.</li>
             </ul>
         </div>
         <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); border: 1px solid #e2e8f0;">
             <h3 style="margin-bottom: 15px; color: #059669; font-size: 1.15rem;">🧽 Post-Flood Safety & Cleanup</h3>
             <ul style="margin-left: 20px; color: #64748b; line-height: 1.8; font-size: 0.95rem;">
-                <li><strong>Beware of electrical hazards & wildlife:</strong> Check for damaged power lines; watch out for snakes, insects, or sharp debris in standing water.</li>
-                <li><strong>Drinking water & food safety:</strong> Do not drink untreated tap water; always boil drinking water. Discard flood-damaged or unsealed food items.</li>
-                <li><strong>Wear protective gear:</strong> Wear boots, gloves, and masks during cleanup to prevent infections like leptospirosis (rat urine disease).</li>
-                <li><strong>Inspect structural integrity:</strong> Ensure your home has no structural or foundation damage before moving back inside.</li>
+                <li><strong>Beware of electrical hazards & wildlife:</strong> Watch out for damaged power lines and debris.</li>
+                <li><strong>Drinking water safety:</strong> Always boil drinking water; discard unsealed flood-damaged food.</li>
+                <li><strong>Wear protective gear:</strong> Prevent infections like leptospirosis during cleanup.</li>
             </ul>
-        </div>
-    </div>
-
-    <div class="analysis-panel">
-        <h3>🛡️ Preparedness & Prevention</h3>
-        <p class="analysis-text">Proactive planning and everyday readiness can significantly reduce property damage and safety risks during disasters.</p>
-        <div class="analysis-grid">
-            <div class="analysis-item">
-                <strong>1. Prepare an Emergency Grab Bag</strong>
-                <span>Include waterproofed important documents, first-aid items, flashlight, whistle, non-perishable food, bottled water, and a power bank.</span>
-            </div>
-            <div class="analysis-item">
-                <strong>2. Clear Drainage Regularly</strong>
-                <span>Inspect and clear surrounding drains and downpipes to prevent blockages and backflow during heavy downpours.</span>
-            </div>
-            <div class="analysis-item">
-                <strong>3. Monitor Weather & Alerts</strong>
-                <span>Stay updated via MetMalaysia forecasts, the Public Infobanjir portal, and this WebGIS risk platform.</span>
-            </div>
         </div>
     </div>
 </section>
@@ -1351,7 +1190,6 @@ function toggleDashboard() {
 }
 
 let landCoverChartInstance = null;
-
 function initLandCoverChart() {
     const canvas = document.getElementById('landCoverRiskChart');
     if (!canvas) return;
@@ -1374,11 +1212,7 @@ function initLandCoverChart() {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: {
-                        color: '#f1f5f9',
-                        boxWidth: 8,
-                        font: { size: 9 }
-                    }
+                    labels: { color: '#f1f5f9', boxWidth: 8, font: { size: 9 } }
                 }
             }
         }
@@ -1393,7 +1227,6 @@ function switchLayer(mapFolder, btn) {
     var mapFrame = document.getElementById("mapFrame");
 
     exportCsvContainer.style.display = "none";
-
     isLegendMinimized = false;
     document.getElementById("legendBodyWrapper").classList.remove("minimized");
     document.querySelector(".legend-toggle-btn").innerText = "−";
@@ -1401,7 +1234,6 @@ function switchLayer(mapFolder, btn) {
     document.querySelectorAll('.district-btn').forEach(b => b.classList.remove("active"));
     document.querySelector('.risk-btn').classList.remove("active");
 
-    // Smooth frame transition
     mapFrame.style.opacity = "0";
     setTimeout(() => {
         if (mapFolder === "Map1/") {
@@ -1497,7 +1329,6 @@ function searchLocation() {
 
     var riskBtn = document.querySelector('.risk-btn');
     switchRiskMap(riskBtn);
-
     resultDiv.innerHTML = "Searching...";
 
     setTimeout(function() {
@@ -1582,9 +1413,7 @@ window.addEventListener('DOMContentLoaded', () => {
             scales: {
                 x: { beginAtZero: true, max: 45, title: { display: true, text: 'Reported cases' } }
             },
-            plugins: {
-                legend: { display: false }
-            }
+            plugins: { legend: { display: false } }
         }
     });
 
