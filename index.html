@@ -253,11 +253,35 @@
             z-index: 900;
             overflow-y: auto;
             border-right: 1px solid rgba(255,255,255,0.08);
+            position: relative;
         }
 
         .sidebar.collapsed {
             margin-left: -310px;
             opacity: 0.2;
+        }
+
+        /* 侧边栏收起箭头按钮 */
+        .sidebar-collapse-arrow {
+            position: absolute;
+            top: 20px;
+            right: 15px;
+            background: #1e293b;
+            color: #2dd4bf;
+            border: 1px solid rgba(255,255,255,0.15);
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .sidebar-collapse-arrow:hover {
+            background: #2dd4bf;
+            color: #0f172a;
         }
 
         .sidebar h3 {
@@ -267,6 +291,7 @@
             border-bottom: 2px solid #1e293b;
             padding-bottom: 8px;
             font-weight: 700;
+            padding-right: 30px; /* 留出箭头空间 */
         }
 
         .map-help {
@@ -646,19 +671,6 @@
             box-shadow: 0 16px 35px rgba(15, 23, 42, 0.1);
         }
 
-        .card-number-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #f1f5f9;
-            color: #0f172a;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 12px;
-            border: 1px solid #cbd5e1;
-        }
-
         .card-icon {
             font-size: 2rem;
             margin-bottom: 14px;
@@ -871,6 +883,9 @@
 
     <div class="workspace">
         <div class="sidebar" id="sidebar">
+            <!-- 侧边栏收起箭头 -->
+            <button class="sidebar-collapse-arrow" onclick="toggleDashboard()" title="Collapse Dashboard">❮</button>
+
             <h3>🔍 Area Risk Search</h3>
             <div class="search-box-container">
                 <div style="font-size: 0.8rem; color: #94a3b8;">Type region to check risk status:</div>
@@ -1085,22 +1100,21 @@
   </div>
 </section>
 
-<!-- 4. HISTORICAL RECORDS & NEWS ARCHIVE (Numbered & New to Old) -->
+<!-- 4. HISTORICAL RECORDS & NEWS ARCHIVE (New to Old, Clean Layout) -->
 <section class="info-section" id="historical-records" style="background:#ffffff;">
   <div class="section-kicker" style="display: flex; align-items: center; gap: 10px;">
       Historical Records & News Database 
-      <span style="background:#ef4444; color:white; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:bold;">12 Total News (1 New)</span>
+      <span style="background:#ef4444; color:white; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:bold;">1 New Update</span>
   </div>
   <h2 class="section-title">Recorded Flood Incidents & News Archive</h2>
   <p class="section-intro">
-    Explore collected news reports, official statements, and academic articles regarding flood events across Klang, Shah Alam, and Petaling Jaya, ordered from newest to oldest with dynamic numbering.
+    Explore collected news reports, official statements, and academic articles regarding flood events across Klang, Shah Alam, and Petaling Jaya, ordered from newest to oldest.
   </p>
 
   <div class="cards-4" id="newsGrid">
-      <!-- 1 -->
+      <!-- 1. 最新 (Newest) -->
       <div class="info-card" style="border-top: 4px solid #ef4444;">
-          <div class="card-number-badge">#1</div>
-          <div style="font-size:0.72rem; font-weight:bold; color:#ef4444; margin-bottom:4px;">NEW UPDATE (2026)</div>
+          <div style="font-size:0.75rem; font-weight:bold; color:#ef4444; margin-bottom:6px;">NEW UPDATE (2026)</div>
           <div class="card-icon">🚨</div>
           <h3>Selangor MB Orders Urgent Action</h3>
           <p><strong>20 July 2026</strong><br>Selangor state government steps up drainage improvement following recent flash floods in Petaling Jaya and Klang.</p>
@@ -1108,7 +1122,6 @@
       </div>
       <!-- 2 -->
       <div class="info-card">
-          <div class="card-number-badge">#2</div>
           <div class="card-icon">🌊</div>
           <h3>Klang Valley Flash Floods</h3>
           <p><strong>24 November 2025</strong><br>Morning downpour triggers widespread flash floods across multiple Klang Valley areas.</p>
@@ -1116,7 +1129,6 @@
       </div>
       <!-- 3 -->
       <div class="info-card">
-          <div class="card-number-badge">#3</div>
           <div class="card-icon">📰</div>
           <h3>Flash Floods in Klang & Shah Alam</h3>
           <p><strong>11 April 2025</strong><br>Temporary relief shelters set up in Klang and Shah Alam following heavy downpours.</p>
@@ -1124,65 +1136,56 @@
       </div>
       <!-- 4 -->
       <div class="info-card">
-          <div class="card-number-badge">#4</div>
           <div class="card-icon">📄</div>
           <h3>1,000 Displaced in Districts</h3>
           <p><strong>NADMA Report</strong><br>Over 1,000 residents displaced by floods across Petaling and Klang districts.</p>
           <p style="margin-top:12px;"><a href="https://www.nadma.gov.my/bm/media-2/berita/3849-1-000-displaced-by-floods-in-petaling-klang-districts" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
 
-      <!-- Hidden Initially (#5 to #12) -->
+      <!-- Hidden Initially (Extra News) -->
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-number-badge">#5</div>
           <div class="card-icon">🌧️</div>
           <h3>Heavy Rain Triggers Floods</h3>
           <p><strong>The Vibes Report</strong><br>Heavy rain triggers flash floods across five districts in Selangor.</p>
           <p style="margin-top:12px;"><a href="https://www.thevibes.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-number-badge">#6</div>
           <div class="card-icon">📰</div>
           <h3>Oriental Daily News Coverage</h3>
           <p><strong>11 April 2025</strong><br>Central region flash flood coverage and emergency updates in Chinese.</p>
           <p style="margin-top:12px;"><a href="https://www.orientaldaily.com.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-number-badge">#7</div>
           <div class="card-icon">🌊</div>
           <h3>Astro Awani Report</h3>
           <p><strong>Amirudin Statement</strong><br>Banjir Kuala Selangor dan punca takungan banjir kilat di Meru.</p>
           <p style="margin-top:12px;"><a href="https://www.astroawani.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read News ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-number-badge">#8</div>
           <div class="card-icon">🌐</div>
           <h3>SERI Flood Management</h3>
           <p><strong>SERI Report</strong><br>Socio-economic research and flood management strategies for Selangor.</p>
           <p style="margin-top:12px;"><a href="https://www.seri.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-number-badge">#9</div>
           <div class="card-icon">📚</div>
           <h3>UiTM Institutional Repository</h3>
           <p><strong>Research Publication</strong><br>Academic studies on flood susceptibility and urban planning in Selangor.</p>
           <p style="margin-top:12px;"><a href="https://ir.uitm.edu.my" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-number-badge">#10</div>
           <div class="card-icon">📊</div>
           <h3>The Great Klang Valley Flood</h3>
           <p><strong>Estate123 Insight</strong><br>Short summary and analysis of the 2021/2022 Klang Valley flood events.</p>
           <p style="margin-top:12px;"><a href="https://insight.estate123.com" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Article ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-number-badge">#11</div>
           <div class="card-icon">📄</div>
           <h3>ReliefWeb Final Report</h3>
           <p><strong>DREF Operation Report</strong><br>Malaysia flash floods operation final report and humanitarian response.</p>
           <p style="margin-top:12px;"><a href="https://reliefweb.int" target="_blank" rel="noopener" style="color:#0d9488; font-weight:bold; text-decoration:none;">Read Report ↗</a></p>
       </div>
       <div class="info-card extra-news" style="display:none;">
-          <div class="card-number-badge">#12</div>
           <div class="card-icon">📰</div>
           <h3>Media Selangor Archive</h3>
           <p><strong>January 2022 Report</strong><br>Official updates on flood relief operations and state drainage initiatives.</p>
@@ -1192,7 +1195,7 @@
 
   <div style="text-align: center; margin-bottom: 40px;">
       <button id="toggleNewsBtn" onclick="toggleMoreNews()" style="background:#0f172a; color:#2dd4bf; border:2px solid #2dd4bf; padding:12px 30px; border-radius:30px; font-weight:700; cursor:pointer; font-size:0.95rem; transition:all 0.3s;">
-          Show More News & Articles (12 Total) ↓
+          Show More News & Articles ↓
       </button>
   </div>
 </section>
@@ -1439,8 +1442,38 @@ function toggleMoreNews() {
         card.style.display = isExpanded ? 'block' : 'none';
     });
 
-    btn.innerText = isExpanded ? 'Show Less ↑' : 'Show More News & Articles (12 Total) ↓';
+    btn.innerText = isExpanded ? 'Show Less ↑' : 'Show More News & Articles ↓';
 }
+
+function toggleGoogleSatellite(enabled) {
+    var iframe = document.getElementById("mapFrame");
+    try {
+        var iframeWin = iframe.contentWindow;
+        if (iframeWin && iframeWin.map) {
+            iframeWin.map.eachLayer(function(layer) {
+                if (layer._url && (layer._url.toLowerCase().includes("google") || layer._url.toLowerCase().includes("vt/lyrs"))) {
+                    if (enabled) {
+                        if (!iframeWin.map.hasLayer(layer)) layer.addTo(iframeWin.map);
+                        if (typeof layer.setOpacity === "function") layer.setOpacity(1);
+                    } else {
+                        if (typeof layer.setOpacity === "function") {
+                            layer.setOpacity(0);
+                        } else {
+                            iframeWin.map.removeLayer(layer);
+                        }
+                    }
+                }
+            });
+        }
+    } catch (e) {
+        console.log("Satellite layer toggle error:", e);
+    }
+}
+
+document.getElementById("mapFrame").addEventListener("load", function() {
+    var isChecked = document.getElementById("satToggle").checked;
+    setTimeout(function() { toggleGoogleSatellite(isChecked); }, 500);
+});
 
 window.addEventListener('DOMContentLoaded', () => {
     const ctx1 = document.getElementById('spatialDistributionChart').getContext('2d');
