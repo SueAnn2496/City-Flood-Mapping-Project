@@ -910,16 +910,16 @@
         }
         .tip-panel li { margin-bottom: 4px; }
 
-        /* 深蓝色页脚样式恢复 */
+        /* 纯正深黑色页脚 */
         .site-footer {
             background: #090d16;
             color: #94a3b8;
             text-align: center;
-            padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
-            font-size: .82rem;
+            padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
+            font-size: .8rem;
             border-top: 1px solid #1e293b;
-            line-height: 1.7;
-            margin-top: 25px;
+            line-height: 1.6;
+            margin-top: 16px;
             border-radius: 12px;
         }
 
@@ -929,8 +929,8 @@
 
         .footer-note {
             max-width: 760px;
-            margin: 8px auto 0;
-            font-size: 0.78rem;
+            margin: 6px auto 0;
+            font-size: 0.75rem;
             color: #94a3b8;
         }
 
@@ -1100,7 +1100,7 @@
             <div class="search-box-container">
                 <label for="searchInput" style="font-size: 0.82rem; color: #94a3b8; display:block;">Type an area to check its status:</label>
                 <div class="search-input-group">
-                    <input type="text" id="searchInput" placeholder="e.g. Shah Alam" autocomplete="off" enterkeyhint="search" onkeydown="if(event.key === 'Enter') searchLocation()">
+                    <input type="text" id="searchInput" placeholder="e.g. Shah Alam, Meru" autocomplete="off" enterkeyhint="search" onkeydown="if(event.key === 'Enter') searchLocation()">
                     <button onclick="searchLocation()">Go</button>
                 </div>
                 <div id="searchResult" aria-live="polite"></div>
@@ -1429,7 +1429,7 @@
     </div>
     <p class="swipe-hint">Swipe sideways for "After a Flood" →</p>
 
-    <!-- 恢复的深蓝色页脚 -->
+    <!-- 纯正深黑色页脚 -->
     <footer class="site-footer">
         City Flood & Waterlogging Risk Mapping Platform &nbsp;|&nbsp; GIS-Based Web Mapping Project <br>
         <div style="margin-top: 4px; font-size: 0.78rem;">
@@ -1607,23 +1607,26 @@ function searchLocation() {
     var result = document.getElementById("searchResult");
     var q = input.value.trim().toLowerCase().replace(/\s+/g, " ");
     if (!q) {
-        result.textContent = "Type Klang, Shah Alam or Petaling Jaya.";
+        result.textContent = "请输入要查询的区域或点位名称（例如：Shah Alam, Klang, Meru）。";
         return;
     }
-    var target = null, name = "";
+    
     if (q.indexOf("klang") !== -1) {
-        target = { folder: "Map4/", btn: "btnKlang" }; name = "Klang";
+        switchDistrict('Map4/', document.getElementById("btnKlang"));
+        result.textContent = "已显示 Klang 区域地图。";
+        return;
     } else if (q.indexOf("shah") !== -1 || q === "sa") {
-        target = { folder: "Map5/", btn: "btnShahAlam" }; name = "Shah Alam";
+        switchDistrict('Map5/', document.getElementById("btnShahAlam"));
+        result.textContent = "已显示 Shah Alam 区域地图。";
+        return;
     } else if (q.indexOf("petaling") !== -1 || q === "pj") {
-        target = { folder: "Map6/", btn: "btnPJ" }; name = "Petaling Jaya";
-    }
-    if (!target) {
-        result.textContent = "No match for \u201C" + input.value.trim() + "\u201D. Try Klang, Shah Alam or Petaling Jaya.";
+        switchDistrict('Map6/', document.getElementById("btnPJ"));
+        result.textContent = "已显示 Petaling Jaya 区域地图。";
         return;
     }
-    switchDistrict(target.folder, document.getElementById(target.btn));
-    result.textContent = "Showing " + name + ". Its risk class is not yet validated.";
+
+    switchLayer('Map1/', document.querySelector('.layer-btn'));
+    result.textContent = "已切换至总览风险点地图（查询点位：" + input.value.trim() + "）。";
 }
 
 function resetMapView() {
