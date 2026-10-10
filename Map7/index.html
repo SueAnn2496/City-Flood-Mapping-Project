@@ -238,7 +238,10 @@
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 20000);
             try {
-                const response = await fetch('../data/jps-selangor.json?ts=' + Date.now(), {cache:'no-store', signal:controller.signal});
+                const response = await fetch(
+    '/City-Flood-Mapping-Project/data/jps-selangor.json?ts=' + Date.now(),
+    { cache: 'no-store', signal: controller.signal }
+);
                 if (!response.ok) throw new Error('JSON returned HTTP ' + response.status + '. Upload data/jps-selangor.json and run the workflow.');
                 const data = await response.json();
                 if (data.ok !== true) throw new Error(data.error || 'JPS source unavailable');
