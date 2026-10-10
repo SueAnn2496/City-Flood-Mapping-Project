@@ -296,6 +296,33 @@
         });
         // ------------------------------------------------
 
+        // ====================================================
+        // 搜索并放大、弹出气泡信息框的扩展接口
+        // ====================================================
+        window.searchMarkerByName = function(query) {
+            var found = false;
+            if (typeof riskLayer !== 'undefined') {
+                riskLayer.eachLayer(function(layer) {
+                    if (layer.getLatLng && layer.getPopup()) {
+                        // 遍历 points 数组或者直接通过 Popup 内容匹配名称
+                        for (var i = 0; i < points.length; i++) {
+                            var p = points[i];
+                            if (p.name.toLowerCase().indexOf(query) !== -1 || query.indexOf(p.name.toLowerCase()) !== -1) {
+                                var targetLatLng = L.latLng(p.lat, p.lng);
+                                if (layer.getLatLng().distanceTo(targetLatLng) < 150) {
+                                    map.setView([p.lat, p.lng], 16); // 放大到 16 级
+                                    layer.openPopup();              // 弹出 Popup 信息框
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            return found;
+        };
+
         // ===== ADD-ON START =====
         (function () {
             // ---- 1. 控制面板:开关 + 区界透明度 ----
