@@ -1,0 +1,116 @@
+name: Update JPS Selangor Rainfall
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub scheduled workflows may run a little later than the exact time.
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-jps-rainfall:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch and parse JPS Selangor rainfall summary
+        run: |
+          python - <<'PY'
+          import json, re, html, urllib.request
+          from datetime import datetime, timezone
+          from pathlib import Path
+          from html.parser import HTMLParser
+
+          URL = "https://infobanjirjps.selangor.gov.my/rainfall.html?lang=en"
+
+          req = urllib.request.Request(
+              URL,
+              headers={"User-Agent": "Mozilla/5.0 (compatible; Map7JPSMonitor/1.0)"}
+          )
+          with urllib.request.urlopen(req, timeout=30) as response:
+              page = response.read().decode("utf-8", errors="replace")
+
+          class TextExtractor(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.parts = []
+              def handle_data(self, data):
+                  s = data.strip()
+                  if s:
+                      self.parts.append(s)
+
+          parser = TextExtractor()
+          parser.feed(page)
+          text = re.sub(r"\s+", " ", html.unescape(" ".join(parser.parts))).strip()
+
+          # Example source wording:
+          # KLANG TOTAL STATION 21 LIGHT 0 MODERATE 0 HEAVY 0 VERY HEAVY 0
+          pattern = re.compile(
+              r"\b(KUALA SELANGOR|SEPANG|SABAK BERNAM|HULU LANGAT|"
+              r"KUALA LANGAT|KLANG|PETALING|HULU SELANGOR|GOMBAK)"
+              r"\s+TOTAL\s+STATION\s+(\d+)\s+"
+              r"LIGHT\s+(\d+)\s+MODERATE\s+(\d+)\s+"
+              r"HEAVY\s+(\d+)\s+VERY\s+HEAVY\s+(\d+)",
+              re.IGNORECASE
+          )
+
+          districts = []
+          for m in pattern.finditer(text):
+              districts.append({
+                  "district": m.group(1).title(),
+                  "total_stations": int(m.group(2)),
+                  "light": int(m.group(3)),
+                  "moderate": int(m.group(4)),
+                  "heavy": int(m.group(5)),
+                  "very_heavy": int(m.group(6))
+              })
+
+          # Fail rather than overwrite the feed with fabricated/empty data
+          # if JPS changes its page structure or the request is blocked.
+          if not districts:
+              raise SystemExit(
+                  "Could not parse JPS rainfall summary. No JSON was overwritten. "
+                  "JPS may have changed its page structure."
+              )
+
+          # Try to capture the source page's own timestamp.
+          timestamp_match = re.search(
+              r"\b(\d{2}/\d{2}/\d{4}\s+\d{2}:\d{2}:\d{2}\s*(?:AM|PM)?)\b",
+              text, re.IGNORECASE
+          )
+
+          payload = {
+              "source": URL,
+              "source_timestamp": timestamp_match.group(1) if timestamp_match else None,
+              "fetched_at_utc": datetime.now(timezone.utc).isoformat(),
+              "data_type": "JPS Selangor district rainfall station category counts",
+              "districts": districts
+          }
+
+          Path("data/jps-selangor.json").parent.mkdir(parents=True, exist_ok=True)
+          Path("data/jps-selangor.json").write_text(
+              json.dumps(payload, ensure_ascii=False, indent=2),
+              encoding="utf-8"
+          )
+          print(f"Saved JPS data for {len(districts)} districts.")
+          PY
+
+      - name: Commit updated JSON if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/jps-selangor.json
+          if git diff --cached --quiet; then
+            echo "No JPS data changes to commit."
+          else
+            git commit -m "Update JPS Selangor rainfall data"
+            git push
+          fi
