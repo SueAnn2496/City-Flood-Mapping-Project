@@ -1606,12 +1606,14 @@ function searchLocation() {
     var input = document.getElementById("searchInput");
     var result = document.getElementById("searchResult");
     var q = input.value.trim().toLowerCase().replace(/\s+/g, " ");
+    
     if (!q) {
-        result.textContent = "Please enter an area or point name (e.g., Shah Alam, Klang, Meru).";
+        result.textContent = "Please enter an area or point name (e.g., Shah Alam, Meru, Seksyen 17).";
         return;
     }
     
-    if (q.indexOf("klang") !== -1) {
+    // 如果搜特定大区
+    if (q.indexOf("klang") !== -1 && q.length < 10) {
         switchDistrict('Map4/', document.getElementById("btnKlang"));
         result.textContent = "Showing Klang district map.";
         return;
@@ -1625,8 +1627,33 @@ function searchLocation() {
         return;
     }
 
-    switchLayer('Map1/', document.querySelector('.layer-btn'));
-    result.textContent = "Switched to overview risk points map (Query: " + input.value.trim() + ").";
+    // 默认或具体点位查询：切换到带有风险点总览的 Map1（或如果你当前在 Map7 风险图层，也可以直接在当前地图搜）
+    var iframe = document.getElementById("mapFrame");
+    var currentSrc = iframe.getAttribute("src") || "";
+    
+    // 如果当前不在 Map1 且不在 Map7，则自动切回 Map1
+    if (currentSrc.indexOf("Map1/") === -1 && currentSrc.indexOf("Map7/") === -1) {
+        switchLayer('Map1/', document.querySelector('.layer-btn'));
+    }
+
+    // 延迟一点等待 iframe 加载完成后，调用子页面暴露的 searchMarkerByName 方法
+    setTimeout(function() {
+        try {
+            var iframeWin = iframe.contentWindow;
+            if (iframeWin && typeof iframeWin.searchMarkerByName === "function") {
+                var found = iframeWin.searchMarkerByName(q);
+                if (found) {
+                    result.textContent = "Found and zoomed to: " + input.value.trim();
+                } else {
+                    result.textContent = "Point '" + input.value.trim() + "' not found in current map view.";
+                }
+            } else {
+                result.textContent = "Switched to map view (Query: " + input.value.trim() + ").";
+            }
+        } catch (e) {
+            result.textContent = "Switched to map view.";
+        }
+    }, 400);
 }
 
 function resetMapView() {
