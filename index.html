@@ -1,15 +1,15 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="theme-color" content="#0f172a">
-    <meta name="description" content="Interactive WebGIS platform showing boundary, slope and land-cover maps to support understanding of potential urban waterlogging risk in Klang, Shah Alam and Petaling Jaya.">
-    <title>City Flood & Waterlogging Risk Mapping Platform</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<meta content="#0f172a" name="theme-color"/>
+<meta content="Interactive WebGIS platform showing boundary, slope and land-cover maps to support understanding of potential urban waterlogging risk in Klang, Shah Alam and Petaling Jaya." name="description"/>
+<title>City Flood &amp; Waterlogging Risk Mapping Platform</title>
+<link href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;text y='.9em' font-size='90'&gt;🌊&lt;/text&gt;&lt;/svg&gt;" rel="icon"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -1043,402 +1043,358 @@
     </style>
 </head>
 <body>
-
 <!-- QUICK JUMP BUTTON TO MAP -->
-<a href="#map-interface" class="floating-jump-btn" id="jumpBtn" aria-label="Back to map" onclick="scrollToMapAndReset()">🗺️ Quick Map</a>
-
+<a aria-label="Back to map" class="floating-jump-btn" href="#map-interface" id="jumpBtn" onclick="scrollToMapAndReset()">🗺️ Quick Map</a>
 <!-- PAGE 1: LANDING -->
 <header class="landing-page">
-    <div class="landing-badge">🌊 GIS-based WebGIS flood platform</div>
-    <h1 class="landing-title">City Flood & Waterlogging Risk Mapping</h1>
-    <p class="landing-desc">
+<div class="landing-badge">🌊 GIS-based WebGIS flood platform</div>
+<h1 class="landing-title">City Flood &amp; Waterlogging Risk Mapping</h1>
+<p class="landing-desc">
         An interactive WebGIS platform displaying spatial information
         related to slope, land cover and study-area boundaries to support
         the understanding of potential urban waterlogging-risk areas
         in Klang, Shah Alam and Petaling Jaya.
     </p>
-    <div class="landing-buttons">
-        <a href="#map-interface" class="scroll-btn primary-btn" onclick="scrollToMapAndReset()">
+<div class="landing-buttons">
+<a class="scroll-btn primary-btn" href="#map-interface" onclick="scrollToMapAndReset()">
             Explore Maps <span>↓</span>
-        </a>
-        <a href="#overview" class="scroll-btn" style="border-color:white;color:white;">
+</a>
+<a class="scroll-btn" href="#overview" style="border-color:white;color:white;">
             Project Overview <span>→</span>
-        </a>
-        <a href="#risk-analysis" class="scroll-btn" style="border-color:#fca5a5;color:#fecaca;">
+</a>
+<a class="scroll-btn" href="#risk-analysis" style="border-color:#fca5a5;color:#fecaca;">
             Risk Analysis <span>→</span>
-        </a>
-        <a href="#historical-records" class="scroll-btn" style="border-color:#93c5fd;color:#bfdbfe;">
-            Historical Records & News <span>→</span>
-        </a>
-        <a href="#emergency-guide" class="scroll-btn" style="border-color:#fbbf24;color:#fbbf24;">
+</a>
+<a class="scroll-btn" href="#historical-records" style="border-color:#93c5fd;color:#bfdbfe;">
+            Historical Records &amp; News <span>→</span>
+</a>
+<a class="scroll-btn" href="#emergency-guide" style="border-color:#fbbf24;color:#fbbf24;">
             🛡️ Emergency Guide <span>→</span>
-        </a>
-    </div>
+</a>
+</div>
 </header>
-
 <main>
 <!-- PAGE 2: MAP -->
 <div class="map-section" id="map-interface">
-    <div class="top-nav" id="topNav">
-        <button class="toggle-btn" id="dashToggleBtn" onclick="toggleDashboard()" title="Open or close the dashboard" aria-label="Open or close the dashboard" aria-controls="sidebar" aria-expanded="true">☰</button>
-        <span class="study-label">View mode:</span>
-        <button class="risk-btn" onclick="switchRiskMap(this)">
+<div class="top-nav" id="topNav">
+<button aria-controls="sidebar" aria-expanded="true" aria-label="Open or close the dashboard" class="toggle-btn" id="dashToggleBtn" onclick="toggleDashboard()" title="Open or close the dashboard">☰</button>
+<span class="study-label">View mode:</span>
+<button class="risk-btn" onclick="switchRiskMap(this)">
             🚨 Risk Map View
         </button>
-    </div>
-
-    <div class="workspace" id="workspace">
-        <div class="sidebar" id="sidebar">
-            <button class="sidebar-collapse-arrow" onclick="toggleDashboard()" title="Close dashboard" aria-label="Close dashboard">❮</button>
-
-            <h3>🔍 Area Risk Search</h3>
-            <div class="search-box-container">
-                <label for="searchInput" style="font-size: 0.82rem; color: #94a3b8; display:block;">Type an area to check its status:</label>
-                <div class="search-input-group">
-                    <input type="text" id="searchInput" placeholder="e.g. Shah Alam, Meru" autocomplete="off" enterkeyhint="search" onkeydown="if(event.key === 'Enter') searchLocation()">
-                    <button onclick="searchLocation()">Go</button>
-                </div>
-                <div id="searchResult" aria-live="polite"></div>
-            </div>
-
-            <h3>🗺️ Flood Maps</h3>
-            <div class="map-help">
+</div>
+<div class="workspace" id="workspace">
+<div class="sidebar" id="sidebar">
+<button aria-label="Close dashboard" class="sidebar-collapse-arrow" onclick="toggleDashboard()" title="Close dashboard">❮</button>
+<h3>🔍 Area Risk Search</h3>
+<div class="search-box-container">
+<label for="searchInput" style="font-size: 0.82rem; color: #94a3b8; display:block;">Type an area to check its status:</label>
+<div class="search-input-group">
+<input autocomplete="off" enterkeyhint="search" id="searchInput" onkeydown="if(event.key === 'Enter') searchLocation()" placeholder="e.g. Shah Alam, Meru" type="text"/>
+<button onclick="searchLocation()">Go</button>
+</div>
+<div aria-live="polite" id="searchResult"></div>
+</div>
+<h3>🗺️ Flood Maps</h3>
+<div class="map-help">
                 Choose a thematic layer or a district to explore spatial characteristics.
             </div>
-
-            <div class="map-selector">
-                <button class="layer-btn active" onclick="switchLayer('Map1/', this)">
+<div class="map-selector">
+<button class="layer-btn active" onclick="switchLayer('Map1/', this)">
                     📍 Boundary Area Map
                 </button>
-
-                <div class="district-subgroup" id="districtSubgroup">
-                    <button class="district-btn klang" id="btnKlang" onclick="switchDistrict('Map4/', this)">
+<div class="district-subgroup" id="districtSubgroup">
+<button class="district-btn klang" id="btnKlang" onclick="switchDistrict('Map4/', this)">
                         Klang
                     </button>
-                    <button class="district-btn shahalam" id="btnShahAlam" onclick="switchDistrict('Map5/', this)">
+<button class="district-btn shahalam" id="btnShahAlam" onclick="switchDistrict('Map5/', this)">
                         Shah Alam
                     </button>
-                    <button class="district-btn pj" id="btnPJ" onclick="switchDistrict('Map6/', this)">
+<button class="district-btn pj" id="btnPJ" onclick="switchDistrict('Map6/', this)">
                         Petaling Jaya
                     </button>
-                </div>
-
-                <button class="layer-btn" onclick="switchLayer('Map2/', this)">
+</div>
+<button class="layer-btn" onclick="switchLayer('Map2/', this)">
                     📐 Slope Map
                 </button>
-
-                <button class="layer-btn" onclick="switchLayer('Map3/', this)">
+<button class="layer-btn" onclick="switchLayer('Map3/', this)">
                     🌳 Land Cover Map
                 </button>
-            </div>
-
-            <div id="exportCsvContainer" style="display: none; animation: fadeIn 0.4s ease;">
-                <h3>📥 Export CSV</h3>
-                <div class="map-help">
+</div>
+<div id="exportCsvContainer" style="display: none; animation: fadeIn 0.4s ease;">
+<h3>📥 Export CSV</h3>
+<div class="map-help">
                     Download risk point data and attribute tables directly.
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;">
-                    <a href="Urban_Waterlogging_UTM_Coordinates.csv" download="Urban_Waterlogging_UTM_Coordinates.csv" class="layer-btn" style="text-align: center; background: #162032; border-color: #2dd4bf; text-decoration: none; display: block;">
+<div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 25px;">
+<a class="layer-btn" download="Urban_Waterlogging_UTM_Coordinates.csv" href="Urban_Waterlogging_UTM_Coordinates.csv" style="text-align: center; background: #162032; border-color: #2dd4bf; text-decoration: none; display: block;">
                         📊 Export CSV
                     </a>
-                </div>
-            </div>
-
-            <h3>🌐 Base Layer</h3>
-            <div class="basemap-option">
-                <span id="satLabel">Satellite imagery</span>
-                <label class="switch">
-                    <input type="checkbox" id="satToggle" checked aria-labelledby="satLabel" onchange="toggleSatellite(this.checked)">
-                    <span class="slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleDashboard()"></div>
-
-        <div class="map-view-wrapper">
-            <iframe id="mapFrame" class="map-container" src="Map1/index.html" title="Interactive flood map"></iframe>
-            <button class="map-center-ctrl" onclick="resetMapView()" title="Re-centre map" aria-label="Re-centre map">🎯</button>
-        </div>
-
-        <div class="floating-legend" id="floatingLegend" style="display: none;">
-            <div class="legend-header-row">
-                <h4 id="floatingLegendTitle">Legend</h4>
-                <button class="legend-toggle-btn" onclick="toggleLegendBody()" title="Minimise or expand legend" aria-label="Minimise or expand legend">−</button>
-            </div>
-            <div class="legend-body-wrapper" id="legendBodyWrapper">
-                <div id="floatingLegendContent"></div>
-            </div>
-        </div>
-    </div>
 </div>
-
+</div>
+<h3>🌐 Base Layer</h3>
+<div class="basemap-option">
+<span id="satLabel">Satellite imagery</span>
+<label class="switch">
+<input aria-labelledby="satLabel" checked="" id="satToggle" onchange="toggleSatellite(this.checked)" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+<div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleDashboard()"></div>
+<div class="map-view-wrapper">
+<iframe class="map-container" id="mapFrame" src="Map1/index.html" title="Interactive flood map"></iframe>
+<button aria-label="Re-centre map" class="map-center-ctrl" onclick="resetMapView()" title="Re-centre map">🎯</button>
+</div>
+<div class="floating-legend" id="floatingLegend" style="display: none;">
+<div class="legend-header-row">
+<h4 id="floatingLegendTitle">Legend</h4>
+<button aria-label="Minimise or expand legend" class="legend-toggle-btn" onclick="toggleLegendBody()" title="Minimise or expand legend">−</button>
+</div>
+<div class="legend-body-wrapper" id="legendBodyWrapper">
+<div id="floatingLegendContent"></div>
+</div>
+</div>
+</div>
+</div>
 <!-- PAGE 3: PROJECT OVERVIEW -->
 <section class="page" id="overview">
-  <div class="page-inner">
-    <div class="section-kicker">Project overview</div>
-    <h2 class="section-title">Understanding Urban Flood & Waterlogging Risk</h2>
-    <p class="section-intro">
+<div class="page-inner">
+<div class="section-kicker">Project overview</div>
+<h2 class="section-title">Understanding Urban Flood &amp; Waterlogging Risk</h2>
+<p class="section-intro">
         This WebGIS platform integrates selected thematic GIS outputs into an interactive
         web-based mapping environment. Users can explore Klang, Shah Alam and Petaling Jaya
         and compare spatial characteristics using the available thematic layers.
     </p>
-
-    <div class="cards">
-        <div class="info-card">
-            <div class="card-icon">📍</div>
-            <h3>Study Area</h3>
-            <p>The boundary layer defines the spatial extent of selected study areas for comparing different thematic maps.</p>
-        </div>
-        <div class="info-card">
-            <div class="card-icon">📐</div>
-            <h3>Slope</h3>
-            <p>Slope describes terrain characteristics. Gentle terrain may let water collect, while steeper terrain can increase runoff.</p>
-        </div>
-        <div class="info-card">
-            <div class="card-icon">🌳</div>
-            <h3>Land Cover</h3>
-            <p>Shows built-up areas, vegetation and water bodies. Paved surfaces can increase runoff, while vegetation helps water soak in.</p>
-        </div>
-    </div>
-  </div>
+<div class="cards">
+<div class="info-card">
+<div class="card-icon">📍</div>
+<h3>Study Area</h3>
+<p>The boundary layer defines the spatial extent of selected study areas for comparing different thematic maps.</p>
+</div>
+<div class="info-card">
+<div class="card-icon">📐</div>
+<h3>Slope</h3>
+<p>Slope describes terrain characteristics. Gentle terrain may let water collect, while steeper terrain can increase runoff.</p>
+</div>
+<div class="info-card">
+<div class="card-icon">🌳</div>
+<h3>Land Cover</h3>
+<p>Shows built-up areas, vegetation and water bodies. Paved surfaces can increase runoff, while vegetation helps water soak in.</p>
+</div>
+</div>
+</div>
 </section>
-
 <!-- PAGE 4: RISK ANALYSIS -->
 <section class="page" id="risk-analysis" style="background:#f1f5f9;">
-  <div class="page-inner">
-    <div class="section-kicker">Risk analysis & methodology</div>
-    <h2 class="section-title">Understanding Potential Waterlogging Susceptibility</h2>
-    <p class="section-intro">
+<div class="page-inner">
+<div class="section-kicker">Risk analysis &amp; methodology</div>
+<h2 class="section-title">Understanding Potential Waterlogging Susceptibility</h2>
+<p class="section-intro">
         Reference figures for the three study areas, and how the spatial information is prepared.
     </p>
-
-    <div class="grid-2">
-        <div class="chart-panel">
-            <h3>Figure 4.1: Spatial Distribution of Urban Flood/Waterlogging Hotspots</h3>
-            <div class="chart-box">
-                <canvas id="spatialDistributionChart" role="img" aria-label="Bar chart of identified flood hotspots: Shah Alam 17, Petaling Jaya 15, Klang 11"></canvas>
-            </div>
-            <p class="chart-caption">Indicative values.</p>
-        </div>
-        <div class="chart-panel">
-            <h3>Figure 4.2: Flood Risk Severity Level Breakdown by District</h3>
-            <div class="chart-box">
-                <canvas id="districtRiskChart" role="img" aria-label="Stacked bar chart of risk classes by district"></canvas>
-            </div>
-            <p class="chart-caption">Indicative values. Classes are not yet validated.</p>
-        </div>
-    </div>
-    <p class="swipe-hint">Swipe sideways for the second figure →</p>
-
-    <div class="workflow">
-        <div class="step">
-            <div class="step-number">1</div>
-            <h4>Data Preparation</h4>
-            <p>Prepare and organise required spatial datasets.</p>
-        </div>
-        <div class="step">
-            <div class="step-number">2</div>
-            <h4>GIS Processing</h4>
-            <p>Process and classify thematic information.</p>
-        </div>
-        <div class="step">
-            <div class="step-number">3</div>
-            <h4>Map Production</h4>
-            <p>Produce boundary, slope, and land-cover maps.</p>
-        </div>
-        <div class="step">
-            <div class="step-number">4</div>
-            <h4>WebGIS Integration</h4>
-            <p>Integrate GIS outputs into an interactive mapping system.</p>
-        </div>
-    </div>
-  </div>
+<div class="grid-2">
+<div class="chart-panel">
+<h3>Figure 4.1: Spatial Distribution of Urban Flood/Waterlogging Hotspots</h3>
+<div class="chart-box">
+<canvas aria-label="Bar chart of identified flood hotspots: Shah Alam 17, Petaling Jaya 15, Klang 11" id="spatialDistributionChart" role="img"></canvas>
+</div>
+<p class="chart-caption">Indicative values.</p>
+</div>
+<div class="chart-panel">
+<h3>Figure 4.2: Flood Risk Severity Level Breakdown by District</h3>
+<div class="chart-box">
+<canvas aria-label="Stacked bar chart of risk classes by district" id="districtRiskChart" role="img"></canvas>
+</div>
+<p class="chart-caption">Indicative values. Classes are not yet validated.</p>
+</div>
+</div>
+<p class="swipe-hint">Swipe sideways for the second figure →</p>
+<div class="workflow">
+<div class="step">
+<div class="step-number">1</div>
+<h4>Data Preparation</h4>
+<p>Prepare and organise required spatial datasets.</p>
+</div>
+<div class="step">
+<div class="step-number">2</div>
+<h4>GIS Processing</h4>
+<p>Process and classify thematic information.</p>
+</div>
+<div class="step">
+<div class="step-number">3</div>
+<h4>Map Production</h4>
+<p>Produce boundary, slope, and land-cover maps.</p>
+</div>
+<div class="step">
+<div class="step-number">4</div>
+<h4>WebGIS Integration</h4>
+<p>Integrate GIS outputs into an interactive mapping system.</p>
+</div>
+</div>
+</div>
 </section>
-
 <!-- PAGE 5: HISTORICAL RECORDS & NEWS -->
 <section class="page" id="historical-records" style="background:#ffffff;">
-  <div class="page-inner">
-    <div class="news-head">
-        <div>
-            <div class="section-kicker">Historical records, news & academic archive</div>
-            <h2 class="section-title">Recorded Flood Incidents, News & References</h2>
-            <p class="section-intro" style="margin-bottom:12px;">
-                Reports, official statements and academic references for Klang, Shah Alam and Petaling Jaya, newest first.
-            </p>
-        </div>
-        <div class="track-ctrl">
-            <button onclick="scrollNews(-1)" aria-label="Previous">‹</button>
-            <button onclick="scrollNews(1)" aria-label="Next">›</button>
-        </div>
-    </div>
+<div class="page-inner">
+<div class="news-head">
+<div>
+<div class="section-kicker">Historical records, news &amp; academic archive</div>
+<h2 class="section-title">Recorded Flood Incidents, News &amp; References</h2>
+<p class="section-intro" style="margin-bottom:12px;">News, reports, research papers and datasets for the three study areas, arranged newest to oldest. Year-only references are grouped by year.</p>
+</div>
+<div class="track-ctrl">
+<button aria-label="Previous" onclick="scrollNews(-1)">‹</button>
+<button aria-label="Next" onclick="scrollNews(1)">›</button>
+</div>
+</div>
+<div aria-label="News and references, swipe sideways" class="news-track" id="newsTrack" tabindex="0">
 
-    <div class="news-track" id="newsTrack" tabindex="0" aria-label="News and references, swipe sideways">
-      <div class="info-card" style="border-top: 4px solid #ef4444;">
-          <div style="font-size:0.78rem; font-weight:bold; color:#dc2626; margin-bottom:6px;">New update (2026)</div>
-          <div class="card-icon">🚨</div>
-          <h3>Selangor MB Orders Urgent Action</h3>
-          <p><strong>20 July 2026</strong><br>Selangor state government steps up drainage improvement following recent flash floods in Petaling Jaya and Klang.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://www.malaymail.com" target="_blank" rel="noopener">Read news ↗</a></p>
-      </div>
 
-      <div class="info-card" style="border-top: 4px solid #3b82f6;">
-          <div style="font-size:0.78rem; font-weight:bold; color:#2563eb; margin-bottom:6px;">2026 report</div>
-          <div class="card-icon">🌧️</div>
-          <h3>PJ & Klang Flash Floods</h3>
-          <p><strong>18 July 2026</strong><br>Flash floods swamp Petaling Jaya, submerging 223 Food Court and Amway HQ areas after a heavy afternoon downpour.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://www.malaymail.com/news/malaysia/2026/07/18/flash-floods-swamp-petaling-jaya-after-heavy-rain-video/228134" target="_blank" rel="noopener">Read report ↗</a></p>
-      </div>
 
-      <div class="info-card">
-          <div class="card-icon">🌊</div>
-          <h3>Klang Valley Torrential Rains</h3>
-          <p><strong>6-7 May 2026</strong><br>Flash floods strike Petaling Jaya, Shah Alam and Kuchai Lama, trapping vehicles on Federal Highway and major expressways.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://www.therakyatpost.com/news/2026/05/07/social-media-flooded-by-videos-of-klangvalley-floods-again-and-again/" target="_blank" rel="noopener">Read report ↗</a></p>
-      </div>
 
-      <div class="info-card">
-          <div class="card-icon">💰</div>
-          <h3>Selangor RM990M Flood Plan</h3>
-          <p><strong>13 April 2026</strong><br>Selangor state approves RM990.41 million for 13 Flood Mitigation Plans (RTB) via DID to ramp up defenses.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://www.thestar.com.my/metro/metronews/2026/04/13/selangor-ramps-up-flood-defences" target="_blank" rel="noopener">Read report ↗</a></p>
-      </div>
 
-      <div class="info-card">
-          <div class="card-icon">📚</div>
-          <h3>Spatial-Temporal Assessment (GIS & AHP)</h3>
-          <p><strong>Rushdi et al. (2026)</strong><br>Environment-Behaviour Proceedings Journal, 11(36), 135–145 on Klang River Basin vulnerability.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://doi.org/10.21834/e-bpj.v11i36.7819" target="_blank" rel="noopener">Read article ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">📑</div>
-          <h3>Mitigating Flood Risk at Shah Alam</h3>
-          <p><strong>Leeonis et al. (2024)</strong><br>Discover Sustainability, 5(1), 352. Focuses on sustainable urban flood mitigation strategies.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://doi.org/10.1007/s43621-024-00504-y" target="_blank" rel="noopener">Read article ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">🔍</div>
-          <h3>Challenges of GIS in Shah Alam</h3>
-          <p><strong>Leeonis et al. (2024)</strong><br>Sustainability, 16, 216–223. Discusses practical barriers in managing flash floods via GIS.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://www.mdpi.com/2071-1050/16/1/216" target="_blank" rel="noopener">Read article ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">📊</div>
-          <h3>Reviewing Flood Risk Management</h3>
-          <p><strong>Rosmadi et al. (2023)</strong><br>Water, 15(13), 2390. Comprehensive review of challenges in Malaysia's flood management.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://doi.org/10.3390/w15132390" target="_blank" rel="noopener">Read article ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">📰</div>
-          <h3>Shah Alam Flash Floods (August 2023)</h3>
-          <p><strong>New Straits Times (2023)</strong><br>Heavy rain causes flash floods across Shah Alam, nearly submerging Section 13 cars.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://www.nst.com.my/news/nation/2023/08/943719/heavy-rain-causesflash-floods-shah-alam" target="_blank" rel="noopener">Read news ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">📄</div>
-          <h3>Catastrophic Shah Alam Floods</h3>
-          <p><strong>Cilisos Report (2022)</strong><br>Detailed overview of the December 2021/2022 floods and government mitigation responses.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://cilisos.my/shah-alam-flood-mitigation-projects/" target="_blank" rel="noopener">Read report ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">🌐</div>
-          <h3>ESA WorldCover 10m Dataset</h3>
-          <p><strong>Zanaga et al. (2022)</strong><br>European Space Agency land cover dataset used for spatial land cover mapping.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://doi.org/10.5281/zenodo.7254221" target="_blank" rel="noopener">Read dataset ↗</a></p>
-      </div>
-      <div class="info-card">
-          <div class="card-icon">🗺️</div>
-          <h3>JPS Selangor GIS Portal</h3>
-          <p><strong>JPS Selangor (n.d.)</strong><br>Public spatial data infrastructure and drainage information portal for Selangor.</p>
-          <p style="margin-top:8px;"><a class="news-link" href="https://jpsselgis.selangor.gov.my/jpsselgis/" target="_blank" rel="noopener">Visit portal ↗</a></p>
-      </div>
-    </div>
-    <p class="swipe-hint">Swipe sideways for more →</p>
-  </div>
+
+
+
+
+
+
+
+<div class="info-card" data-date="2026-07-20" style="border-top: 4px solid #ef4444;">
+<div style="font-size:0.78rem; font-weight:bold; color:#dc2626; margin-bottom:6px;">New update (2026)</div>
+<div class="card-icon">🚨</div>
+<h3>Selangor MB Orders Urgent Action</h3>
+<p><strong>20 July 2026</strong><br/>Selangor state government steps up drainage improvement following recent flash floods in Petaling Jaya and Klang.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://www.malaymail.com" rel="noopener" target="_blank">Read news ↗</a></p>
+</div><div class="info-card" data-date="2026-07-18" style="border-top: 4px solid #3b82f6;">
+<div style="font-size:0.78rem; font-weight:bold; color:#2563eb; margin-bottom:6px;">2026 report</div>
+<div class="card-icon">🌧️</div>
+<h3>PJ &amp; Klang Flash Floods</h3>
+<p><strong>18 July 2026</strong><br/>Flash floods swamp Petaling Jaya, submerging 223 Food Court and Amway HQ areas after a heavy afternoon downpour.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://www.malaymail.com/news/malaysia/2026/07/18/flash-floods-swamp-petaling-jaya-after-heavy-rain-video/228134" rel="noopener" target="_blank">Read report ↗</a></p>
+</div><div class="info-card" data-date="2026-01-01">
+<div class="card-icon">📚</div>
+<h3>Spatial-Temporal Assessment (GIS &amp; AHP)</h3>
+<p><strong>Rushdi et al. (2026)</strong><br/>Environment-Behaviour Proceedings Journal, 11(36), 135–145 on Klang River Basin vulnerability.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://doi.org/10.21834/e-bpj.v11i36.7819" rel="noopener" target="_blank">Read article ↗</a></p>
+</div><article class="info-card" data-date="2025-11-24"><div class="card-icon">📰</div><h3>Klang Valley Areas Face Flash Floods</h3><p>2025-11-24 · The Star — Heavy morning rain led to flash floods in parts of Klang Valley.</p><p style="margin-top:8px;"><a class="news-link" href="https://www.thestar.com.my/news/nation/2025/11/24/klang-valley-areas-face-flash-floods-after-morning-downpour" rel="noopener noreferrer" target="_blank">Read original source ↗</a></p></article><article class="info-card" data-date="2025-04-20"><div class="card-icon">📰</div><h3>Selangor MB Orders Urgent Flood Action (April 2025)</h3><p>2025-04-20 · Malay Mail — State authorities directed urgent action following flooding in Klang and Shah Alam.</p><p style="margin-top:8px;"><a class="news-link" href="https://www.malaymail.com/news/malaysia/2025/04/20/selangor-mb-orders-urgent-action-after-flash-floods-hit-klang-shah-alam/173823" rel="noopener noreferrer" target="_blank">Read original source ↗</a></p></article><article class="info-card" data-date="2025-04-11"><div class="card-icon">📰</div><h3>Temporary Relief Shelters in Klang and Shah Alam</h3><p>2025-04-11 · The Star — Relief shelters opened after flooding affected Padang Jawa and Bukit Lanchong.</p><p style="margin-top:8px;"><a class="news-link" href="https://www.thestar.com.my/news/nation/2025/04/11/flash-floods-temporary-relief-shelters-set-up-in-klang-and-shah-alam" rel="noopener noreferrer" target="_blank">Read original source ↗</a></p></article><article class="info-card" data-date="2025-04-11"><div class="card-icon">📰</div><h3>Flash Floods Reported in Five Selangor Districts</h3><p>2025-04-11 · Oriental Daily — Chinese-language report covering flash floods across five districts.</p><p style="margin-top:8px;"><a class="news-link" href="https://www.orientaldaily.com.my/news/central/2025/04/11/725361" rel="noopener noreferrer" target="_blank">Read original source ↗</a></p></article><article class="info-card" data-date="2025-04-11"><div class="card-icon">📰</div><h3>Heavy Rain Triggers Flash Floods Across Five Districts</h3><p>2025-04-11 · The Vibes — Report on widespread flooding across Selangor districts.</p><p style="margin-top:8px;"><a class="news-link" href="https://www.thevibes.com/articles/news/106874/heavy-rain-triggers-flash-floods-across-five-districts-in-selangor" rel="noopener noreferrer" target="_blank">Read original source ↗</a></p></article><div class="info-card" data-date="2024-01-01">
+<div class="card-icon">📑</div>
+<h3>Mitigating Flood Risk at Shah Alam</h3>
+<p><strong>Leeonis et al. (2024)</strong><br/>Discover Sustainability, 5(1), 352. Focuses on sustainable urban flood mitigation strategies.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://doi.org/10.1007/s43621-024-00504-y" rel="noopener" target="_blank">Read article ↗</a></p>
+</div><div class="info-card" data-date="2024-01-01">
+<div class="card-icon">🔍</div>
+<h3>Challenges of GIS in Shah Alam</h3>
+<p><strong>Leeonis et al. (2024)</strong><br/>Sustainability, 16, 216–223. Discusses practical barriers in managing flash floods via GIS.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://www.mdpi.com/2071-1050/16/1/216" rel="noopener" target="_blank">Read article ↗</a></p>
+</div><article class="info-card" data-date="2024-01-01"><div class="card-icon">📰</div><h3>Flood Research Conference Paper (2024)</h3><p>2024-01-01 · E3S Conferences — Academic conference paper on flooding and climate research.</p><p style="margin-top:8px;"><a class="news-link" href="https://www.e3s-conferences.org/articles/e3sconf/pdf/2024/129/e3sconf_staclim2024_05008.pdf" rel="noopener noreferrer" target="_blank">Read original source ↗</a></p></article><div class="info-card" data-date="2023-01-01">
+<div class="card-icon">📊</div>
+<h3>Reviewing Flood Risk Management</h3>
+<p><strong>Rosmadi et al. (2023)</strong><br/>Water, 15(13), 2390. Comprehensive review of challenges in Malaysia's flood management.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://doi.org/10.3390/w15132390" rel="noopener" target="_blank">Read article ↗</a></p>
+</div><div class="info-card" data-date="2023-01-01">
+<div class="card-icon">📰</div>
+<h3>Shah Alam Flash Floods (August 2023)</h3>
+<p><strong>New Straits Times (2023)</strong><br/>Heavy rain causes flash floods across Shah Alam, nearly submerging Section 13 cars.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://www.nst.com.my/news/nation/2023/08/943719/heavy-rain-causesflash-floods-shah-alam" rel="noopener" target="_blank">Read news ↗</a></p>
+</div><div class="info-card" data-date="2022-01-01">
+<div class="card-icon">📄</div>
+<h3>Catastrophic Shah Alam Floods</h3>
+<p><strong>Cilisos Report (2022)</strong><br/>Detailed overview of the December 2021/2022 floods and government mitigation responses.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://cilisos.my/shah-alam-flood-mitigation-projects/" rel="noopener" target="_blank">Read report ↗</a></p>
+</div><div class="info-card" data-date="2022-01-01">
+<div class="card-icon">🌐</div>
+<h3>ESA WorldCover 10m Dataset</h3>
+<p><strong>Zanaga et al. (2022)</strong><br/>European Space Agency land cover dataset used for spatial land cover mapping.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://doi.org/10.5281/zenodo.7254221" rel="noopener" target="_blank">Read dataset ↗</a></p>
+</div><article class="info-card" data-date="2022-01-01"><div class="card-icon">📰</div><h3>Geological Factors Can Influence Flooding</h3><p>2022-01-01 · Media Selangor — Expert discussion on geological conditions and flooding.</p><p style="margin-top:8px;"><a class="news-link" href="https://mediaselangor.com/en/2022/01/111391" rel="noopener noreferrer" target="_blank">Read original source ↗</a></p></article><article class="info-card" data-date="2022-01-01"><div class="card-icon">📰</div><h3>Lightning Flood Disaster in Selangor</h3><p>2022-01-01 · UPM IPSAS — Research article discussing flood disasters and climate change.</p><p style="margin-top:8px;"><a class="news-link" href="https://ipsas.upm.edu.my/article/lightning_flood_disaster_in_selangor_a_factor_of_climate_change-69663" rel="noopener noreferrer" target="_blank">Read original source ↗</a></p></article><div class="info-card" data-date="0000-01-01">
+<div class="card-icon">🗺️</div>
+<h3>JPS Selangor GIS Portal</h3>
+<p><strong>JPS Selangor (n.d.)</strong><br/>Public spatial data infrastructure and drainage information portal for Selangor.</p>
+<p style="margin-top:8px;"><a class="news-link" href="https://jpsselgis.selangor.gov.my/jpsselgis/" rel="noopener" target="_blank">Visit portal ↗</a></p>
+</div></div>
+<p class="swipe-hint">Swipe sideways for more →</p>
+</div>
 </section>
-
 <!-- PAGE 6: EMERGENCY & PREPAREDNESS GUIDE -->
 <section class="page" id="emergency-guide" style="background:#f1f5f9;">
-  <div class="page-inner">
-    <div class="section-kicker">Emergency & preparedness guide</div>
-    <h2 class="section-title">Flood Safety & Emergency Guide</h2>
-
-    <div class="check-row">
-        <span>🌦️ Check conditions before heavy rain:</span>
-        <a href="https://publicinfobanjir.water.gov.my" target="_blank" rel="noopener">Public InfoBanjir ↗</a>
-        <a href="https://www.met.gov.my" target="_blank" rel="noopener">MetMalaysia ↗</a>
-    </div>
-
-    <div class="cards-5">
-        <div class="info-card hotline" style="border-left: 4px solid #ef4444;">
-            <div class="card-icon">🚨</div>
-            <h3>MERS 999</h3>
-            <p class="desc"><strong>National emergency</strong><br>Police, Ambulance, Fire & Rescue.</p>
-            <p class="num"><a class="tel" href="tel:999">999</a></p>
-        </div>
-        <div class="info-card hotline" style="border-left: 4px solid #f97316;">
-            <div class="card-icon">🚒</div>
-            <h3>Klang Civil Defence</h3>
-            <p class="desc"><strong>Flood rescue & evacuation</strong></p>
-            <p class="num"><a class="tel" href="tel:+60333710820">03-3371 0820</a></p>
-        </div>
-        <div class="info-card hotline" style="border-left: 4px solid #3b82f6;">
-            <div class="card-icon">🏙️</div>
-            <h3>Petaling Jaya (MBPJ)</h3>
-            <p class="desc"><strong>District disaster operations</strong></p>
-            <p class="num"><a class="tel" href="tel:+60379542020">03-7954 2020</a><br><span class="sub">Ops Room <a class="tel" href="tel:+60379574113">03-7957 4113</a></span></p>
-        </div>
-        <div class="info-card hotline" style="border-left: 4px solid #a855f7;">
-            <div class="card-icon">🧑‍🚒</div>
-            <h3>Shah Alam (MBSA)</h3>
-            <p class="desc"><strong>Pasukan PANTAS, 24 hours</strong></p>
-            <p class="num"><a class="tel" href="tel:+60355105811">03-5510 5811</a></p>
-        </div>
-        <div class="info-card hotline" style="border-left: 4px solid #10b981;">
-            <div class="card-icon">🌧️</div>
-            <h3>NADMA / NDCC</h3>
-            <p class="desc"><strong>National disaster centre, 24/7</strong></p>
-            <p class="num"><a class="tel" href="tel:+60380642400">03-8064 2400</a></p>
-        </div>
-    </div>
-
-    <div class="grid-2" style="margin-top: clamp(12px, 2.5dvh, 22px);">
-        <div class="tip-panel">
-            <h3 style="color: #dc2626;">⚡ During a Flood</h3>
-            <ul>
-                <li><strong>Shut off electricity & gas</strong> at the main switch and valves.</li>
-                <li><strong>Move to higher ground:</strong> second floor, roof, or an evacuation centre (PPS).</li>
-                <li><strong>Avoid moving water:</strong> 30 cm of flowing water can sweep away an adult or a car.</li>
-                <li><strong>Stay connected:</strong> keep your phone charged and a grab bag ready.</li>
-            </ul>
-        </div>
-        <div class="tip-panel">
-            <h3 style="color: #059669;">🧽 After a Flood</h3>
-            <ul>
-                <li><strong>Watch for hazards:</strong> damaged power lines, snakes and sharp debris.</li>
-                <li><strong>Water & food:</strong> boil drinking water; discard flood-damaged food.</li>
-                <li><strong>Wear boots, gloves and a mask</strong> to avoid infections such as leptospirosis.</li>
-                <li><strong>Check the building</strong> is structurally safe before moving back in.</li>
-            </ul>
-        </div>
-    </div>
-    <p class="swipe-hint">Swipe sideways for "After a Flood" →</p>
-
-    <!-- Solid Dark Footer -->
-    <footer class="site-footer">
-        City Flood & Waterlogging Risk Mapping Platform &nbsp;|&nbsp; GIS-Based Web Mapping Project <br>
-        <div style="margin-top: 4px; font-size: 0.78rem;">
-            Created by: <strong>Chan Boon Yeah, Ooi Sue Ann, Wong Yuean Yi</strong><br>
+<div class="page-inner">
+<div class="section-kicker">Emergency &amp; preparedness guide</div>
+<h2 class="section-title">Flood Safety &amp; Emergency Guide</h2>
+<div class="check-row">
+<span>🌦️ Check conditions before heavy rain:</span>
+<a href="https://publicinfobanjir.water.gov.my" rel="noopener" target="_blank">Public InfoBanjir ↗</a>
+<a href="https://www.met.gov.my" rel="noopener" target="_blank">MetMalaysia ↗</a>
+</div>
+<div class="cards-5">
+<div class="info-card hotline" style="border-left: 4px solid #ef4444;">
+<div class="card-icon">🚨</div>
+<h3>MERS 999</h3>
+<p class="desc"><strong>National emergency</strong><br/>Police, Ambulance, Fire &amp; Rescue.</p>
+<p class="num"><a class="tel" href="tel:999">999</a></p>
+</div>
+<div class="info-card hotline" style="border-left: 4px solid #f97316;">
+<div class="card-icon">🚒</div>
+<h3>Klang Civil Defence</h3>
+<p class="desc"><strong>Flood rescue &amp; evacuation</strong></p>
+<p class="num"><a class="tel" href="tel:+60333710820">03-3371 0820</a></p>
+</div>
+<div class="info-card hotline" style="border-left: 4px solid #3b82f6;">
+<div class="card-icon">🏙️</div>
+<h3>Petaling Jaya (MBPJ)</h3>
+<p class="desc"><strong>District disaster operations</strong></p>
+<p class="num"><a class="tel" href="tel:+60379542020">03-7954 2020</a><br/><span class="sub">Ops Room <a class="tel" href="tel:+60379574113">03-7957 4113</a></span></p>
+</div>
+<div class="info-card hotline" style="border-left: 4px solid #a855f7;">
+<div class="card-icon">🧑‍🚒</div>
+<h3>Shah Alam (MBSA)</h3>
+<p class="desc"><strong>Pasukan PANTAS, 24 hours</strong></p>
+<p class="num"><a class="tel" href="tel:+60355105811">03-5510 5811</a></p>
+</div>
+<div class="info-card hotline" style="border-left: 4px solid #10b981;">
+<div class="card-icon">🌧️</div>
+<h3>NADMA / NDCC</h3>
+<p class="desc"><strong>National disaster centre, 24/7</strong></p>
+<p class="num"><a class="tel" href="tel:+60380642400">03-8064 2400</a></p>
+</div>
+</div>
+<div class="grid-2" style="margin-top: clamp(12px, 2.5dvh, 22px);">
+<div class="tip-panel">
+<h3 style="color: #dc2626;">⚡ During a Flood</h3>
+<ul>
+<li><strong>Shut off electricity &amp; gas</strong> at the main switch and valves.</li>
+<li><strong>Move to higher ground:</strong> second floor, roof, or an evacuation centre (PPS).</li>
+<li><strong>Avoid moving water:</strong> 30 cm of flowing water can sweep away an adult or a car.</li>
+<li><strong>Stay connected:</strong> keep your phone charged and a grab bag ready.</li>
+</ul>
+</div>
+<div class="tip-panel">
+<h3 style="color: #059669;">🧽 After a Flood</h3>
+<ul>
+<li><strong>Watch for hazards:</strong> damaged power lines, snakes and sharp debris.</li>
+<li><strong>Water &amp; food:</strong> boil drinking water; discard flood-damaged food.</li>
+<li><strong>Wear boots, gloves and a mask</strong> to avoid infections such as leptospirosis.</li>
+<li><strong>Check the building</strong> is structurally safe before moving back in.</li>
+</ul>
+</div>
+</div>
+<p class="swipe-hint">Swipe sideways for "After a Flood" →</p>
+<!-- Solid Dark Footer -->
+<footer class="site-footer">
+        City Flood &amp; Waterlogging Risk Mapping Platform  |  GIS-Based Web Mapping Project <br/>
+<div style="margin-top: 4px; font-size: 0.78rem;">
+            Created by: <strong>Chan Boon Yeah, Ooi Sue Ann, Wong Yuean Yi</strong><br/>
             Supervised by: <strong>Sr Dr. Masreta Binti Mohd @ Basri</strong>
-        </div>
-        <p class="footer-note">
+</div>
+<p class="footer-note">
             Prepared for academic and educational purposes. The maps show potential waterlogging susceptibility, not live flood conditions or official risk assessments. In an emergency, call 999.
         </p>
-    </footer>
-  </div>
+</footer>
+</div>
 </section>
 </main>
-
 <!-- JAVASCRIPT -->
 <script>
 var slopeLegendHTML = `
@@ -1767,6 +1723,5 @@ window.addEventListener('DOMContentLoaded', function () {
     });
 });
 </script>
-
 </body>
 </html>
