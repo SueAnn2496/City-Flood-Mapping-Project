@@ -1,5 +1,11 @@
 name: Update JPS Rainfall
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Map7/**'
+      - '.github/workflows/update-jps-rainfall.yml'
   workflow_dispatch:
   schedule:
     - cron: '7,22,37,52 * * * *'
