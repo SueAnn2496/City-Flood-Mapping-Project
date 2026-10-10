@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Map 7 - Risk Map & Live Rainfall Monitor</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
@@ -36,7 +36,7 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             font-family: Arial, sans-serif;
             font-size: 12px;
-            max-width: 280px;
+            max-width: 340px; max-height: 65vh; overflow-y: auto;
         }
         .live-panel h4 {
             margin: 0 0 8px 0;
@@ -91,10 +91,10 @@
     <!-- Live Panel UI Container -->
     <div class="live-panel">
         <h4>
-            <span>Live Rainfall Feed (JPS)</span>
+            <span>JPS Rainfall Snapshot</span>
             <span class="live-dot" id="liveIndicator"></span>
         </h4>
-        <div id="feedStatus" class="feed-status">Connecting to JPS data source…</div><div id="stationList">Loading official rainfall readings…</div>
+        <p>Petaling &amp; Klang districts. Petaling is not the same as Petaling Jaya city. Rainfall readings do not confirm flooding.</p><button id="refreshFeed" type="button">Refresh</button> <a href="https://publicinfobanjir.water.gov.my/hujan/data-hujan/?state=SEL&amp;lang=en" target="_blank" rel="noopener">Official JPS</a><div id="feedStatus" class="feed-status">Connecting to JPS data source…</div><div id="stationList">Loading official rainfall readings…</div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -172,7 +172,7 @@
                 '<div style="font-family: Arial; font-size: 13px;">' +
                 '<b style="color: #2c3e50; font-size: 14px;">' + p.name + '</b><hr style="margin: 4px 0;">' +
                 '<b>District:</b> ' + p.district + '<br>' +
-                '<b>Risk Status:</b> <span style="color: ' + color + '; font-weight: bold;">' + p.risk + '</span><br>' +
+                '<b>Project Risk:</b> <span style="color: ' + color + '; font-weight: bold;">' + p.risk + '</span><br>' +
                 '<b>Latitude / Longitude:</b> ' + p.lat + ', ' + p.lng + '<br>' +
                 '<b>UTM Coords:</b> ' + p.easting + ' E, ' + p.northing + ' N (' + p.zone + ')' +
                 '</div>'
@@ -187,105 +187,75 @@
                 '<i style="background: #e74c3c;"></i> High Risk<br>' +
                 '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
                 '<i style="background: #2ecc71;"></i> Low Risk<br>' +
-                '<hr style="margin:4px 0;"><small><b>(!)</b> = Live JPS Warning</small>';
+                '<hr style="margin:4px 0;"><small>Project risk points; not live flood reports.</small>';
             return div;
         };
         legend.addTo(map);
 
-        // Layer group for dynamic live JPS warning exclamation mark icons
-        var liveWarningLayerGroup = L.layerGroup().addTo(map);
-
-        // Real JPS rainfall feed. This page expects a same-origin PHP endpoint at /api/rainfall.php.
-        // Do not substitute sample numbers: if the source is unavailable, show a clear error.
         const JPS_REFRESH_MS = 60000;
+        const MAX_AGE_MS = 90 * 60000;
         const feedStatus = document.getElementById('feedStatus');
         const stationList = document.getElementById('stationList');
-        let lastGoodFetch = null;
-
+        const indicator = document.getElementById('liveIndicator');
+        let loading = false;
         function escapeHtml(value) {
-            return String(value ?? '').replace(/[&<>"']/g, ch => ({
-                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-            }[ch]));
+            return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
         }
-
+        function isFresh(value) {
+            const time = Date.parse(value);
+            const age = Date.now() - time;
+            return Number.isFinite(time) && age >= -300000 && age <= MAX_AGE_MS;
+        }
+        function formatTime(value) {
+            return Number.isFinite(Date.parse(value)) ? new Date(value).toLocaleString('en-MY', {timeZone:'Asia/Kuala_Lumpur'}) + ' MYT' : 'Unknown';
+        }
         function rainfallCategory(mm) {
-            if (mm === null || mm === undefined || !Number.isFinite(Number(mm))) return 'No data';
-            const n = Number(mm);
-            if (n <= 0) return 'No rainfall';
-            if (n <= 10) return 'Light';
-            if (n <= 30) return 'Moderate';
-            if (n <= 60) return 'Heavy';
-            return 'Very heavy';
+            if (typeof mm !== 'number' || !Number.isFinite(mm) || mm < 0) return 'No data';
+            return mm === 0 ? 'No rainfall' : mm <= 10 ? 'Light' : mm <= 30 ? 'Moderate' : mm <= 60 ? 'Heavy' : 'Very heavy';
         }
-
-        function categoryColor(category) {
-            if (category === 'Heavy' || category === 'Very heavy') return '#d9534f';
-            if (category === 'Moderate') return '#f39c12';
-            if (category === 'Light') return '#3498db';
-            if (category === 'No rainfall') return '#2ecc71';
-            return '#6b7280';
-        }
-
         function setFeedStatus(message, kind) {
-            feedStatus.className = 'feed-status ' + (kind || '');
+            feedStatus.className = 'feed-status ' + kind;
             feedStatus.textContent = message;
+            indicator.style.backgroundColor = kind === 'ok' ? '#2ecc71' : kind === 'warn' ? '#f39c12' : '#9ca3af';
+            indicator.style.animation = kind === 'ok' ? 'pulse 2s infinite' : 'none';
         }
-
-        function renderStations(stations) {
-            liveWarningLayerGroup.clearLayers();
-            if (!Array.isArray(stations) || stations.length === 0) {
-                stationList.innerHTML = '<p>No matching JPS stations were returned. Check the selected districts/station names.</p>';
-                return;
-            }
-            stationList.innerHTML = stations.map(station => {
-                const mm = station.oneHourMm;
-                const category = rainfallCategory(mm);
-                const color = categoryColor(category);
-                const rainfallText = (mm === null || mm === undefined || !Number.isFinite(Number(mm)))
-                    ? 'No data' : Number(mm).toFixed(1) + ' mm (last 1 hour)';
-                const updated = station.lastUpdated || 'Timestamp not supplied by source';
-                // Only map a live warning when the API supplies verified station coordinates.
-                if ((category === 'Heavy' || category === 'Very heavy') &&
-                    Number.isFinite(Number(station.lat)) && Number.isFinite(Number(station.lng))) {
-                    const icon = L.divIcon({ className: 'live-warning-marker', html: '!', iconSize: [26, 26], iconAnchor: [13, 13] });
-                    L.marker([Number(station.lat), Number(station.lng)], { icon })
-                        .bindPopup('<b>JPS Rainfall Warning</b><br>Station: ' + escapeHtml(station.name) +
-                            '<br>Rainfall: ' + escapeHtml(rainfallText) + '<br>Status: ' + escapeHtml(category) +
-                            '<br>JPS updated: ' + escapeHtml(updated)).addTo(liveWarningLayerGroup);
-                }
-                return '<div class="station-item"><b>' + escapeHtml(station.name) + '</b><br>' +
-                    '<span>District: ' + escapeHtml(station.district || 'Not supplied') + '</span><br>' +
-                    'Rainfall: <b>' + escapeHtml(rainfallText) + '</b><br>' +
-                    'Status: <span style="color:' + color + ';font-weight:bold">' + escapeHtml(category) + '</span><br>' +
-                    '<small class="station-meta">JPS updated: ' + escapeHtml(updated) + '</small></div>';
+        function renderStations(stations, snapshotFresh) {
+            let freshCount = 0;
+            const sorted = [...stations].sort((a,b) => a.district.localeCompare(b.district) || a.name.localeCompare(b.name));
+            stationList.innerHTML = sorted.map(station => {
+                const fresh = snapshotFresh && isFresh(station.lastUpdated);
+                const category = fresh ? rainfallCategory(station.oneHourMm) : 'STALE — not current';
+                if (fresh && category !== 'No data') freshCount++;
+                const mm = typeof station.oneHourMm === 'number' && Number.isFinite(station.oneHourMm) && station.oneHourMm >= 0 ? station.oneHourMm.toFixed(1) + ' mm (1-hour total at observation time)' : 'No data';
+                return '<div class="station-item"><b>' + escapeHtml(station.name) + '</b><br>JPS district: ' + escapeHtml(station.district) + '<br>' +
+                    (fresh ? 'Rainfall: ' : 'Last recorded rainfall: ') + escapeHtml(mm) + '<br><b>' + escapeHtml(category) + '</b><br><small class="station-meta">Station observed: ' + escapeHtml(formatTime(station.lastUpdated)) + '</small></div>';
             }).join('');
+            return freshCount;
         }
-
         async function loadLiveRainfallData() {
-            setFeedStatus('Checking official JPS rainfall data…', '');
+            if (loading) return;
+            loading = true;
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 20000);
             try {
-                const response = await fetch('api/rainfall.php?ts=' + Date.now(), {
-                    method: 'GET', cache: 'no-store', headers: { 'Accept': 'application/json' }
-                });
-                if (!response.ok) throw new Error('Rainfall endpoint returned HTTP ' + response.status);
+                const response = await fetch('./data/jps-selangor.json?ts=' + Date.now(), {cache:'no-store', signal:controller.signal});
+                if (!response.ok) throw new Error('JSON returned HTTP ' + response.status + '. Upload data/jps-selangor.json and run the workflow.');
                 const data = await response.json();
-                if (!data || data.ok !== true || !Array.isArray(data.stations)) {
-                    throw new Error(data && data.error ? data.error : 'Unexpected response from rainfall endpoint');
-                }
-                renderStations(data.stations);
-                lastGoodFetch = new Date();
-                const sourceTime = data.fetchedAt ? new Date(data.fetchedAt).toLocaleString() : lastGoodFetch.toLocaleString();
-                const old = data.sourceUpdatedAt ? ' | Latest station reading: ' + data.sourceUpdatedAt : '';
-                setFeedStatus('Connected to JPS source via server. Checked: ' + sourceTime + old, 'ok');
-                if (data.warning) setFeedStatus('Source warning: ' + data.warning + ' | Checked: ' + sourceTime, 'warn');
+                if (data.ok !== true) throw new Error(data.error || 'JPS source unavailable');
+                if (data.schemaVersion !== 1 || !Array.isArray(data.stations) || !data.stations.length || !data.stations.every(s => typeof s.name === 'string' && typeof s.district === 'string')) throw new Error('JSON format mismatch. Use the included update_jps.py.');
+                const snapshotFresh = isFresh(data.fetchedAt);
+                const freshCount = renderStations(data.stations, snapshotFresh);
+                const allFresh = freshCount === data.stations.length;
+                setFeedStatus((!snapshotFresh ? 'STALE snapshot — check GitHub Actions. ' : freshCount === 0 ? 'No current station readings. ' : 'Current readings: ' + freshCount + '/' + data.stations.length + '. ') + 'JPS fetched: ' + formatTime(data.fetchedAt) + '. Page checked: ' + formatTime(new Date().toISOString()) + '. Scheduled fetch: every 15 min; page check: every 60 sec.', snapshotFresh && allFresh ? 'ok' : 'warn');
             } catch (error) {
-                const last = lastGoodFetch ? ' Last successful check: ' + lastGoodFetch.toLocaleString() + '.' : '';
-                setFeedStatus('LIVE DATA UNAVAILABLE — ' + error.message + '. No sample readings are being shown.' + last, 'error');
-                if (!lastGoodFetch) stationList.innerHTML = '<p>Could not load official rainfall data. Please check the PHP endpoint/server and try again.</p>';
-                console.error('JPS rainfall feed error:', error);
+                setFeedStatus('DATA UNAVAILABLE — ' + error.message, 'error');
+                stationList.textContent = 'Current rainfall cannot be confirmed. Check the official JPS page or the workflow logs.';
+            } finally {
+                clearTimeout(timeout);
+                loading = false;
             }
         }
-
+        document.getElementById('refreshFeed').addEventListener('click', loadLiveRainfallData);
         loadLiveRainfallData();
         setInterval(loadLiveRainfallData, JPS_REFRESH_MS);
     </script>
