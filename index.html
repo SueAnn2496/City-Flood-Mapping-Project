@@ -1606,52 +1606,10 @@ function searchLocation() {
     var input = document.getElementById("searchInput");
     var result = document.getElementById("searchResult");
     var q = input.value.trim().toLowerCase().replace(/\s+/g, " ");
-    
     if (!q) {
         result.textContent = "Please enter an area or point name (e.g., Shah Alam, Klang, Meru).";
         return;
     }
-    
-    if (q.indexOf("klang") !== -1) {
-        switchDistrict('Map4/', document.getElementById("btnKlang"));
-        result.textContent = "Showing Klang district map.";
-        return;
-    } else if (q.indexOf("shah") !== -1 || q === "sa") {
-        switchDistrict('Map5/', document.getElementById("btnShahAlam"));
-        result.textContent = "Showing Shah Alam district map.";
-        return;
-    } else if (q.indexOf("petaling") !== -1 || q === "pj") {
-        switchDistrict('Map6/', document.getElementById("btnPJ"));
-        result.textContent = "Showing Petaling Jaya district map.";
-        return;
-    }
-
-    var iframe = document.getElementById("mapFrame");
-    var currentSrc = iframe.getAttribute("src") || "";
-    
-    if (currentSrc.indexOf("Map1/") === -1 && currentSrc.indexOf("Map7/") === -1) {
-        switchLayer('Map1/', document.querySelector('.layer-btn'));
-    }
-
-    setTimeout(function() {
-        try {
-            var iframeWin = iframe.contentWindow;
-            if (iframeWin && typeof iframeWin.searchMarkerByName === "function") {
-                var found = iframeWin.searchMarkerByName(q);
-                if (found) {
-                    result.textContent = "Found and zoomed to: " + input.value.trim();
-                } else {
-                    result.textContent = "Query processed. Point not found in current map view.";
-                }
-            } else {
-                result.textContent = "Switched to map view (Query: " + input.value.trim() + ").";
-            }
-        } catch (e) {
-            console.log("Iframe communication error:", e);
-            result.textContent = "Switched to map view.";
-        }
-    }, 400);
-}
     
     if (q.indexOf("klang") !== -1) {
         switchDistrict('Map4/', document.getElementById("btnKlang"));
