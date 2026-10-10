@@ -36,8 +36,17 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             font-family: Arial, sans-serif;
             font-size: 12px;
-            max-width: 340px; max-height: 65vh; overflow-y: auto;
+            width: min(340px, calc(100vw - 54px));
+            max-height: 65vh; overflow-y: auto;
         }
+        .live-panel.collapsed { width: auto; max-width: calc(100vw - 54px); }
+        .live-panel.collapsed #panelBody { display: none; }
+        .live-panel.collapsed h4 { margin: 0; }
+        .panel-button { border: 1px solid #d1d5db; background: #fff; border-radius: 5px; padding: 5px 8px; cursor: pointer; }
+        .live-panel h4 { gap: 8px; }
+        #warningBadge { font-size: 11px; color: #991b1b; white-space: nowrap; }
+        .station-heavy { border-left: 3px solid #d9534f; padding-left: 7px; }
+        .warning-note { color: #b91c1c; font-size: 11px; }
         .live-panel h4 {
             margin: 0 0 8px 0;
             font-size: 14px;
@@ -79,8 +88,8 @@
             color: white;
             text-align: center;
             font-weight: bold;
-            font-size: 14px;
-            line-height: 22px;
+            font-size: 20px;
+            line-height: 30px;
             box-shadow: 0 0 12px rgba(217, 83, 79, 0.9);
         }
     </style>
@@ -89,12 +98,19 @@
     <div id="map"></div>
 
     <!-- Live Panel UI Container -->
-    <div class="live-panel">
+    <div class="live-panel collapsed" id="livePanel">
         <h4>
-            <span>JPS Rainfall Snapshot</span>
+            <span>Live Rainfall</span>
             <span class="live-dot" id="liveIndicator"></span>
+            <span id="warningBadge" aria-live="polite"></span>
+            <button id="togglePanel" class="panel-button" aria-expanded="false" aria-controls="panelBody" type="button">Show ▾</button>
         </h4>
-        <p>Petaling &amp; Klang districts. Petaling is not the same as Petaling Jaya city. Rainfall readings do not confirm flooding.</p><button id="refreshFeed" type="button">Refresh</button> <a href="https://publicinfobanjir.water.gov.my/hujan/data-hujan/?state=SEL&amp;lang=en" target="_blank" rel="noopener">Official JPS</a><div id="feedStatus" class="feed-status">Connecting to JPS data source…</div><div id="stationList">Loading official rainfall readings…</div>
+        <div id="panelBody">
+            <button id="refreshFeed" class="panel-button" type="button">Refresh</button>
+            <a href="https://publicinfobanjir.water.gov.my/hujan/data-hujan/?state=SEL&amp;lang=en" target="_blank" rel="noopener">Official JPS</a>
+            <div id="feedStatus" class="feed-status">Loading JPS snapshot…</div>
+            <div id="stationList">Loading station readings…</div>
+        </div>
     </div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -187,7 +203,7 @@
                 '<i style="background: #e74c3c;"></i> High Risk<br>' +
                 '<i style="background: #f39c12;"></i> Moderate Risk<br>' +
                 '<i style="background: #2ecc71;"></i> Low Risk<br>' +
-                '<hr style="margin:4px 0;"><small>Project risk points; not live flood reports.</small>';
+                '<hr style="margin:4px 0;"><small><b style="color:#d9534f">!</b> Heavy rain — possible waterlogging<br>Click ! for station and observation time.</small>';
             return div;
         };
         legend.addTo(map);
@@ -197,7 +213,72 @@
         const feedStatus = document.getElementById('feedStatus');
         const stationList = document.getElementById('stationList');
         const indicator = document.getElementById('liveIndicator');
+        const warningLayer = L.layerGroup().addTo(map);
+        const warningBadge = document.getElementById('warningBadge');
+        let currentSnapshot = null;
         let loading = false;
+        // These are project AREA coordinates, not surveyed JPS station locations.
+        // Names must match explicitly; never map every point in a district as flooded.
+        const stationAreaNames = {
+            'taman sri muda': 'Taman Sri Muda / Seksyen 32',
+            'taman desa kemuning': 'Taman Desa Kemuning',
+            'taman sentosa': 'Taman Sentosa',
+            'pekan meru': 'Meru',
+            'p/a pandamaran': 'Pandamaran',
+            'pandamar': 'Pandamaran',
+            'jalan 222': 'Jalan 222 (BH petrol station / Federal Highway junction)',
+            'kg. budiman': 'Kampung Budiman',
+            'bukit lancong faz': 'Bukit Lanchong / Kg Bukit Lanchung'
+        };
+        // For unmatched stations, use ONE district reference marker, explicitly
+        // labelled as regional information, not the location of rain or flooding.
+        const districtReferences = {
+            'Klang': {lat:3.0449, lng:101.4456},
+            'Petaling': {lat:3.12, lng:101.60}
+        };
+        function stationArea(station) {
+            const name = station.name.toLowerCase().replace(/\s*\(f2\)\s*$/i, '').trim();
+            return points.find(p => p.name === stationAreaNames[name]);
+        }
+        function heavyStations(data) {
+            if (!data || data.ok !== true || !isFresh(data.fetchedAt)) return [];
+            return data.stations.filter(s => isFresh(s.lastUpdated) &&
+                typeof s.oneHourMm === 'number' && Number.isFinite(s.oneHourMm) && s.oneHourMm > 30);
+        }
+        function renderWarnings(data) {
+            warningLayer.clearLayers();
+            const heavy = heavyStations(data);
+            warningBadge.textContent = heavy.length ? '! ' + heavy.length + ' stations' : '';
+            const groups = new Map();
+            heavy.forEach(s => {
+                const area = stationArea(s);
+                const ref = area || districtReferences[s.district];
+                if (!ref) return;
+                const key = area ? 'area:' + area.name : 'district:' + s.district;
+                if (!groups.has(key)) groups.set(key, {ref, area, district:s.district, stations:[]});
+                groups.get(key).stations.push(s);
+            });
+            groups.forEach(group => {
+                const title = group.area ? group.area.name : group.district + ' district — regional rain alert';
+                const placement = group.area ? 'Marker shows the project area, not the exact rain gauge.' : 'Marker is a district reference only. Heavy rain was reported at the stations below; it may be elsewhere in this district.';
+                const readings = group.stations.map(s => '<b>' + escapeHtml(s.name) + '</b>: ' + s.oneHourMm.toFixed(1) +
+                    ' mm / 1 hour (' + rainfallCategory(s.oneHourMm) + ')<br><small>' + escapeHtml(formatTime(s.lastUpdated)) + '</small>').join('<hr>');
+                const icon = L.divIcon({className:'live-warning-marker', html:'!', iconSize:[32,32], iconAnchor:[16,16]});
+                L.marker([group.ref.lat, group.ref.lng], {icon, zIndexOffset:1000})
+                    .bindTooltip(title + ': possible waterlogging')
+                    .bindPopup('<b>' + escapeHtml(title) + '</b><p style="color:#b91c1c">Heavy rain — possible waterlogging. Flooding has not been confirmed.</p>' +
+                        readings + '<p><small>' + placement + '</small></p>').addTo(warningLayer);
+            });
+        }
+        const panel = document.getElementById('livePanel');
+        const togglePanel = document.getElementById('togglePanel');
+        togglePanel.addEventListener('click', () => {
+            const collapsed = panel.classList.toggle('collapsed');
+            togglePanel.setAttribute('aria-expanded', String(!collapsed));
+            togglePanel.textContent = collapsed ? 'Show ▾' : 'Hide ▴';
+        });
+        L.DomEvent.disableClickPropagation(panel);
+        L.DomEvent.disableScrollPropagation(panel);
         function escapeHtml(value) {
             return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
         }
@@ -218,6 +299,7 @@
             feedStatus.textContent = message;
             indicator.style.backgroundColor = kind === 'ok' ? '#2ecc71' : kind === 'warn' ? '#f39c12' : '#9ca3af';
             indicator.style.animation = kind === 'ok' ? 'pulse 2s infinite' : 'none';
+            indicator.title = message;
         }
         function renderStations(stations, snapshotFresh) {
             let freshCount = 0;
@@ -227,7 +309,8 @@
                 const category = fresh ? rainfallCategory(station.oneHourMm) : 'STALE — not current';
                 if (fresh && category !== 'No data') freshCount++;
                 const mm = typeof station.oneHourMm === 'number' && Number.isFinite(station.oneHourMm) && station.oneHourMm >= 0 ? station.oneHourMm.toFixed(1) + ' mm (1-hour total at observation time)' : 'No data';
-                return '<div class="station-item"><b>' + escapeHtml(station.name) + '</b><br>JPS district: ' + escapeHtml(station.district) + '<br>' +
+                const heavy = fresh && typeof station.oneHourMm === 'number' && Number.isFinite(station.oneHourMm) && station.oneHourMm > 30;
+                return '<div class="station-item' + (heavy ? ' station-heavy' : '') + '"><b>' + escapeHtml(station.name) + '</b><br>JPS district: ' + escapeHtml(station.district) + '<br>' +
                     (fresh ? 'Rainfall: ' : 'Last recorded rainfall: ') + escapeHtml(mm) + '<br><b>' + escapeHtml(category) + '</b><br><small class="station-meta">Station observed: ' + escapeHtml(formatTime(station.lastUpdated)) + '</small></div>';
             }).join('');
             return freshCount;
@@ -245,12 +328,17 @@
                 if (!response.ok) throw new Error('JSON returned HTTP ' + response.status + '. Upload data/jps-selangor.json and run the workflow.');
                 const data = await response.json();
                 if (data.ok !== true) throw new Error(data.error || 'JPS source unavailable');
-                if (data.schemaVersion !== 1 || !Array.isArray(data.stations) || !data.stations.length || !data.stations.every(s => typeof s.name === 'string' && typeof s.district === 'string')) throw new Error('JSON format mismatch. Use the included update_jps.py.');
+                if (data.schemaVersion !== 1 || !Array.isArray(data.stations) || !data.stations.length || !data.stations.every(s => s && typeof s.name === 'string' && typeof s.district === 'string')) throw new Error('JSON format mismatch. Use the included update_jps.py.');
+                currentSnapshot = data;
+                renderWarnings(data);
                 const snapshotFresh = isFresh(data.fetchedAt);
                 const freshCount = renderStations(data.stations, snapshotFresh);
                 const allFresh = freshCount === data.stations.length;
                 setFeedStatus((!snapshotFresh ? 'STALE snapshot — check GitHub Actions. ' : freshCount === 0 ? 'No current station readings. ' : 'Current readings: ' + freshCount + '/' + data.stations.length + '. ') + 'JPS fetched: ' + formatTime(data.fetchedAt) + '. Page checked: ' + formatTime(new Date().toISOString()) + '. Scheduled fetch: every 15 min; page check: every 60 sec.', snapshotFresh && allFresh ? 'ok' : 'warn');
             } catch (error) {
+                currentSnapshot = null;
+                warningLayer.clearLayers();
+                warningBadge.textContent = 'Unavailable';
                 setFeedStatus('DATA UNAVAILABLE — ' + error.message, 'error');
                 stationList.textContent = 'Current rainfall cannot be confirmed. Check the official JPS page or the workflow logs.';
             } finally {
@@ -261,6 +349,14 @@
         document.getElementById('refreshFeed').addEventListener('click', loadLiveRainfallData);
         loadLiveRainfallData();
         setInterval(loadLiveRainfallData, JPS_REFRESH_MS);
+        // Expire warning markers even while a slow network request is pending.
+        setInterval(() => {
+            if (currentSnapshot) {
+                renderWarnings(currentSnapshot);
+                renderStations(currentSnapshot.stations, isFresh(currentSnapshot.fetchedAt));
+                if (!isFresh(currentSnapshot.fetchedAt)) setFeedStatus('STALE snapshot — check GitHub Actions.', 'warn');
+            }
+        }, 15000);
     </script>
 </body>
 </html>
