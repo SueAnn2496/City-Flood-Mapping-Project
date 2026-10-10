@@ -508,11 +508,6 @@
             transform: translateX(20px);
         }
 
-        input:focus-visible + .slider {
-            outline: 3px solid #2dd4bf;
-            outline-offset: 2px;
-        }
-
         .map-view-wrapper {
             flex: 1;
             min-width: 0;
@@ -1603,57 +1598,49 @@ function switchRiskMap(btn) {
 }
 
 function searchLocation() {
-    var input = document.getElementById("searchInput");
-    var result = document.getElementById("searchResult");
-    var q = input.value.trim().toLowerCase().replace(/\s+/g, " ");
+    var query = document.getElementById("searchInput").value.trim().toLowerCase();
+    var resultDiv = document.getElementById("searchResult");
     
-    if (!q) {
-        result.textContent = "Please enter an area or point name (e.g., Shah Alam, Meru, Seksyen 17).";
-        return;
-    }
-    
-    // 如果搜特定大区
-    if (q.indexOf("klang") !== -1 && q.length < 10) {
-        switchDistrict('Map4/', document.getElementById("btnKlang"));
-        result.textContent = "Showing Klang district map.";
-        return;
-    } else if (q.indexOf("shah") !== -1 || q === "sa") {
-        switchDistrict('Map5/', document.getElementById("btnShahAlam"));
-        result.textContent = "Showing Shah Alam district map.";
-        return;
-    } else if (q.indexOf("petaling") !== -1 || q === "pj") {
-        switchDistrict('Map6/', document.getElementById("btnPJ"));
-        result.textContent = "Showing Petaling Jaya district map.";
+    if (!query) {
+        resultDiv.innerHTML = "<span style='color: #ef4444;'>Please type an area name.</span>";
         return;
     }
 
-    // 默认或具体点位查询：切换到带有风险点总览的 Map1（或如果你当前在 Map7 风险图层，也可以直接在当前地图搜）
-    var iframe = document.getElementById("mapFrame");
-    var currentSrc = iframe.getAttribute("src") || "";
-    
-    // 如果当前不在 Map1 且不在 Map7，则自动切回 Map1
-    if (currentSrc.indexOf("Map1/") === -1 && currentSrc.indexOf("Map7/") === -1) {
-        switchLayer('Map1/', document.querySelector('.layer-btn'));
-    }
+    var riskBtn = document.querySelector('.risk-btn');
+    switchRiskMap(riskBtn);
 
-    // 延迟一点等待 iframe 加载完成后，调用子页面暴露的 searchMarkerByName 方法
+    resultDiv.innerHTML = "Searching...";
+
     setTimeout(function() {
+        var iframe = document.getElementById("mapFrame");
         try {
-            var iframeWin = iframe.contentWindow;
-            if (iframeWin && typeof iframeWin.searchMarkerByName === "function") {
-                var found = iframeWin.searchMarkerByName(q);
-                if (found) {
-                    result.textContent = "Found and zoomed to: " + input.value.trim();
+            var win = iframe.contentWindow;
+            if (win && win.points && win.map) {
+                var matches = win.points.filter(p => 
+                    p.name.toLowerCase().includes(query) || p.district.toLowerCase().includes(query)
+                );
+
+                if (matches.length > 0) {
+                    var p = matches[0];
+                    win.map.setView([p.lat, p.lng], 14);
+                    resultDiv.innerHTML = `<span style="color: #10b981;"><b>Found:</b> ${p.name} (${p.district})<br><b>Risk:</b> ${p.risk}</span>`;
+                    
+                    win.map.eachLayer(function(layer) {
+                        if (layer.getLatLng && layer.getLatLng().lat === p.lat && layer.getLatLng().lng === p.lng) {
+                            layer.openPopup();
+                        }
+                    });
                 } else {
-                    result.textContent = "Point '" + input.value.trim() + "' not found in current map view.";
+                    resultDiv.innerHTML = `<span style='color: #ef4444;'>No match found for "${query}".</span>`;
                 }
             } else {
-                result.textContent = "Switched to map view (Query: " + input.value.trim() + ").";
+                resultDiv.innerHTML = "Map data loading, please click Search again.";
             }
         } catch (e) {
-            result.textContent = "Switched to map view.";
+            console.log("Search error:", e);
+            resultDiv.innerHTML = "<span style='color: #ef4444;'>Unable to search.</span>";
         }
-    }, 400);
+    }, 600);
 }
 
 function resetMapView() {
