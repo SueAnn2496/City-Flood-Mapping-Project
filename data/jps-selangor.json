@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "ok": false,
-  "fetchedAt": "2026-10-24T14:50:16.203796+00:00",
+  "fetchedAt": "2026-10-24T17:41:32.887492+00:00",
   "sourceUrl": "https://publicinfobanjir.water.gov.my/wp-content/themes/shapely/agency/searchresultrainfall.php?state=SEL&district=ALL&station=ALL&loginStatus=0&language=en",
   "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: certificate has expired (_ssl.c:1010)>",
   "stations": []
