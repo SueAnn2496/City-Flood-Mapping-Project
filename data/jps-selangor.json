@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "ok": false,
-  "fetchedAt": "2026-11-02T02:23:17.424293+00:00",
+  "fetchedAt": "2026-11-02T09:54:43.343401+00:00",
   "sourceUrl": "https://publicinfobanjir.water.gov.my/wp-content/themes/shapely/agency/searchresultrainfall.php?state=SEL&district=ALL&station=ALL&loginStatus=0&language=en",
   "error": "HTTP Error 404: Not Found",
   "stations": []
