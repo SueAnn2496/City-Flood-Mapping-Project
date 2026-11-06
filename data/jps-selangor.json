@@ -1,154 +1,154 @@
 {
   "schemaVersion": 1,
   "ok": true,
-  "fetchedAt": "2026-11-05T19:04:00.134295+00:00",
+  "fetchedAt": "2026-11-06T00:09:08.437638+00:00",
   "sourceUrl": "https://publicinfobanjir.water.gov.my/wp-content/themes/shapely/agency/searchresultrainfall.php?state=SEL&district=ALL&station=ALL&loginStatus=0&language=en",
   "stations": [
     {
       "id": "0232371RF",
       "name": "SMK SS 17 (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:30:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "0232291RF",
       "name": "KDR Sandaran Permai (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
-      "oneHourMm": 0.0
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
+      "oneHourMm": 0.5
     },
     {
       "id": "",
       "name": "Jave Setia (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T03:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "0231651RF",
       "name": "Ayer Hitam Puchong (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "0230621RF",
       "name": "Surau Al-Syakirin (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Emp. Tasik Subang Meru (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "0000000RF",
       "name": "SG. DAMANSARA di KG MELAYU KEBUN BUNGA (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Taman Kayu Ara Indah (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "USJ 1 (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Jalan SS 2/24 (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Rem KTM Sungai Buloh  (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:30:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Taman Mayang (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:30:00+08:00",
+      "lastUpdated": "2026-11-06T07:30:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Kg. Gandhi (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Jalan 222 (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "0231151RF",
       "name": "Bandar Klang (F2)",
       "district": "Klang",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "3014095",
       "name": "Kg. Delek (F2)",
       "district": "Klang",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "SK Bukit Kemuning (F2)",
       "district": "Klang",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "0232581RF",
       "name": "Sg. Rasau AJ (F2)",
       "district": "Klang",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Batu 3 (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Pandamar (F2)",
       "district": "Klang",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Bukit Jelutong (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
@@ -162,35 +162,35 @@
       "id": "",
       "name": "Bukit Lancong FAZ (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "",
       "name": "Taman Sri Manja (F2)",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T02:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "3115180",
       "name": "Paya Jaras",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T01:30:00+08:00",
+      "lastUpdated": "2026-11-06T07:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "3114087",
       "name": "Empangan Tasik Subang Meru",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T01:00:00+08:00",
+      "lastUpdated": "2026-11-06T07:15:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "0220291",
       "name": "Kg. Budiman",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T00:45:00+08:00",
+      "lastUpdated": "2026-11-06T06:45:00+08:00",
       "oneHourMm": 0.0
     },
     {
@@ -204,7 +204,7 @@
       "id": "3017107",
       "name": "Seri Kembangan",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T01:45:00+08:00",
+      "lastUpdated": "2026-11-06T08:00:00+08:00",
       "oneHourMm": 0.0
     },
     {
@@ -225,7 +225,7 @@
       "id": "3015440",
       "name": "IOI Puchong Jaya",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T01:30:00+08:00",
+      "lastUpdated": "2026-11-06T07:45:00+08:00",
       "oneHourMm": 0.0
     },
     {
@@ -253,14 +253,14 @@
       "id": "3115083",
       "name": "Taman Mayang",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T01:45:00+08:00",
+      "lastUpdated": "2026-11-06T07:45:00+08:00",
       "oneHourMm": 0.0
     },
     {
       "id": "3115082",
       "name": "Kota Damansara",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T01:15:00+08:00",
+      "lastUpdated": "2026-11-06T02:45:00+08:00",
       "oneHourMm": 0.0
     },
     {
@@ -274,7 +274,7 @@
       "id": "3115084",
       "name": "Kg. Melayu Subang",
       "district": "Petaling",
-      "lastUpdated": "2026-11-06T01:45:00+08:00",
+      "lastUpdated": "2026-11-06T07:45:00+08:00",
       "oneHourMm": 0.0
     },
     {
@@ -393,7 +393,7 @@
       "id": "3013002",
       "name": "Jln. Benteng Kapar",
       "district": "Klang",
-      "lastUpdated": "2026-11-06T01:45:00+08:00",
+      "lastUpdated": "2026-11-06T07:45:00+08:00",
       "oneHourMm": 0.0
     },
     {
@@ -414,7 +414,7 @@
       "id": "2913001",
       "name": "Telok Gong",
       "district": "Klang",
-      "lastUpdated": "2026-11-06T01:15:00+08:00",
+      "lastUpdated": "2026-11-06T07:30:00+08:00",
       "oneHourMm": 0.0
     }
   ]
